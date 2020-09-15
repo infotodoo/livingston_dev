@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record id="view_maintenance_request_form_inherit" model="ir.ui.view">
+            <field name="name">maintenance.request.form.thomas</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='maintenance_type']" position="after">
+                    <field name="metodology_control" widget="radio"/>
+                    <field name="bool_quantity" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='description']" position="after">
+                    <page string='Metodology Control' attrs="{'invisible': [('bool_quantity','!=',True)]}">
+                        <group>
+                            <group>
+                                <field name="variable"/>
+                                <field name="unit_measure" options="{'no_create': True, 'no_create_edit':True}" />
+                                <field name="range_measure"/>
+                                <field name="tolerance"/>
+                            </group>
+                            <group>
+                                <field name="mistake_equipment"/>
+                                <field name="uncertainty_measure"/>
+                                <field name="fercuency"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
