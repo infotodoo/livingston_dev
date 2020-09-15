@@ -11,7 +11,7 @@ class ActivityWizardMaintenance(models.TransientModel):
     def action_create_activity(self):
         for record in self:
             maintenance_id = self.env['maintenance.request'].browse(self._context.get('active_id'))
-            model_id = self.env.ref('maintenaince_thomas.model_maintenance_request')
+            model_id = self.env.ref('maintenance_thomas.model_maintenance_request')
             type_id = self.env.ref('mail.mail_activity_data_todo')
             summary = record.message
             users = record.users_ids

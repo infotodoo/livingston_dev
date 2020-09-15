@@ -25,7 +25,8 @@
         'views/maintenance_view.xml',
         'data/sequence.xml',
         'data/maintenance_data.xml',
-        # 'views/templates.xml',
+        'views/maintenance_request_view.xml',
+        'wizard/wizard_activity_maintenance_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

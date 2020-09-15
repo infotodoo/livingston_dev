@@ -30,12 +30,12 @@ class MaintenanceRequest(models.Model):
             for user in users:
                 ids.append((4, user.id))
         vals_wiz = {
-            'message': 'Petición de mantenimiento'+record.name+'en progreso',
+            'message': 'Petición de mantenimiento  '+record.name+'en '+record.stage_id.name ,
             'users_ids': ids,
         }
         wiz_id = self.env['wizard.maintenance'].create(vals_wiz)
-        action = imd.xmlid_to_object('maintenaince_thomas.action_create_maintenance')
-        form_view_id = imd.xmlid_to_res_id('maintenaince_thomas.view_message_activity')
+        action = imd.xmlid_to_object('maintenance_thomas.action_create_maintenance')
+        form_view_id = imd.xmlid_to_res_id('maintenance_thomas.view_message_activity')
         return {
             'name': action.name,
             'help': action.help,

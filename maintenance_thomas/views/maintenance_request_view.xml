@@ -5,26 +5,31 @@
             <field name="model">maintenance.request</field>
             <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//button[@name='archive_equipment_request']" position="after">
+                    <button name="action_create_wizard" type="object" string="Notify"/>
+                </xpath>
                 <xpath expr="//field[@name='maintenance_type']" position="after">
                     <field name="metodology_control" widget="radio"/>
                     <field name="bool_quantity" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='description']" position="after">
-                    <page string='Metodology Control' attrs="{'invisible': [('bool_quantity','!=',True)]}">
-                        <group>
+                    <notebook colspan="4">
+                        <page string='Metodology Control' attrs="{'invisible': [('bool_quantity','!=',True)]}">
                             <group>
-                                <field name="variable"/>
-                                <field name="unit_measure" options="{'no_create': True, 'no_create_edit':True}" />
-                                <field name="range_measure"/>
-                                <field name="tolerance"/>
+                                <group>
+                                    <field name="variable"/>
+                                    <field name="unit_measure" options="{'no_create': True, 'no_create_edit':True}" />
+                                    <field name="range_measure"/>
+                                    <field name="tolerance"/>
+                                </group>
+                                <group>
+                                    <field name="mistake_equipment"/>
+                                    <field name="uncertainty_measure"/>
+                                    <field name="fercuency"/>
+                                </group>
                             </group>
-                            <group>
-                                <field name="mistake_equipment"/>
-                                <field name="uncertainty_measure"/>
-                                <field name="fercuency"/>
-                            </group>
-                        </group>
-                    </page>
+                        </page>
+                    </notebook>
                 </xpath>
             </field>
         </record>
