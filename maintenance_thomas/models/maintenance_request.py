@@ -12,6 +12,8 @@ class MaintenanceRequest(models.Model):
     uncertainty_measure = fields.Char('Uncertainty Measure')
     fercuency = fields.Char('Frecuency')
     bool_quantity = fields.Boolean(compute='_compute_bool_quantity')
+    maintenance_type = fields.Selection([('corrective','Corrective'),('preventive','Preventive'),('autonomous','Autonomous'),('pdae','PDAE')])
+    employee_ids = fields.One2many('hr.employee','maintenance_id','Technicians')
 
 
     @api.depends('maintenance_team_id')
