@@ -26,7 +26,9 @@
         'data/sequence.xml',
         'data/maintenance_data.xml',
         'views/maintenance_request_view.xml',
-        'wizard/wizard_activity_maintenance_view.xml'
+        'views/maintenance_equipment_view.xml',
+        'wizard/wizard_activity_maintenance_view.xml',
+        'report/report_cv_machine.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
