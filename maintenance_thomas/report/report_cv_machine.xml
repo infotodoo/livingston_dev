@@ -4,14 +4,14 @@
         <record id="report_thomas" model="report.paperformat">
             <field name="name">CV Equipment</field>
             <field name="default" eval="True"/>
-            <field name="format">A2</field>
+            <field name="format">A4</field>
             <field name="page_height">0</field>
             <field name="page_width">0</field>
             <field name="orientation">Portrait</field>
-            <field name="margin_top">4</field>
+            <field name="margin_top">2</field>
             <field name="margin_bottom">2</field>
-            <field name="margin_left">3</field>
-            <field name="margin_right">3</field>
+            <field name="margin_left">20</field>
+            <field name="margin_right">20</field>
             <field name="header_line" eval="False"/>
             <field name="header_spacing">3</field>
             <field name="dpi">90</field>
@@ -19,8 +19,9 @@
         <template id="report_custom_template">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
-                    <t t-call="web.internal_layout">
+                    <!--<t t-call="web.internal_layout">-->
                         <style>
+                        #nombre2{ width:1200px; height:1200px; background-color:white; float:left; border-style: double;border-width: 5px}
                         #double {border-style: double;border-width: 5px;height: 1600px;width: 1000px;}
                         .container {height: 60px;width: 700;}
                         #caja_logo{ width:20%; height:60px;float:left; border: 1px solid black; }
@@ -29,8 +30,8 @@
                         #cod_interno{ width:30%; height:20px; background-color:white; float:left; border: 1px solid black; }
                         #nombre1{ width:40%; height:60px; background-color:white; float:left; border: 1px solid black; }
                         #cod_interno1{ width:30%; height:60px; background-color:white; float:left; border: 1px solid black; }
-                        </style>
-                        <div id="double">
+                        </style><!---->
+                        <div id="nombre2">
                             <br></br>
                             <div class="container">
                             <div id="caja_logo">foto</div>
@@ -47,9 +48,10 @@
                             <div id="cod_interno1">pagina</div>
                             </div>
                         </div>
-                   </t>
+                   <!--</t>-->
                 </t>
             </t>
+        </t>
         </template>
     </data>
 </odoo>
