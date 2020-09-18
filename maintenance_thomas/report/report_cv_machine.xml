@@ -21,18 +21,30 @@
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.internal_layout">
                         <style>
-                        .double {border-style: double;border-width: 5px;height: auto;width: 100%;}
-                        .caja_a {border: 1px solid black;height: 80px;width: 20%;}
-                        .caja_b {border: 1px solid black;height: 80px;width: 60%;display: table;}
-                        .container {display: flex;align-items: center;justify-content: center;height: auto;width: 100%;}
-                        .cuadro_general {display: table;margin: 0 auto;border: 1px solid black;height: 80px;width: 90%;}
+                        #double {border-style: double;border-width: 5px;height: 1600px;width: 1000px;}
+                        .container {height: 60px;width: 700;}
+                        #caja_logo{ width:20%; height:60px;float:left; border: 1px solid black; }
+                        #caja_nombre{ width:60%; height:60px; background-color:white; float:left; border: 1px solid black; }
+                        #nombre{ width:40%; height:20px; background-color:white; float:left; border: 1px solid black; }
+                        #cod_interno{ width:30%; height:20px; background-color:white; float:left; border: 1px solid black; }
+                        #nombre1{ width:40%; height:60px; background-color:white; float:left; border: 1px solid black; }
+                        #cod_interno1{ width:30%; height:60px; background-color:white; float:left; border: 1px solid black; }
                         </style>
-                        <div  class="double">
+                        <div id="double">
                             <br></br>
                             <div class="container">
-                                <div class="caja_a">foto</div>
-                                <div class="caja_b">mensaje</div>
-                                <div class="caja_a">pagina</div>
+                            <div id="caja_logo">foto</div>
+                            <div id="caja_nombre">mensaje</div>
+                            <div id="caja_logo">pagina</div>
+                            </div>
+                            <div class="container">
+                            <br></br>
+                            <div id="nombre">foto</div>
+                            <div id="cod_interno">mensaje</div>
+                            <div id="cod_interno">pagina</div>
+                            <div id="nombre1">foto</div>
+                            <div id="cod_interno1">mensaje</div>
+                            <div id="cod_interno1">pagina</div>
                             </div>
                         </div>
                    </t>
