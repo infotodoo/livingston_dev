@@ -1,4 +1,43 @@
 <odoo>
     <data>
+        <report id="report_custom" string="CV Equipment" model="maintenance.equipment" report_type="qweb-pdf" name="maintenance_thomas.report_custom_template"/>
+        <record id="report_thomas" model="report.paperformat">
+            <field name="name">CV Equipment</field>
+            <field name="default" eval="True"/>
+            <field name="format">A2</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">4</field>
+            <field name="margin_bottom">2</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+        <template id="report_custom_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.internal_layout">
+                        <style>
+                        .double {border-style: double;border-width: 5px;height: auto;width: 100%;}
+                        .caja_a {border: 1px solid black;height: 80px;width: 20%;}
+                        .caja_b {border: 1px solid black;height: 80px;width: 60%;display: table;}
+                        .container {display: flex;align-items: center;justify-content: center;height: auto;width: 100%;}
+                        .cuadro_general {display: table;margin: 0 auto;border: 1px solid black;height: 80px;width: 90%;}
+                        </style>
+                        <div  class="double">
+                            <br></br>
+                            <div class="container">
+                                <div class="caja_a">foto</div>
+                                <div class="caja_b">mensaje</div>
+                                <div class="caja_a">pagina</div>
+                            </div>
+                        </div>
+                   </t>
+                </t>
+            </t>
+        </template>
     </data>
 </odoo>

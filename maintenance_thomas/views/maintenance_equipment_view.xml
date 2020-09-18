@@ -5,10 +5,16 @@
             <field name="model">maintenance.equipment</field>
             <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//form[1]/sheet[1]/div[not(@name)][1]" position="after">
-                    <field name="image" options="{&quot;size&quot;: [0, 90]}" widget="image" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
+                <xpath expr="//form[1]/sheet[1]/div[not(@name)][1]" position="replace">
+                    <div class="oe_title oe_left">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" string="Name" placeholder="Equipment Name"/></h1>
+                    </div>
+                    <div>
+                        <field name="image" options="{&quot;size&quot;: [0, 90]}" widget="image" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
+                    </div>
                 </xpath>
-                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/group[1]/group[1]" position="attributes">
+                <xpath expr="//notebook[1]/page[2]/group[1]/group[1]" position="attributes">
                     <attribute name="string">Technical Information</attribute>
                 </xpath>
                 <xpath expr="//field[@name='model']" position="before">
@@ -24,7 +30,7 @@
                     <field name="phone" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
                 <xpath expr="//field[@name='partner_ref']" position="move"/>
                 </xpath>
-                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/group[1]" position="after">
+                <xpath expr="//notebook[1]/page[2]/group[1]" position="after">
                     <group groups="maintenance_thomas.group_maintenance_thomas_production_user">
                         <group string="Connection">
                         <field name="voltage_connection"/>
