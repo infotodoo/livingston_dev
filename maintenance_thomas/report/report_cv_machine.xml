@@ -17,41 +17,45 @@
             <field name="dpi">90</field>
         </record>
         <template id="report_custom_template">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="o">
-                    <!--<t t-call="web.internal_layout">-->
+            <t t-name="maintenance_thomas.report_custom_template">
+                <t t-call="web.html_container">
+                    <t t-foreach="docs" t-as="o">
                         <style>
-                        #nombre2{ width:1200px; height:1200px; background-color:white; float:left; border-style: double;border-width: 5px}
-                        #double {border-style: double;border-width: 5px;height: 1600px;width: 1000px;}
-                        .container {height: 60px;width: 700;}
-                        #caja_logo{ width:20%; height:60px;float:left; border: 1px solid black; }
-                        #caja_nombre{ width:60%; height:60px; background-color:white; float:left; border: 1px solid black; }
+                        #margen{ width:1000px; height:1000px; background-color:white; float:left; border-style: double;border-width: 5px;padding:25px;}
+                        .container {height: 60px;width: 800;}
+                        #caja_logo{ width:22%; height:60px;float:left; border: 1px solid black; }
+                        #caja_nombre{ width:50%; height:60px; background-color:white; float:left; border: 1px solid black; }
                         #nombre{ width:40%; height:20px; background-color:white; float:left; border: 1px solid black; }
                         #cod_interno{ width:30%; height:20px; background-color:white; float:left; border: 1px solid black; }
                         #nombre1{ width:40%; height:60px; background-color:white; float:left; border: 1px solid black; }
-                        #cod_interno1{ width:30%; height:60px; background-color:white; float:left; border: 1px solid black; }
+                        #cod_interno1{ width:30%; height:20px; background-color:white; float:left; border: 1px solid black; }
+                        .div{padding:25px;}
+                        table {border-collapse: collapse;}
+                        table, th, td {border: 1px solid black;}
                         </style><!---->
-                        <div id="nombre2">
-                            <br></br>
-                            <div class="container">
-                            <div id="caja_logo">foto</div>
-                            <div id="caja_nombre">mensaje</div>
-                            <div id="caja_logo">pagina</div>
-                            </div>
-                            <div class="container">
-                            <br></br>
-                            <div id="nombre">foto</div>
-                            <div id="cod_interno">mensaje</div>
-                            <div id="cod_interno">pagina</div>
-                            <div id="nombre1">foto</div>
-                            <div id="cod_interno1">mensaje</div>
-                            <div id="cod_interno1">pagina</div>
-                            </div>
+                        <div id="margen">
+                            <table width="100%">
+                                <th>tgs</th>
+                                <th>tarjeta</th>
+                                <th>mt</th>
+                                </table>
+                                <br></br>
+                            <table width="100%">
+                                <tr>
+                                    <th >NOMBRE</th>
+                                    <th >CODIGO INTERNO</th>
+                                    <th >UBICACION</th>
+                                </tr>
+                                <tr>
+                                    <td id="nombre1">Gratis!</td>
+                                    <td id="cod_interno1">Gratis!</td>
+                                    <td id="cod_interno1">Gratis!</td>
+                                </tr>
+                            </table>
                         </div>
-                   <!--</t>-->
+                    </t>
                 </t>
             </t>
-        </t>
         </template>
     </data>
 </odoo>
