@@ -21,7 +21,7 @@
                 <t t-call="web.html_container">
                     <t t-foreach="docs" t-as="o">
                         <style>
-                        #margen{ width:1000px; height:1000px; background-color:white; float:left; border-style: double;border-width: 5px;padding:25px;}
+                        #margen{ width:1000px; height:1450; background-color:white; float:left; border-style: double;border-width: 5px;padding:25px;}
                         .container {height: 60px;width: 800;}
                         #caja_logo{ width:22%; height:60px;float:left; border: 1px solid black; }
                         #caja_nombre{ width:50%; height:60px; background-color:white; float:left; border: 1px solid black; }
@@ -29,15 +29,19 @@
                         #cod_interno{ width:30%; height:20px; background-color:white; float:left; border: 1px solid black; }
                         #nombre1{ width:40%; height:60px; background-color:white; float:left; border: 1px solid black; }
                         #cod_interno1{ width:30%; height:20px; background-color:white; float:left; border: 1px solid black; }
-                        .div{padding:25px;}
+                        #description1{ width:40%; height:600px; background-color:white; float:left; border: 1px solid black; }
+                        #description2{ width:30%; height:200px; background-color:white; float:left; border: 1px solid black; }
+                        #velocidad{ width:20%; height:25px; background-color:white; float:left; border: 1px solid black; }
+                        #conexion{ width:40%; height:20px; background-color:white; float:left; border: 1px solid black; }
                         table {border-collapse: collapse;}
                         table, th, td {border: 1px solid black;}
                         </style><!---->
                         <div id="margen">
                             <table width="100%">
-                                <th>tgs</th>
-                                <th>tarjeta</th>
-                                <th>mt</th>
+                                <th><span t-field="o.company_id.logo" widget="image"/></th>
+                                <th>TARJETA DE INFORMACION BASICA DE <br></br>
+                                MAQUINARIA</th>
+                                <th>MT-R011</th>
                                 </table>
                                 <br></br>
                             <table width="100%">
@@ -47,10 +51,95 @@
                                     <th >UBICACION</th>
                                 </tr>
                                 <tr>
-                                    <td id="nombre1">Gratis!</td>
-                                    <td id="cod_interno1">Gratis!</td>
-                                    <td id="cod_interno1">Gratis!</td>
+                                    <td id="nombre1"></td>
+                                    <td id="cod_interno1"></td>
+                                    <td id="cod_interno1"></td>
                                 </tr>
+                            </table>
+                              <br></br>
+                            <table width="100%">
+                                <tr>
+                                    <th colspan="2">DESCRIPCION GENERAL</th>
+                                </tr>
+                                <tr>
+                                    <td id="description1"></td>
+                                    <td id="description2"></td>
+                                </tr>
+                            </table>
+                             <br></br>
+                            <table width="100%">
+                                <tr>
+                                    <th colspan="4">INFORMACION TECNICA</th>
+                                </tr>
+                                <tr>
+                                    <td id="velocidad">Capacidad</td>
+                                    <td id="velocidad"></td>
+                                    <td id="velocidad">Velocidad</td>
+                                    <td id="velocidad"></td>
+                                </tr>
+                                <tr>
+                                    <td id="nombre1">Descripción</td>
+                                    <td id="cod_interno1" colspan="3"></td>
+                                </tr>
+                                <tr>
+                                  <td>Insumos</td>
+                                  <td colspan="3"></td>
+                                </tr>
+                                <tr>
+                                    <td id="velocidad">Tipo de maquina</td>
+                                    <td id="velocidad"></td>
+                                    <td id="velocidad">Fabricante</td>
+                                    <td id="velocidad"></td>
+                                </tr>
+                                <tr>
+                                    <td id="velocidad">Modelo</td>
+                                    <td id="velocidad"></td>
+                                    <td id="velocidad">Proveedor</td>
+                                    <td id="velocidad"></td>
+                                </tr>
+                                <tr>
+                                    <td id="velocidad">N° Serie</td>
+                                    <td id="velocidad"></td>
+                                    <td id="velocidad">Teléfono</td>
+                                    <td id="velocidad"></td>
+                                </tr>
+                                <tr>
+                                    <td id="velocidad">Año de fabricación</td>
+                                    <td id="velocidad"></td>
+                                    <td id="velocidad">Pais Origen</td>
+                                    <td id="velocidad"></td>
+                                </tr>
+                                <tr>
+                                    <td>CONEXIÓN</td>
+                                    <td colspan="3">REQUERIMIENTOS</td>
+                                </tr>
+                                 <tr>
+                                    <td id="velocidad">Voltaje de conexión</td>
+                                    <td id="velocidad"></td>
+                                    <td id="velocidad">Aire Comprimido</td>
+                                    <td id="velocidad"></td>
+                                </tr>
+                                 <tr>
+                                    <td id="velocidad">Consumo</td>
+                                    <td id="velocidad"></td>
+                                    <td id="velocidad">Agua</td>
+                                    <td id="velocidad"></td>
+                                </tr>
+                                 <tr>
+                                    <td id="velocidad">Potencia</td>
+                                    <td id="velocidad"></td>
+                                    <td id="velocidad">Aire Acondicionado</td>
+                                    <td id="velocidad"></td>
+                                </tr>
+                            </table>
+                              <br></br>
+                            <table width="100%">
+                              <tr>
+                                <td colspan="4">OBSERVACIONES</td>
+                              </tr>
+                              <tr>
+                                <td style="width:40%; height:200px;" colspan="4"></td>
+                              </tr>
                             </table>
                         </div>
                     </t>
