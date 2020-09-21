@@ -11,7 +11,8 @@
                         <h1><field name="name" string="Name" placeholder="Equipment Name"/></h1>
                     </div>
                     <div>
-                        <field name="internal_code" style="float:left;" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
+                         <label for="internal_code" string="Internal Code" style="float:left;"/>
+                        <field name="internal_code" style="float:left;width: 30%;" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
                         <field style="float:right;" name="image" options="{&quot;size&quot;: [0, 900]}" widget="image" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
                     </div>
                 </xpath>
@@ -43,7 +44,8 @@
                         <field name="water"/>
                         <field name="conditioning_air"/>
                         </group>
-                        <field name="observation"/>
+                        <h4>Observations</h4>
+                        <field name="observation" widget="note"/>
                     </group>
                 </xpath>
             </field>
