@@ -17,3 +17,5 @@ class MaintenanceEquipment(models.Model):
     compressed_air = fields.Char('Compressed Air')
     water = fields.Char('Water')
     conditioning_air = fields.Char('Conditioning Air')
+    observation = fields.text('Observations')
+    internal_code = fields.Char('Internal Code')
