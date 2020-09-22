@@ -6,16 +6,17 @@ class PurchaseOrder(models.Model):
     state =  fields.Selection(selection_add=[('deparment', 'WAITING DEPARMENT APPROVAL'),('waiting','WAITING IR APPROVAL'),('done','DONE')])
 
     def validation_mount_department(self):
-        if self.amount_total >= 8000000:
-            self.state = 'deparment'
-            self.notification_department()
-        else:
-            self.state = 'deparment'
-            self.notification_department()
+        self.state = 'deparment'
+        res = self.notification_department()
+        return res
     
     def validation_mount_waiting(self):
-        self.state = 'waiting'
-        self.notification_waiting()
+        if self.amount_total >= 8000000:
+            self.state = 'waiting'
+            res = self.notification_waiting()
+        else:
+            res = super(PurchaseOrder,self).button_approve()
+        return res
    
     def notification_department(self):
         imd = self.env['ir.model.data']
