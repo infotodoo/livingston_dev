@@ -7,7 +7,7 @@
     'description': "Maintenance Thomas",
 
     'author': "Todoo SAS",
-    'contributors': ['Carlos Guio fg@todoo.co'],
+    'contributors': ['Carlos Guio fg@todoo.co','Livingston Arias Narváez la@todoo.co'],
     'website': "http://www.todoo.co",
 
     # Categories can be used to filter modules in modules listing
@@ -25,7 +25,10 @@
         'views/maintenance_view.xml',
         'data/sequence.xml',
         'data/maintenance_data.xml',
-        # 'views/templates.xml',
+        'views/maintenance_request_view.xml',
+        'views/maintenance_equipment_view.xml',
+        'wizard/wizard_activity_maintenance_view.xml',
+        'report/report_cv_machine.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

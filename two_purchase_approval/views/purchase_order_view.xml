@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="view_maintenance_request_form_inherit" model="ir.ui.view">
+            <field name="name">maintenance.request.form.thomas</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@id='bid_confirm]" position="replace">
+                    <button name="validation_mount_department" type="object" states="deparment" string="Confirm Order" class="oe_highlight" id="bid_confirm"/>
+                </xpath>
+                <xpath expr="//button[@id='draft_confirm]" position="replace">
+                    <button name="validation_mount_waiting" type="object" states="waiting" string="Confirm Order" id="draft_confirm"/>
+                </xpath>
+                <xpath expr="//button[@name='button_confirm']" position="after">
+                    <button name="validation_mount_department" type="object" states="deparment" string="Notify" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
