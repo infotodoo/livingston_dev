@@ -12,8 +12,8 @@
                     <button name="validation_mount_waiting" type="object" states="deparment" string="Confirm Order" id="draft_confirm"/>
                 </xpath>
                 <xpath expr="//button[@name='validation_mount_waiting']" position="after">
-                    <button name="button_confirm" type="object" states="waiting" string="Confirm Order" id="draft_confirm"/>
-                    <button name="button_cancel" states="waiting,department" string="Cancel" type="object"/>
+                    <button name="button_approve" type="object" states="waiting" string="Confirm Order" id="draft_confirm"/>
+                    <button name="button_cancel" states="deparment" string="Cancel" type="object"/>
                 </xpath>
             </field>
         </record>
