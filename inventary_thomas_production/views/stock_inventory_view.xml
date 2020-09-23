@@ -5,9 +5,19 @@
             <field name="model">stock.inventory</field>
             <field name="inherit_id" ref="stock.view_inventory_tree"/>
             <field name="arch" type="xml">
-              <xpath expr="//field[@name='product_ids']" position="after">
-                  <field name="diff_motive" optional="show"/>
+              <xpath expr="//field[@string='Lot/Serial Number Inventory']" position="replace">
+                  <tree string="Lot/Serial Number Inventory" decoration-muted="state == 'cancel'" multi_edit="1">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="location_ids" widget="many2many_tags" optional="hide" groups="stock.group_stock_multi_locations"/>
+                    <field name="product_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="diff_motive" optional="show"/>
+                    <field name="state"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                  </tree>
               </xpath>
+              <!--<xpath expr="//field[@name='product_ids']" position="after">
+              </xpath>-->
             </field>
     </record>
     <record model="ir.module.category" id="module_category_stock_thomas_production">
