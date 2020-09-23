@@ -8,6 +8,9 @@
                 <xpath expr="//button[@name='archive_equipment_request']" position="after">
                     <button name="action_create_wizard" type="object" string="Notify" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
                 </xpath>
+                <!--<xpath expr="//field[@name='stage_id']" position="replace" groups="maintenance_thomas.group_maintenance_thomas_production_user">
+                    <field name="stage_id"/>
+                </xpath>-->
                 <xpath expr="//field[@name='maintenance_type']" position="replace">
                     <field name="maintenance_type" widget="radio" />
                 </xpath>

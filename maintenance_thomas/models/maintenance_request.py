@@ -14,7 +14,11 @@ class MaintenanceRequest(models.Model):
     bool_quantity = fields.Boolean(compute='_compute_bool_quantity')
     maintenance_type = fields.Selection([('corrective','Corrective'),('preventive','Preventive'),('autonomous','Autonomous'),('pdae','PDAE')])
     employee_ids = fields.One2many('hr.employee','maintenance_id','Technicians')
+    #stage_id = fields.Many2one('checklist.stage', group_expand='_expand_stages', default=lambda self: self._default_stage())
 
+    #def _expand_stages(self, states, domain, order):
+     #   stage_ids = self.env['checklist.stage'].search([])
+     #  return stage_ids
 
     @api.depends('maintenance_team_id')
     def _compute_bool_quantity(self):
