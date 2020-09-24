@@ -34,16 +34,22 @@
                 </xpath>
                 <xpath expr="//notebook[1]/page[2]/group[1]" position="after">
                     <group groups="maintenance_thomas.group_maintenance_thomas_production_user">
-                        <group string="Connection">
-                        <field name="voltage_connection"/>
-                        <field name="intake"/>
-                        <field name="power"/>
-                        </group>
-                        <group string="Requirements">
-                        <field name="compressed_air"/>
-                        <field name="water"/>
-                        <field name="conditioning_air"/>
-                        </group>
+                        <div>
+                            <div class="o_row"><h2>Connection</h2><span></span><field name="connection"/></div>
+                            <group >
+                                <field name="voltage_connection"  attrs="{'invisible': [('connection','=',False)]}"/>
+                                <field name="intake" attrs="{'invisible': [('connection','=',False)]}"/>
+                                <field name="power" attrs="{'invisible': [('connection','=',False)]}"/>
+                            </group>
+                        </div>
+                        <div>
+                            <div class="o_row"><h2>Requirements</h2><span></span><field name="requirement"/></div>
+                            <group >
+                                <field name="compressed_air" attrs="{'invisible': [('requirement','=',False)]}"/>
+                                <field name="water" attrs="{'invisible': [('requirement','=',False)]}"/>
+                                <field name="conditioning_air" attrs="{'invisible': [('requirement','=',False)]}"/>
+                            </group>
+                        </div>
                         <h4>Observations</h4>
                         <field name="observation" widget="note"/>
                     </group>

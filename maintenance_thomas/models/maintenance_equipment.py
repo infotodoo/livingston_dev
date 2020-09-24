@@ -19,3 +19,5 @@ class MaintenanceEquipment(models.Model):
     conditioning_air = fields.Char('Conditioning Air')
     observation = fields.Text('Observations')
     internal_code = fields.Char('Internal Code')
+    connection = fields.Boolean()
+    requirement = fields.Boolean()
