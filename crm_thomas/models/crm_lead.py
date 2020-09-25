@@ -414,3 +414,16 @@ class CrmLead(models.Model):
             'UNIQUE(opportuny_situation)',
             "Ya esta descripcion"),
         ]
+
+    def quotation_create(self):
+        self.action_sale_quotations_new()
+        order_id = self.opportunity_id
+        dic = {
+        'cost_total': self.cost_total,
+        'quantity': self.quantity,
+        'unit_price': self.unit_price,
+        'price_n_iva': self.price_n_iva,
+        'contribution_percentage': self.contribution_percentage,
+        }
+        order_id.create(dic)
+            
