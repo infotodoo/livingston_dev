@@ -7,13 +7,13 @@
             <field name="arch" type="xml">
               <xpath expr="//tree[1]" position="replace">
                 <tree string="Lot/Serial Number Inventory" decoration-muted="state == 'cancel'" multi_edit="1">
-                  <field name="name"/>
-                  <field name="date"/>
+                  <field name="name" readonly="1"/>
+                  <field name="date" readonly="1"/>
                   <field name="location_ids" widget="many2many_tags" optional="hide" groups="stock.group_stock_multi_locations"/>
-                  <field name="product_ids" widget="many2many_tags" optional="hide"/>
-                  <field name="diff_motive" optional="show"/>
+                  <field name="product_ids" widget="many2many_tags" optional="hide" readonly="1"/>
+                  <field name="diff_motive" optional="show" groups="	inventary_thomas_production.group_stock_thomas_production_user"/>
                   <field name="state"/>
-                  <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                  <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
                 </tree>
               </xpath>
             </field>
