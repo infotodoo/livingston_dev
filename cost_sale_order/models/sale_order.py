@@ -10,8 +10,8 @@ class SaleOrder(models.Model):
     price_n_iva = fields.Float('Price Unit without IVA', tracking=True)
     contribution_percentage = fields.Float('Contribution Percentage', tracking=True)
 
-    @api.depends('partner_id')
+    @api.onchange('partner_id','validity_date')
     def partner_id(self):
         for record in self:
-            if record.partner_id:
+            if record.partner_id and not record.validity_date:
                 raise Warning(_("Invoice Condition: %s" % record.partner_id.invoice_condition))
