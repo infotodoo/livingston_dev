@@ -435,6 +435,16 @@
                 </xpath>
             </field>
         </record>
+        <record id="crm_lead_form_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_sale_quotations_new']" position="after">
+                <button string="New Quotation" name="quotation_create" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('type', '=', 'lead'), '&', ('probability', '=', 0), ('active', '=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
     </data>
     <menuitem id="benefit_center_menu" name="Centro de Beneficios" action="benefit_center_form_action"  parent="crm.menu_crm_config_lead" sequence="5"/>
 </odoo>
