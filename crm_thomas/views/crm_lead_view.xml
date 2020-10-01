@@ -254,9 +254,9 @@
                 <xpath expr="//field[@name='email_from']" position="attributes">
                     <attribute name="required">1</attribute>
                 </xpath>
-                <xpath expr="//form[1]/sheet[1]/group[1]/group[4]/field[@name='date_deadline']" position="replace">
+                <!--<xpath expr="//form[1]/sheet[1]/group[1]/group[4]/field[@name='date_deadline']" position="replace">
                     <div />
-                </xpath>
+                </xpath>-->
                 <xpath expr="//form[1]/sheet[1]/group[1]/group[1]/field[@name='partner_id']" position="after">
                     <field name="customer_type_crm" string="Tipo de Cliente" required="True" />
                     <field name="benefit_center" options="{'no_open': True, 'no_create': True}" required="True" />
@@ -440,8 +440,9 @@
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='action_sale_quotations_new']" position="after">
-                <button string="New Quotation" name="quotation_create" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('type', '=', 'lead'), '&', ('probability', '=', 0), ('active', '=', False)]}"/>
+                <xpath expr="//button[@name='action_set_won_rainbowman']" position="after">
+                    <button name="sale_quotations_new" string="New Quotation" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('type', '=', 'lead'), '&amp;', ('probability', '=', 0), ('active', '=', False)]}"
+                    groups="cost_sale_order.group_sale_order_thomas_production_user"/>
                 </xpath>
             </field>
         </record>

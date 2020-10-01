@@ -6,11 +6,11 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='note']" position="after">
-                    <field name="cost_total"/>
-                    <field name="quantity"/>
-                    <field name="unit_price"/>
-                    <field name="price_n_iva"/>
-                    <field name="contribution_percentage"/>
+                    <field name="cost_total" groups="cost_sale_order.group_sale_order_thomas_production_user"/>
+                    <field name="quantity" groups="cost_sale_order.group_sale_order_thomas_production_user"/>
+                    <field name="unit_price" groups="cost_sale_order.group_sale_order_thomas_production_user"/>
+                    <field name="price_n_iva" groups="cost_sale_order.group_sale_order_thomas_production_user"/>
+                    <field name="contribution_percentage" groups="cost_sale_order.group_sale_order_thomas_production_user"/>
                 </xpath>
             </field>
         </record>

@@ -1,5 +1,4 @@
-from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
-from odoo import models,fields,api
+from odoo import models,fields,api,_
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -10,8 +9,13 @@ class SaleOrder(models.Model):
     price_n_iva = fields.Float('Price Unit without IVA', tracking=True)
     contribution_percentage = fields.Float('Contribution Percentage', tracking=True)
 
-    @api.onchange('partner_id','validity_date')
-    def partner_id(self):
+    @api.onchange('partner_id','order_line')
+    def _onchage_partner_id(self):
         for record in self:
-            if record.partner_id and not record.validity_date:
-                raise Warning(_("Invoice Condition: %s" % record.partner_id.invoice_condition))
+            if record.partner_id and not record.order_line:
+                message = _("Invoice Condition: %s" % record.partner_id.invoice_condition)
+                mess= {
+                    'title': _('Invoice Condition!'),
+                    'message' : message
+                      }
+                return {'warning': mess}
