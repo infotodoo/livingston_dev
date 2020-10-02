@@ -15,7 +15,8 @@
                 'purchase',
                 ],
     'data':[
-        'views/stock_picking_view.xml',
+        'views/material_purchase_requisition.xml',
+        'views/stock_piking_view.xml',
     ],
     'installable' : True,
     'application' : False,
