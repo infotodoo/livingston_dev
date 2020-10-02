@@ -414,3 +414,32 @@ class CrmLead(models.Model):
             'UNIQUE(opportuny_situation)',
             "Ya esta descripcion"),
         ]
+
+    def new_quotation(self):
+        action = self.env.ref("sale_crm.sale_action_quotations_new").read()[0]
+        action['context'] = {
+            'search_default_opportunity_id': self.id,
+            'default_opportunity_id': self.id,
+            'search_default_partner_id': self.partner_id.id,
+            'default_partner_id': self.partner_id.id,
+            'default_team_id': self.team_id.id,
+            'default_campaign_id': self.campaign_id.id,
+            'default_medium_id': self.medium_id.id,
+            'default_origin': self.name,
+            'default_source_id': self.source_id.id,
+            'default_company_id': self.company_id.id or self.env.company.id,
+            'default_cost_total': self.cost_total,
+            'default_quantity': self.quantity,
+            'default_unit_price': self.unit_price,
+            'default_price_n_iva': self.price_n_iva,
+            'default_contribution_percentage': self.contribution_percentage,
+        }
+        return action
+    
+    def sale_quotations_new(self):
+        if not self.partner_id:
+            return self.env.ref("sale_crm.crm_quotation_partner_action").read()[0]
+        else:
+            return self.new_quotation()
+        
+            

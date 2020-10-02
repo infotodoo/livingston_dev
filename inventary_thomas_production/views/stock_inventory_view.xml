@@ -5,6 +5,7 @@
             <field name="model">stock.inventory</field>
             <field name="inherit_id" ref="stock.view_inventory_tree"/>
             <field name="arch" type="xml">
+<<<<<<< HEAD
               <xpath expr="//field[@string='Lot/Serial Number Inventory']" position="replace">
                   <tree string="Lot/Serial Number Inventory" decoration-muted="state == 'cancel'" multi_edit="1">
                     <field name="name"/>
@@ -15,6 +16,18 @@
                     <field name="state"/>
                     <field name="company_id" groups="base.group_multi_company" optional="show"/>
                   </tree>
+=======
+              <xpath expr="//tree[1]" position="replace">
+                <tree string="Lot/Serial Number Inventory" decoration-muted="state == 'cancel'" multi_edit="1">
+                  <field name="name" readonly="1"/>
+                  <field name="date" readonly="1"/>
+                  <field name="location_ids" widget="many2many_tags" optional="hide" groups="stock.group_stock_multi_locations"/>
+                  <field name="product_ids" widget="many2many_tags" optional="hide" readonly="1"/>
+                  <field name="diff_motive" optional="show" groups="	inventary_thomas_production.group_stock_thomas_production_user"/>
+                  <field name="state"/>
+                  <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
+                </tree>
+>>>>>>> 644b13bce19b7d06e50a17304d508923f4a89564
               </xpath>
               <!--<xpath expr="//field[@name='product_ids']" position="after">
               </xpath>-->

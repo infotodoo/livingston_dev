@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_material_purchase_requisition_form_inherit" model="ir.ui.view">
+            <field name="name">material.purchase.requisition.form.inherit</field>
+            <field name="model">material.purchase.requisition</field>
+            <field name="inherit_id" ref="material_purchase_requisitions.material_purchase_requisition_form_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='requisition_responsible_id']" position="after">
+                        <field name="charge_to"/>
+                        <field name="production_id" options="{'no_create': True, 'no_create_edit':True}" />
+                        <field name="cost_center_id" options="{'no_create': True, 'no_create_edit':True}" />
+                    </xpath>
+                    <xpath expr="//field[@name='employee_id']" position="after">
+                        <field name="responsable_area" />
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

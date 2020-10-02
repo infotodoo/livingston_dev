@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 {
-    'name': "Crm Thomas",
+    'name': "Cost Sale Order",
 
-    'summary': "Crm Thomas",
+    'summary': "Cost Sale Order",
 
-    'description': "Crm Thomas",
+    'description': "Cost Sale Order",
 
     'author': "Todoo SAS",
-    'contributors': "Fernando Fernandez nf@todoo,co",
+    'contributors': "Livingston Arias Narváez la@todoo,co",
     'website': "http://www.todoo.co",
 
     # Categories can be used to filter modules in modules listing
@@ -17,12 +16,12 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['crm','sale_crm'],
+    'depends': ['crm','sale_managment','cost_sale_order'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/crm_lead_view.xml',
-        'views/mail_template.xml',
+        'views/sale_order_view.xml',
+        'views/res_partner_view.xml',
     ],
 }
