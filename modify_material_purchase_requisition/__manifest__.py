@@ -8,12 +8,8 @@
     'author': 'Todoo S.A.S.',
     'website': 'http://www.todoo.com',
     'images': [''],
-    'category': 'Warehouse',
-    'depends': [
-                'stock',
-                'hr',
-                'purchase',
-                ],
+    'category': 'Requisition',
+    'depends': ['material_purchase_requisitions','stock'],
     'data':[
         'views/material_purchase_requisition.xml',
         'views/stock_piking_view.xml',
