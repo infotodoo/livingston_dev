@@ -48,6 +48,6 @@ class MaterialPurchaseRequisitionLine(models.Model):
             else:
                 record.delivery_by = ''
 
-    def _compute_inspection_state(self):
-        for record in self:
+    #def _compute_inspection_state(self):
+        #for record in self:
             #stock_id = record.env['stock.move']
