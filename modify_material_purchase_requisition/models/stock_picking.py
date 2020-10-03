@@ -7,9 +7,9 @@ class StockPicking(models.Model):
     recieved_id = fields.Many2one('res.users','Decieved By')
     owner_id = fields.Many2one('res.users','Owner')
     security_aux_id = fields.Many2one('res.users','Security Auxiliar')
-    area = fields.Char = ('Solicitant Area',compute='_compute_area')
-    responsable = fields.Char = ('Responsable',compute='_compute_responsable')
-    charge_to = fields.Char = ('Charge To',compute='_compute_charge_to')
+    area = fields.Char('Solicitant Area',compute='_compute_area')
+    responsable = fields.Char('Responsable',compute='_compute_responsable')
+    charge_to = fields.Char('Charge To',compute='_compute_charge_to')
     cost_center_id = fields.Many2one('mrp.workcenter','Cost Center')
     
     
