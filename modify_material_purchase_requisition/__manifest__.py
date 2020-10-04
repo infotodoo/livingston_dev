@@ -12,7 +12,7 @@
     'depends': ['material_purchase_requisitions','stock','mrp'],
     'data':[
         'views/material_purchase_requisition.xml',
-        'views/stock_piking_view.xml',
+        'views/stock_picking_view.xml',
     ],
     'installable' : True,
     'application' : False,
