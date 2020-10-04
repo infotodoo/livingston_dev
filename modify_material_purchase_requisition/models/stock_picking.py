@@ -25,7 +25,7 @@ class StockPicking(models.Model):
             if record.custom_requisition_id:
                 record.responsable = custom_requisition_id.employee_id.name
             else:
-                record.responsable = '' custom_requisition_id.charge_to
+                record.responsable = ''
 
     def _compute_charge_to(self):
         for record in self:
