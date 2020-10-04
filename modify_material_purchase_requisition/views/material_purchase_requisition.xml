@@ -7,6 +7,9 @@
             <field name="inherit_id" ref="material_purchase_requisitions.material_purchase_requisition_form_view"/>
             <field name="arch" type="xml">
                 <data>
+                    <xpath expr="//button[@name='request_stock']" position="replace">
+                        <button name="request_stock_modify" type="object" string="Create Picking and PO" states="approve" class="btn-primary" groups="material_purchase_requisitions.group_purchase_requisition_user"/>
+                    </xpath>
                     <xpath expr="//field[@name='requisiton_responsible_id']" position="after">
                         <field name="charge_to"/>
                         <field name="production_id" options="{'no_create': True, 'no_create_edit':True}" />
