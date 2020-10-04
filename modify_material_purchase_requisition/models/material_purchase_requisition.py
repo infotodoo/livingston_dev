@@ -1,5 +1,4 @@
 from odoo import models, api, fields
-from material_purchase_requisitions import purchase_requisition
 
 class MaterialPurchaseRequisition(models.Model):
     _inherit = 'material.purchase.requisition'
