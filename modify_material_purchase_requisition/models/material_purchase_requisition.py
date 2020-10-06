@@ -7,6 +7,34 @@ class MaterialPurchaseRequisition(models.Model):
     charge_to = fields.Selection([('order','Production Order'),('center','Cost Center')],'Charge To')
     production_id = fields.Many2one('mrp.production','Production Order')
     cost_center_id = fields.Many2one('mrp.workcenter','Cost Center')
+    delivery_by = fields.Char('Delivery By',compute="_compute_delivery_by")
+    recieved_by = fields.Char('recieved By',compute="_compute_recieve_by")
+    security_aux = fields.Char('Security Auxiliar',compute="_compute_security_aux")
+    
+    def _compute_security_aux(self):
+        for record in self:
+            stock_id = record.env['stock.picking'].search([('origin','=',record.name),('state','in',('assigned','done'))],limit=1)
+            if record.state == 'stock' and stock_id:
+                record.security_aux = stock_id.security_aux_id.name
+            else:
+                record.security_aux = ''
+    
+    def _compute_recieve_by(self):
+        for record in self:
+            stock_id = record.env['stock.picking'].search([('origin','=',record.name),('state','in',('assigned','done'))],limit=1)
+            if record.state == 'stock' and stock_id:
+                record.recieved_by = stock_id.recieved_id.name
+            else:
+                record.recieved_by = ''
+    
+    def _compute_delivery_by(self):
+        for record in self:
+            stock_id = record.env['stock.picking'].search([('origin','=',record.name),('state','in',('assigned','done'))],limit=1)
+            if record.state == 'stock' and stock_id:
+                record.delivery_by = stock_id.delivery_id.name
+            else:
+                record.delivery_by = ''
+
 
     @api.depends('department_id')
     def _compute_responsable_area(self):
@@ -81,7 +109,7 @@ class MaterialPurchaseRequisition(models.Model):
             po_dict = {}
             for line in rec.requisition_line_ids:
                 if line.requisition_type =='internal':
-                    pick_vals = rec._prepare_pick_vals(line, stock_id)
+                    pick_vals = rec._prepare_pick_vals_modify(line, stock_id)
                     move_id = move_obj.sudo().create(pick_vals)
                 #else:
                 if line.requisition_type == 'purchase': #10/12/2019
@@ -99,11 +127,11 @@ class MaterialPurchaseRequisition(models.Model):
                             }
                             purchase_order = purchase_obj.create(po_vals)
                             po_dict.update({partner:purchase_order})
-                            po_line_vals = rec._prepare_po_line(line, purchase_order)
+                            po_line_vals = rec._prepare_po_line_modify(line, purchase_order)
                             purchase_line_obj.sudo().create(po_line_vals)
                         else:
                             purchase_order = po_dict.get(partner)
-                            po_line_vals = rec._prepare_po_line(line, purchase_order)
+                            po_line_vals = rec._prepare_po_line_modify(line, purchase_order)
                             purchase_line_obj.sudo().create(po_line_vals)
                 rec.state = 'stock'
     
@@ -111,36 +139,38 @@ class MaterialPurchaseRequisitionLine(models.Model):
     _inherit = 'material.purchase.requisition.line'
 
     inspection_state = fields.Char('Inspection State',compute="_compute_inspection_state")
-    delivery_by = fields.Char('Delivery By',compute="_compute_delivery_by")
-    recieved_by = fields.Char('recieved By',compute="_compute_recieve_by")
-    security_aux = fields.Char('recieved By',compute="_compute_security_aux")
-    analityc_acount_id = fields.Many2one('account.analytic.account','Cost Center')
+    analytic_account_id = fields.Many2one('account.analytic.account','Cost Center')
+    lot = fields.Char('Lots and Serial Number',compute="_compute_lot")
     
-
-    def _compute_security_aux(self):
+    @api.depends('product_id')
+    def _compute_inspection_state(self):
+        picking = []
         for record in self:
-            stock_id = record.env['stock.picking'].search([('name','=',record.origin),('state','=','assigned')],limit=1)
-            if record.state == 'stock' and stock_id:
-                record.security_aux = stock_id.security_aux_id.name
+            if record.requisition_id.state == 'receive' and record.requisition_type == 'internal':
+                picking_id = record.env['stock.move'].search([('product_id','=',record.product_id.id),('picking_id.custom_requisition_id','=',record.requisition_id.id)])
+                for stock in picking_id:
+                    if picking_id and record.requisition_type == 'internal':
+                        picking.append(stock.inspection_state)
+                        for x in range(len(picking)):
+                            record.inspection_state = picking[x]
+                    else:
+                        record.inspection_state = ''
             else:
-                record.security_aux = ''
-    
-    def _compute_recieve_by(self):
+                record.inspection_state = ''
+                    
+    @api.depends('product_id')
+    def _compute_lot(self):
+        picking = []
         for record in self:
-            stock_id = record.env['stock.picking'].search([('name','=',record.origin),('state','=','assigned')],limit=1)
-            if record.state == 'stock' and stock_id:
-                record.recieved_by = stock_id.recieved_id.name
+            if record.requisition_id.state == 'receive' and record.requisition_type == 'internal':
+                picking_id = record.env['stock.move.line'].search([('product_id','=',record.product_id.id),('picking_id.custom_requisition_id','=',record.requisition_id.id)])
+                for stock in picking_id:
+                    if picking_id:
+                        picking.append(stock.lot_id.name)
+                        for x in range(len(picking)):
+                            record.lot = picking[x]
+                    else:
+                        record.lot = ''
             else:
-                record.recieved_by = ''
-    
-    def _compute_delivery_by(self):
-        for record in self:
-            stock_id = record.env['stock.picking'].search([('name','=',record.origin),('state','=','assigned')],limit=1)
-            if record.state == 'stock' and stock_id:
-                record.delivery_by = stock_id.delivery_id.name
-            else:
-                record.delivery_by = ''
-
-    #def _compute_inspection_state(self):
-        #for record in self:
-            #stock_id = record.env['stock.move']
+                record.lot = ''
+                

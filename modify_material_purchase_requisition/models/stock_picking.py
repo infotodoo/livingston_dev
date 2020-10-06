@@ -16,20 +16,20 @@ class StockPicking(models.Model):
     def _compute_area(self):
         for record in self:
             if record.custom_requisition_id:
-                record.area = custom_requisition_id.department_id.name
+                record.area = record.custom_requisition_id.department_id.name
             else:
                 record.area = ''
                 
     def _compute_responsable(self):
         for record in self:
             if record.custom_requisition_id:
-                record.responsable = custom_requisition_id.employee_id.name
+                record.responsable = record.custom_requisition_id.employee_id.name
             else:
                 record.responsable = ''
 
     def _compute_charge_to(self):
         for record in self:
             if record.custom_requisition_id:
-                record.charge_to = custom_requisition_id.charge_to
+                record.charge_to = record.custom_requisition_id.charge_to
             else:
                 record.charge_to = ''
