@@ -20,7 +20,7 @@
   
     # always loaded
     'data': [
-        'views/menu_view.xml',
         'views/pyg_report_view.xml',
+        'views/menu_view.xml',
     ],
 }
