@@ -1,0 +1,5 @@
+<odoo>
+    <data>
+        <menuitem id="pyg_report" name="PYG Report Product Line" parent="costos_produccion" action="zpp_report.pyg_report_action" sequence="50"/>
+    </data>
+</odoo>
