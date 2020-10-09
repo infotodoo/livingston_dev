@@ -17,20 +17,27 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field'],
-  
+    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','base_vat'],
     # always loaded
     'data': [
         'security/mrp_variation_cost_security.xml',
         'security/ir.model.access.csv',
         'data/mrp_workcenter_productivity_loss_data.xml',
         'views/mrp_workcenter_view.xml',
-        'views/mrp_cost_structure_template.xml',
+        'views/cost_structure_report.xml',
+       # 'views/mrp_cost_structure_template.xml',
         'views/mrp_variation_view.xml',
-        'views/mrp_variation_cost_menus.xml',
+        'views/mrp_variation_cost_menu.xml',
+        #'views/mrp_variation_cost_menus.xml',
         'views/mrp_workorder_view.xml',
         'views/mrp_variation_line_view.xml',
         'views/account_line.xml',
+        'views/mrp_production_view.xml',
+        'views/tripulacion_view.xml',
+        #'views/tripulation_form_view.xml',
         'data/accounting_groups.xml',
+        'data/accounting_groups.xml',
+        
     ],
 }
+

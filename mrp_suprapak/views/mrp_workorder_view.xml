@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <record id="mrp_workorder_form_view" model="ir.ui.view">
-            <field name="name">mrp.workorder.inherit.form.view</field>
+            <field name="name">mrp.workorder.inherit.form</field>
             <field name="model">mrp.workorder</field>
             <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
             <field name="arch" type="xml"> 
@@ -11,7 +11,14 @@
                  <group>
                     <field name="estimated_time" widget="float_time"/>
                  </group>
-             </xpath> 
+             </xpath>
+             <xpath expr="//sheet/notebook/page[3]/group[1]/group[2]" position="after">
+                 <group>
+                 </group>
+                 <group>
+                    <field name="real_time_operator" widget="float_time"/>
+                 </group>
+             </xpath>  
             </field>
         </record>
 
@@ -25,8 +32,17 @@
              </xpath>
              <xpath expr="//field[@name='state']" position="after">
                  <field name="duration" widget="float_time"/>
+             </xpath>
+
+             <xpath expr="//field[@name='duration']" position="before">
+                 <field name="real_time_operator" widget="float_time"/>
+             </xpath>
+
+             <xpath expr="//field[@name='name']" position="before">
+                <field name="id"/>
              </xpath>  
             </field>
         </record>
     </data>
 </odoo>
+

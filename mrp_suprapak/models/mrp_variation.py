@@ -18,6 +18,7 @@ class MrpVariation(models.Model):
     end_time = fields.Datetime('Fecha fin', required=True)
     line_ids = fields.One2many('mrp.variation.line', 'variation_id', 'Detalle de Variaciones')
     journal_id = fields.Many2one('account.journal', 'Diario')
+    action = fields.Many2one('ir.cron', 'Accion Automática')
       
     def block_workorders(self):
         self.ensure_one()
@@ -63,6 +64,7 @@ class MrpVariation(models.Model):
         for workorder in workorders:
             time = sum([x.duration for x in workorder.time_ids])/60
             time_estimated = (workorder.duration_expected)/60
+            time_real_operator = sum([x.real_time_operator_line for x in workorder.time_ids])/60
 
             # plannifiqued = self.production_ids.product_qty
             plannifiqued = workorder.qty_production
@@ -77,7 +79,7 @@ class MrpVariation(models.Model):
             cif_standard = time_estimated * workorder.workcenter_id.costs_hour_cif
             maq_standard = time_estimated * workorder.workcenter_id.costs_hour_maq 
             # Costos Reales
-            mod_real = time * workorder.workcenter_id.costs_hour_mod_real
+            mod_real = time_real_operator * workorder.workcenter_id.costs_hour_mod_real
             cif_real = time * workorder.workcenter_id.costs_hour_cif_real
             maq_real = time * workorder.workcenter_id.costs_hour_maq_real
             # Costos de Variacion
