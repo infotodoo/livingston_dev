@@ -414,7 +414,7 @@ class CrmLead(models.Model):
             'UNIQUE(opportuny_situation)',
             "Ya esta descripcion"),
         ]
-
+        
     def new_quotation(self):
         action = self.env.ref("sale_crm.sale_action_quotations_new").read()[0]
         action['context'] = {
@@ -441,5 +441,3 @@ class CrmLead(models.Model):
             return self.env.ref("sale_crm.crm_quotation_partner_action").read()[0]
         else:
             return self.new_quotation()
-        
-            

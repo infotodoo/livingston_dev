@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="view_sale_order_tst_inherit" model="ir.ui.view">
+    <record id="view_sale_order_form_inherit" model="ir.ui.view">
         <field name="name">sale.order.form.inherit</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
@@ -14,8 +14,38 @@
                 <field name="cebe" invisible="True"/>
                 <field name="currency_tst" invisible="True"/>
              </xpath>
-             <xpath expr="//field[(@name='date_order')]" position="after">
+              <xpath expr="//field[(@name='sale_order_template_id')]" position="after">
+                 <field name="machine_tsts" readonly="True"/>
+                 <field name="machine_catg" readonly="True"/>
+                 <field name="serial" readonly="True"/>
+                 <field name="brand" readonly="True"/>
+                 <field name="model_tst" readonly="True"/>
+                 <field name="charge_service" attrs="{'invisible': [('type_of_servicetst', '=', 'garantia')]}"/>
+                 <field name="charge_spare" attrs="{'invisible': [('type_of_servicetst', '=', 'garantia')]}"/>
+                 <field name="charge_service_gar" attrs="{'invisible': [('type_of_guarantee_sale', '!=', 'mantenimiento')]}"/>
+                 <field name="charge_spare_gar" attrs="{'invisible': [('type_of_guarantee_sale', '!=', 'mantenimiento')]}"/>
+                 <field name="charge_service_garv" attrs="{'invisible': [('type_of_guarantee_sale', '!=', 'venta')]}"/>
+                 <field name="charge_spare_garv" attrs="{'invisible': [('type_of_guarantee_sale', '!=', 'venta')]}"/>
+                 <field name="service_total" readonly="True"/>
+                 <field name="spare_total" readonly="True"/>
+             </xpath>
+             <xpath expr="//field[(@name='payment_term_id')]" position="after">
+                <field name="date_of_attention" readonly="True"/>
+                <field name="stage_maintenance" readonly="True" attrs="{'invisible': [('check_tag_ids', '=', True)]}"/>
+                <field name="stageid" readonly="True" attrs="{'invisible': [('check_tag_ids', '!=', True)]}"/>
+                <field name="check_tag_ids" invisible="True"/>
                 <field name="sequence_maintenance" readonly="True"/>
+                <field name="type_of_servicetst" readonly="True"/>
+                <field name="type_of_guarantee_sale" readonly="True" attrs="{'invisible': [('type_of_servicetst', '!=', 'garantia')]}"/>
+                <field name="technical_tst" readonly="True"/>
+                <field name="technical_code" readonly="True"/>
+                <field name="city_of_machine" readonly="True"/>
+                <field name="state_machine" readonly="True"/>
+                <field name="branch_machine" readonly="True"/>
+                <field name="branch_tst" invisible="True"/>
+                <field name="address_branch_tst" readonly="True"/>
+                <field name="office_code" readonly="True"/>
+                <field name="description_maintenance" readonly="True"/>
              </xpath>
                 
         </field>

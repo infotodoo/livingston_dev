@@ -439,10 +439,11 @@ class Todoo(models.Model):
             if id_stage.sequence == 8:
                 #vals['tiempo_pri_entrevista']= fields.Datetime().now()
                 vals.update(fecha_hora_finalizada =fields.Datetime().now())
-                calc = fields.Datetime.now() - self.fecha_hora_garantia
+                if self.fecha_hora_garantia:
+                    calc = fields.Datetime.now() - self.fecha_hora_garantia
+                    calc = calc.seconds/3600
+                    vals.update(tiempo_garantia=calc)
                 calc2 = fields.Datetime.now() - self.date_aper
-                calc = calc.seconds/3600
-                vals.update(tiempo_garantia=calc)
                 calc2 = calc2.seconds/3600
                 vals.update(tiempo_total=calc2)
         return super(Todoo, self).write(vals)

@@ -16,7 +16,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['crm','sale_managment','cost_sale_order'],
+    'depends': ['crm','sale_managment'],
 
     # always loaded
     'data': [

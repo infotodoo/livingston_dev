@@ -4,6 +4,10 @@ from odoo.osv import expression
 from odoo.exceptions import UserError
 import base64
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class FieldService(models.Model):
     _inherit = 'project.task'
@@ -42,14 +46,24 @@ class FieldService(models.Model):
     plate_of_inventory = fields.Char(string="Placa de Inventario", related="team_to_check.inventory_plate")
     equipment_branch = fields.Many2one(string="Sucursal", related="team_to_check.branch")
     branch_address = fields.Char(string="Dirección de Sucursal", related="team_to_check.address")
-    sap_code = fields.Char(related="partner_id.sap", string="Código SAP")    
+    sap_code = fields.Char(related="partner_id.sap", string="Código SAP")
+    finally_with_nov = fields.Boolean(string="Finalizar con Novedad")
+    sign_by = fields.Char(string="Firmado Por")
+    job_id_tst = fields.Char(string="Cargo")
+    email_by = fields.Char(string="Correo")
     accident = fields.Boolean(string="Accidente")
     bad_driving = fields.Boolean(string="Mal Manejo")
     standard_use = fields.Boolean(string="Uso normal")
-  
+    img_incontec_tst = fields.Binary(related="company_id.img_incontec")
+    img_logo_tst = fields.Binary(related="company_id.logo_tst")
+    stage_id_maintenance = fields.Char(string="Estado del Mantenimiento")
+    office_code_tst = fields.Char(related="team_to_check.office_code", string="Código de Oficina - Sucursal")
+    type_of_guarantee_tst = fields.Selection([('venta','Garantía por Venta'),('mantenimiento','Garantía por Mantenimiento')], string="Tipo de Garantía",tracking=True)
+    res_city_id = fields.Many2one('res.city', string="Ciudad", related="team_to_check.branch")
+       
 
-    #################################################################
-    #################################################################
+    ################################################################
+    ################################################################
     def action_new_quotation(self):
         action = self.env.ref("sale_crm.sale_action_quotations_new").read()[0]
         vals = {
@@ -81,6 +95,19 @@ class FieldService(models.Model):
             'partner_id': self.partner_id.id,
             'company_id': self.company_id.id,
             'sequence_maintenance': self.name,
+            'date_of_attention': self.planned_date_begin,
+            'type_of_servicetst': self.type_service,
+            'technical_tst': self.user_id.id,
+            'office_code': self.office_code_tst,
+            'address_branch_tst': self.branch_address,
+            'description_maintenance': self.description_maintenance,
+            'stage_maintenance': self.stage_id_maintenance,
+            'branch_tst': self.equipment_branch.id,
+            'type_of_guarantee_sale': self.type_of_guarantee_tst,
+            'machine_tsts': self.team_to_check.id,
+            'serial': self.serial,
+            'brand': self.brand,
+            'model_tst': self.model,
             'analytic_account_id': self.project_id.analytic_account_id.id,            
             'team_id': team.id if team else False
         })
@@ -91,21 +118,57 @@ class FieldService(models.Model):
 
         self.sale_order_id = sale_order
 
-    def _fsm_create_sale_order_line(self):        
-        sale_order_line = self.env['sale.order.line'].sudo().create({
-            'order_id': self.sale_order_id.id,
-            'product_id': self.project_id.timesheet_product_id.id,
-            'project_id': self.project_id.id,
-            'task_id': self.id,
-            'product_uom_qty': 1.0,
-            'product_uom': self.project_id.timesheet_product_id.uom_id.id,
-            'price_unit': self.team_to_check.maintenance_value,
-        })
-        self.write({
-            'sale_line_id': sale_order_line.id,
-        })        
-        sale = super(FieldService, self)._fsm_create_sale_order_line()                
-        return sale
+    def _fsm_create_sale_order_line(self):
+        #_logger.error('++++++++++++++++++++++++++++++++++\n**garantia**********')
+        #_logger.error(self.type_service)
+        
+            
+        if self.type_service == 'preventivo':
+            #_logger.error('1++++++++++++++++++++++++++++++++++\n**garantia**********')
+            sale_order_line = self.env['sale.order.line'].sudo().create({
+                'order_id': self.sale_order_id.id,
+                'product_id': self.project_id.timesheet_product_id.id,
+                'project_id': self.project_id.id,
+                'task_id': self.id,
+                'product_uom_qty': 1.0,
+                'product_uom': self.project_id.timesheet_product_id.uom_id.id,
+                'price_unit': self.team_to_check.maintenance_value,
+            })
+            self.write({
+                'sale_line_id': sale_order_line.id,
+            })
+            return super(FieldService, self)._fsm_create_sale_order_line()
+        elif self.type_service == 'garantia' and self.project_id.timesheet_product_id.type == 'product':
+            #_logger.error('2++++++++++++++++++++++++++++++++++\n**garantia**********')
+            #_logger.error(self.type_service)
+            sale_order_line = self.env['sale.order.line'].sudo().create({
+                'order_id': self.sale_order_id.id,
+                'product_id': self.project_id.timesheet_product_id.id,
+                'project_id': self.project_id.id,
+                'task_id': self.id,
+                'product_uom_qty': 0,
+                'product_uom': self.project_id.timesheet_product_id.uom_id.id,
+                'price_unit': self.team_to_check.maintenance_value_corrective,
+            })
+            self.write({
+                'sale_line_id': sale_order_line.id,
+            })
+        elif self.type_service == 'correctivo':
+            #_logger.error('3++++++++++++++++++++++++++++++++++\n**garantia**********')
+            sale_order_line = self.env['sale.order.line'].sudo().create({
+                'order_id': self.sale_order_id.id,
+                'product_id': self.project_id.timesheet_product_id.id,
+                'project_id': self.project_id.id,
+                'task_id': self.id,
+                'product_uom_qty': 1.0,
+                'product_uom': self.project_id.timesheet_product_id.uom_id.id,
+                'price_unit': self.team_to_check.maintenance_value_corrective,
+            })
+            self.write({
+                'sale_line_id': sale_order_line.id,
+            })
+            return super(FieldService, self)._fsm_create_sale_order_line()
+
         
     
     ######################## crear cotización desde field service ###############################
@@ -138,16 +201,25 @@ class FieldService(models.Model):
    
     #cancelar peticion de mantenimiento desde field service//
     def cancel_field_service(self):
-        # peticion = self.env['maintenance.request'].search([('name','=',self.name)], limit=1)
         peticion = self.request_id
         if peticion:
-            peticion.archive_equipment_request()
+            peticion.button_finalizada()
+
+    def confim_cotización(self):
+        peticion = self.request_id
+        if peticion:
+            peticion.button_finalizada()
+
+    def confim_marcar_garantia_como_hecho(self):
+        peticion = self.request_id
+        if peticion:
+            peticion.button_marcar_como_hecho()                
 
     def finally_maintenance_request(self):
         # peticion_mantenimiento = self.env['maintenance.request'].search([('name','=',self.name)],limit=1)
         peticion_mantenimiento = self.request_id
         if peticion_mantenimiento:
-            peticion_mantenimiento.button_finalizada()
+            peticion_mantenimiento.button_marcar_como_hecho()
             self.create_attachment()
             
     def action_fsm_validate(self):
@@ -197,4 +269,3 @@ class FieldService(models.Model):
             return attachment_id   
         else:
             return False
-    
