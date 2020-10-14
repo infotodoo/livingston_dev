@@ -12,6 +12,10 @@
                     <field name="price_n_iva" groups="cost_sale_order.group_sale_order_thomas_production_user"/>
                     <field name="contribution_percentage" groups="cost_sale_order.group_sale_order_thomas_production_user"/>
                 </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                     <attribute name="attrs">{'nolabel': [('prod_typecompany_id.id','=','19')]]}</attribute>
+                      <label for="user_id" string="Director">
+                </xpath>
             </field>
         </record>
         <record model="ir.module.category" id="module_category_sale_order_thomas_production">

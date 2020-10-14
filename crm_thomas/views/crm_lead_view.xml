@@ -435,6 +435,17 @@
                 </xpath>
             </field>
         </record>
+        <record id="crm_lead_form_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_set_won_rainbowman']" position="after">
+                    <button name="sale_quotations_new" string="New Quotation" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('type', '=', 'lead'), '&amp;', ('probability', '=', 0), ('active', '=', False)]}"
+                    groups="cost_sale_order.group_sale_order_thomas_production_user"/>
+                </xpath>
+            </field>
+        </record>
     </data>
     <menuitem id="benefit_center_menu" name="Centro de Beneficios" action="benefit_center_form_action"  parent="crm.menu_crm_config_lead" sequence="5"/>
 </odoo>
