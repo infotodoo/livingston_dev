@@ -16,7 +16,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['crm','sale_managment'],
+    'depends': ['crm_thomas','sale_management','sale_crm'],
 
     # always loaded
     'data': [
