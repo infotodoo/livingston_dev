@@ -16,7 +16,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp_account_enterprise','mrp','mrp_suprapak'],
+    'depends': ['mrp_suprapak','contacs_thomas'],
   
     # always loaded
     'data': [
