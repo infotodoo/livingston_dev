@@ -9,6 +9,15 @@
                 </tree>
             </field>
         </record>
+        <record id="pyg_report_view_form" model="ir.ui.view">
+            <field name="name">pyg.report.product.line.view.form</field>
+            <field name="model">zpp.report</field>
+            <field name="arch" type="xml">
+                <form string="ZPP">
+                    <field name="product_id"/>
+                </form>
+            </field>
+        </record>
         <record model="ir.actions.act_window" id="pyg_report_action">
             <field name="name">pyg report action</field>
             <field name="type">ir.actions.act_window</field>
