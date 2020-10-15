@@ -1,5 +1,6 @@
 <odoo>
     <data>
-        <menuitem id="pyg_report_action" name="PYG Report Product Line" parent="mrp_suprapak.costos_produccion" action="zpp_report.pyg_report_action" sequence="50"/>
+        <menuitem id="pyg_report" name="PYG Report" parent="account.menu_finance_reports" sequence="5"/>
+        <menuitem id="pyg_report_action" name="PYG Report Product Line" parent="pyg_report" action="zpp_report.pyg_report_action" sequence="1"/>
     </data>
 </odoo>
