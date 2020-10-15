@@ -17,7 +17,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['maintenance','contacs_thomas'],
+    'depends': ['maintenance','contacs_thomas','industry_thomas'],
 
     # always loaded
     'data': [

@@ -7,9 +7,10 @@
         <field name="arch" type="xml">
 
         <header>
-         <button type="object" string="CONFIRMAR COTIZACIÓN" class="oe_highlight" name="action_fsm_validate" confirm="Esta seguro que desea confirmar la  Cotización?" icon="fa-edit"  attrs="{'invisible': ['&amp;', '|',  ('allow_material', '=', True), '|', ('allow_timesheets', '=', True), ('allow_quotations', '=', False), '|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}" ></button>         
+         <button type="object" string="CONFIRMAR COTIZACIÓN" class="oe_highlight" name="confim_cotización" confirm="Esta seguro que desea confirmar la  Cotización?" icon="fa-edit"  attrs="{'invisible': ['&amp;', '|',  ('allow_material', '=', True), '|', ('allow_timesheets', '=', True), ('allow_quotations', '=', False), '|', '|', '|', '|', '|', ('timesheet_timer_start', '!=', False), ('fsm_done', '=', True), '&amp;', ('allow_timesheets', '=', True), ('total_hours_spent', '=', 0), '&amp;', ('allow_material', '=', True), ('material_line_product_count', '=', 0), '&amp;', ('allow_timesheets', '=', False), ('allow_material', '=', False)]}" ></button>         
          <button type="object" string="MARCAR COMO HECHO" class="oe_highlight" name="finally_maintenance_request" confirm="Desea colocar en estado finalizado la petición de mantenimiento?" icon="fa-check" invisible="True"/>
-         <button type="object" string="CANCELAR MANTENIMIENTO" class="btn btn-danger" name="cancel_field_service" confirm="Esta seguro que desea cancelar el Mantenimiento?" icon="fa-times-circle-o"/>         
+         <button type="object" string="FINALIZAR MANTENIMIENTO CON NOVEDAD" class="btn btn-danger" name="cancel_field_service" confirm="Esta seguro que desea colocar el Mantenimiento en FINALIZADO CON NOVEDAD?" icon="fa-times-circle-o"/>
+         <button type="object" string="MARCAR GARANTIA COMO HECHO" class="oe_highlight" name="confim_marcar_garantia_como_hecho" confirm="Desea colocar la Garantía en estado de  finalizado?" icon="fa-check" attrs="{'invisible': [('type_service', '!=', 'garantia')]}"></button>         
 
         </header>
       
@@ -50,23 +51,31 @@
             </xpath>       
             
             <xpath expr="//field[(@name='partner_id')]" position="after">
-                <field name="sap_code" required="True"/>               
+                <field name="sap_code" required="True"/>
+                <field name="stage_id_maintenance" readonly="True"/>               
                 <field name="phone" required="True"/>
                 <field name="customer_email" required="True"/>
                 <field name="spare_parts" required="True"/>
                 <field name="team_to_check" required="True" readonly="True"/>
-                <field name="serial" required="True"/>
+                <field name="serial"/>
                 <field name="brand" required="True"/>
                 <field name="model" required="True"/>
                 <field name="plate_of_inventory"/>
-                <field name="machine_location" required="True"/>
+                <field name="machine_location"/>
+                <field name="office_code_tst"/>
                 <field name="equipment_branch"/>
                 <field name="branch_address"/>
                 <field name="type_request" readonly="True"/>
-                <field name="type_service" required="True" widget="radio" readonly="True"/>                
+                <field name="type_service" required="True" widget="radio" readonly="True"/>
+                <field name="type_of_guarantee_tst" readonly="True" attrs="{'invisible': [('type_service', '!=', 'garantia')]}"/>                
             </xpath>
             <xpath expr="//field[(@name='user_id')]" position="after">
-                <field name="sign" widget="image"/>
+                <field name="sign_by"/>
+                <field name="job_id_tst"/>
+                <field name="email_by"/>
+                <field name="sign" widget="signature"/>
+                <field name="img_incontec_tst" invisible="True"/>
+                <field name="img_logo_tst" invisible="True"/>
             </xpath>    
             <sheet>
              <notebook>
@@ -87,16 +96,17 @@
                        <group string="Reparación/Instalación/Mantenimiento">
                            <field name="machine_ok"/>                           
                            <field name="machine_change"/>
-                           <field name="requires_spare_parts"/>                           
+                           <field name="requires_spare_parts"/>
+                           <field name="finally_with_nov"/>                           
                        </group>
-                       <group string="FALLAS DESCUBIERTAS Y CAUSAS">
+                       <group string="Fallas descubiertas y causas">
                           <field name="accident"/>
                           <field name="bad_driving"/>
                           <field name="standard_use"/>
                        </group>
                        <field name="description_maintenance" placeholder="Descripción del Mantenimiento" required="True"/>
-                       <field name="repair_setting" placeholder="Reparación" required="True"/>
-                       <field name="repair" placeholder="Justificación" required="True"/>
+                       <field name="repair_setting" placeholder="Reparación" attrs="{'required': [('machine_ok', '!=', True)]}"/>
+                       <field name="repair" placeholder="Justificación" attrs="{'required': [('finally_with_nov', '=', True)]}"/>
                    </group>
                </page>
              </notebook>

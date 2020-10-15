@@ -64,23 +64,47 @@
                                 width:510px;
                                 height:150px;                                
                                 float:left;         
-                                }                                                                                          
+                                }
+                                div#logo{
+                                margin:auto;
+                                margin-top:60px;
+                                background-color:white;
+                                width:350px;
+                                height:150px;                                
+                                float:left;
+                                 border: 1px solid #338F30;
+                                }
+                                div#logo1{
+                                margin:auto;
+                                margin-top:60px;
+                                background-color:white;
+                                width:326px;
+                                height:150px;                                
+                                float:left;
+                                 border: 1px solid #338F30;
+                                }
+                                div#logo2{
+                                margin:auto;
+                                margin-top:60px;
+                                background-color:white;
+                                width:332px;
+                                height:150px;                                
+                                float:left;
+                                 border: 1px solid #338F30;
+                                }                                                                                             
                              </style>
                            </head>
-                            <table class="table" style="width:100%;">
-                                <thead>
-                                  <tr>                                                                        
-                                     <th scope="col"><img t-att-src="'/industry_thomas/static/description/logotst.PNG'" height="100" width="300"/> 
-                                      <br></br> <t t-if="o.type_service == 'preventivo'"> <p>INFORME DE MANTENIMIENTO  <br></br> <span>No.</span><span t-field="o.name"></span></p></t> 
-                                      <br></br> <t t-if="o.type_service == 'correctivo'"> <p>INFORME DE MANTENIMIENTO  <br></br> <span>No.</span><span t-field="o.name"></span></p></t>  
-                                      <br></br> <t t-if="o.type_service == 'alistamiento'"> <p>INFORME DE INSTALACIÓN  <br></br> <span>No.</span><span t-field="o.name"></span></p></t>  
-                                      <br></br> <t t-if="o.type_service == 'instalacion de maquina'"> <p>INFORME DE INSTALACIÓN  <br></br> <span>No.</span><span t-field="o.name"></span></p></t>   
-                                      <br></br> <t t-if="o.type_service == 'instalacion de repuesto'"> <p>INFORME DE INSTALACIÓN  <br></br> <span>No.</span><span t-field="o.name"></span></p></t>  
-                                     </th>
-                                     <th scope="col"><p>TS - R - 001<br></br><br></br>Versión 2</p></th>      
-                                  </tr>
-                                </thead> 
-                            </table>
+                            <div id="logo"><img t-att-src="'data:image/png;base64,%s' % to_text(o.img_logo_tst)" width="370" height="140"/></div> 
+                           <div id="logo1" style="border-left-style: none;">
+                             
+                             <t t-if="o.type_service == 'preventivo'"> <p>INFORME DE MANTENIMIENTO  <br/> <span>No.</span><span t-field="o.name"/></p></t> 
+                                      <br/> <t t-if="o.type_service == 'correctivo'"> <p>INFORME DE MANTENIMIENTO  <br/> <span>No.</span><span t-field="o.name"/></p></t>  
+                                      <br/> <t t-if="o.type_service == 'alistamiento'"> <p>INFORME DE INSTALACIÓN  <br/> <span>No.</span><span t-field="o.name"/></p></t>  
+                                      <br/> <t t-if="o.type_service == 'instalacion de maquina'"> <p>INFORME DE INSTALACIÓN  <br/> <span>No.</span><span t-field="o.name"/></p></t>   
+                                      <br/> <t t-if="o.type_service == 'instalacion de repuesto'"> <p>INFORME DE INSTALACIÓN  <br/> <span>No.</span><span t-field="o.name"/></p></t>  
+                              
+                           </div>
+                           <div id="logo2" style="border-left-style: none;"> <p>TS - R - 001<br/><br/>Versión 2</p></div>
                             <table class="table" style="width:100%;">
                                 <thead>
                                   <tr>
@@ -94,7 +118,7 @@
                                 <thead>
                                   <tr>
                                      <td scope="col"><strong>DIRECCIÓN:</strong> <span> </span><span t-field="h.street"></span> </td>
-                                     <td scope="col"><strong>TÉLEFONO:</strong><span> </span><span t-field="o.phone"></span></td>      
+                                     <td scope="col"><strong>TÉLEFONO:</strong><span> </span><span t-field="o.phone"></span></td>     
                                   </tr>
                                 </thead> 
                                </t> 
@@ -119,8 +143,7 @@
                                      <td scope="col"><strong>MARCA:</strong><span> </span><span t-field="o.brand"></span></td>
                                      <td><strong>MODELO:</strong><span> </span><span t-field="o.model"></span></td>      
                                   </tr>
-                                </thead>
-                               
+                                </thead> 
                             </table>
                             <table class="table" style="width:100%;">
                                 <thead>
@@ -158,7 +181,7 @@
                                <td>COTIZACION</td>
                                <td><div id="b"></div></td>
                                <td>MANTENIMIENTO POR GARANTIA</td>
-                               <td><div id="b"></div></td>
+                               <td><div id="b" style=" text-align: center;">   <t t-if="o.type_service == 'garantia'"> <span>✔</span>  </t>    </div></td>
                               </tr>
                               <tr>
                                <td>MANTENIMIENTO CORRECTIVO</td>
@@ -175,29 +198,24 @@
                                <td>FALLAS DESCUBIERTAS Y CAUSAS:</td>
                                <td></td>
                                <td>Accidente</td>
-                               <td><div id="b" style=" text-align: center;">  <t t-if="o.accident == True"> <span>✔</span>  </t> </div></td>
+                               <td><div id="b" style=" text-align: center;"> <t t-if="o.accident == True"> <span>✔</span>  </t></div></td>
                                <td>Mal Manejo</td>
-                               <td><div id="b" style=" text-align: center;"></div></td>
+                               <td><div id="b" style=" text-align: center;"><t t-if="o.bad_driving == True"> <span>✔</span>  </t></div></td>
                                <td>Uso Normal</td>
-                               <td><div id="b" style=" text-align: center;"></div></td>
-                              </tr>
-                              
-                              
+                               <td><div id="b" style=" text-align: center;"><t t-if="o.standard_use == True"> <span>✔</span>  </t></div></td>
+                              </tr> 
                             </table>
                              <table style="width:100%;">                              
                               <tr>
                                <td><p align="justify"><span t-field="o.description_maintenance"></span></p></td>
                                
                               </tr>                            
-                              
                             </table>
                              <table style="width:100%;">                              
                               <tr>
                                <td><strong>PROCEDIMIENTOS INSTALACION</strong></td>
                                
-                              </tr>
-                              
-                              
+                              </tr> 
                             </table>
                             <table style="width:100%;">                              
                               <tr>
@@ -247,8 +265,6 @@
                               </tr>                           
                               <tr>
                                <td><p><span t-field="o.repair"></span></p></td>
-                               
-                               
                               </tr>   
                             </table>
                             <br></br>
@@ -269,13 +285,9 @@
                                     <tr>
                                         <th class="text-left">DESCRIPCIÓN</th>
                                         <th class="text-right">CANTIDAD</th>
-                                        <th t-if="order.amount_total != 0" class="text-right">PRECIO UNITARIO</th>
+                                       
                                         <th t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
                                             <span>Disc.%</span>
-                                        </th>
-                                        <th class="text-right">
-                                            <t t-if="order.amount_total != 0" groups="account.group_show_line_subtotals_tax_excluded">SUBTOTAL</t>
-                                            <t t-if="order.amount_total != 0" groups="account.group_show_line_subtotals_tax_included">AMOUNT</t>
                                         </th>
                                     </tr>
                                 </thead>
@@ -292,18 +304,12 @@
                                                 <t t-if="not line.display_type and not line.is_downpayment">
                                                     <td><span t-field="line.name"/></td>
                                                     <td class="text-right">
-                                                        <span t-field="line.product_uom_qty"/>
+                                                        <span t-esc="'%.0f'%(line.product_uom_qty)"/>
                                                         <span t-field="line.product_uom" groups="uom.group_uom"/>
                                                     </td>
-                                                    <td class="text-right">
-                                                        <span t-if="line.price_total != 0" t-field="line.price_unit"/>
-                                                    </td>
+                                                   
                                                     <td t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
                                                         <span t-field="line.discount"/>
-                                                    </td>
-                                                    <td class="text-right o_price_total">
-                                                        <span t-if="line.price_subtotal != 0" t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                                        <span t-if="line.price_total != 0" t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
                                                     </td>
                                                 </t>
                                                 <t t-if="line.display_type == 'line_section'">
@@ -336,14 +342,7 @@
                             <div class="container" name="so_total_summary">
                                 <div id="total" class="row justify-content-end" name="total">
                                     <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-5'}">
-                                        <table t-if="order.amount_untaxed != 0" class="table table-sm">
-                                            <tr class="border-black o_subtotal" style="">
-                                                <td><strong>TOTAL</strong></td>
-                                                <td class="text-right">
-                                                    <span t-field="o.sale_order_id.amount_untaxed"/>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -364,14 +363,14 @@
                                <td><strong>REPUESTOS</strong></td>
                                <td><strong>OTROS</strong></td>
                                <td><strong>IMPUESTO A LAS VENTAS</strong></td>
-                               <td><strong>TOTAL</strong></td>                               
+                                                            
                               </tr>
                               <tr>
+                               <td>________</td>
                                <td></td>
                                <td></td>
                                <td></td>
-                               <td></td>
-                               <td>50000</td>                               
+                                                             
                               </tr>                             
                               
                             </table>                             
@@ -386,15 +385,12 @@
                               <t t-foreach="o.partner_id" t-as="x">                             
                               <tr>
                                <td><p align="center"><span t-field="x.street"></span><br></br><span t-field="x.city"></span><span>-</span><span t-field="x.country_id"></span><br></br><span>TÉLEFONO:</span><span> </span><span t-field="o.phone"></span></p></td>
-                               <td><p align="center"><span><img t-att-src="'/industry_thomas/static/description/iso.png'" height="78" width="250"/></span></p></td>
+                               <td><p align="center"><img t-att-src="'data:image/png;base64,%s' % to_text(o.img_incontec_tst)" width="380" height="150"/></p></td>
                                
                               </tr>                             
                               </t>
-                            </table>                          
-
-                               
-                               
-                               
+                            </table>
+                            
                         </div>                   
                 </t>
             </t>

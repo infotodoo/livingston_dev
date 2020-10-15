@@ -35,14 +35,17 @@ class MaintenanceRequest(models.Model):
     mantenimientos_proces = fields.Text('Mantenimiento en proceso',tracking=True)    
     preventive = fields.Char(string="Preventivo")
     corrective = fields.Char(string="Correctivo")
-    department_add = fields.Many2one(related="equipment_id.department", string="Departamento")
-    city_machine = fields.Many2one(related="equipment_id.branch", string="Ciudad")
-    branch_machine_tst = fields.Char(string="Sucursal", related="equipment_id.branch_tst")
+    department_add = fields.Many2one(related="equipment_id.department", string="Departamento",tracking=True)
+    city_machine = fields.Many2one(related="equipment_id.branch", string="Ciudad",tracking=True)
+    branch_machine_tst = fields.Char(string="Sucursal", related="equipment_id.branch_tst",tracking=True)
     sequence_machine = fields.Integer(related="stage_id.sequence")
     type_of_guarantee = fields.Selection([('venta','Garantía por Venta'),('mantenimiento','Garantía por Mantenimiento')], string="Tipo de Garantía",tracking=True)
     maintenance_worksheet = fields.Many2one('maintenance.request', string="Hoja de trabajo relacionada con garantía",tracking=True)
-    #mantenimientosproces = fields.Char(string="Mantenimiento en proceso")
-
+    sap_code_sap = fields.Char(related="customer.sap")
+    stage_id_related = fields.Char(related="stage_id.name", string="Estado de la Petición")
+    office_code_tst = fields.Char(related="equipment_id.office_code", string="Código de Oficina - Sucursal")
+    machine_rental = fields.Boolean(string="Máquina en Contrato de Alquiler", related="equipment_id.rental_contract")
+    
     @api.model
     def create(self, vals):
         
@@ -61,15 +64,9 @@ class MaintenanceRequest(models.Model):
         name = self.env['ir.sequence'].next_by_code('maintenance.request') or _('Nuevo')
 
         if vals.get('type_of_maintenance') == 'correctivo':
-
-            vals.update(name='MC '+name)
-        elif vals.get('type_of_maintenance') == 'preventivo':
-            vals.update(name='MP '+name)    
-
             vals.update(name='MC'+name)
         elif vals.get('type_of_maintenance') == 'preventivo':
             vals.update(name='MP'+name)    
-
         else:
             vals.update(name=name)                   
         return super(MaintenanceRequest, self).create(vals)      
@@ -80,7 +77,7 @@ class MaintenanceRequest(models.Model):
             progress = self.env.ref('maintenance_thomas.stage_7')            
             if progress and vals.get('stage_id') == progress.id:
                 self.create_task()
-        if vals.get('schedule_date') or vals.get('duration') or vals.get('customer') or vals.get('equipment_id') or vals.get('type_of_maintenance') or vals.get('type_request_maintenance') or vals.get('user_id') :
+        if vals.get('schedule_date') or vals.get('duration') or vals.get('customer') or vals.get('equipment_id') or vals.get('type_of_maintenance') or vals.get('type_request_maintenance') or vals.get('user_id') or vals.get('stage_id_related') :
             self.write_task(vals)
 
         if vals.get('type_of_maintenance') == 'correctivo':
@@ -108,6 +105,8 @@ class MaintenanceRequest(models.Model):
                 'machine_location': record.machine_location,               
                 'planned_date_begin': planned_date_begin,
                 'planned_date_end': planned_date_end,
+                'stage_id_maintenance':record.stage_id_related,
+                'type_of_guarantee_tst': record.type_of_guarantee,
                 'partner_id': record.customer.id if record.customer else False,
                 'team_to_check': record.equipment_id.id if record.equipment_id else False,
                 'user_id':record.user_id.id if record.user_id else False
@@ -137,13 +136,19 @@ class MaintenanceRequest(models.Model):
                 if vals.get('type_request_maintenance'):
                     dic.update(type_request=vals.get('type_request_maintenance'))
                 if vals.get('user_id'):
-                    dic.update(user_id=vals.get('user_id'))            
+                    dic.update(user_id=vals.get('user_id'))
+                if vals.get('stage_id_related'):
+                    dic.update(stage_id_maintenance=vals.get('stage_id_related'))                 
                 record.task_id.write(dic)
 
     #cambiar de etapa
     def button_finalizada(self):
-        rs = self.env['maintenance.stage'].search([('done', '=', True)], limit=1)
-        self.write({'stage_id': rs.id})    
+        rs = self.env['maintenance.stage'].search([('name', '=', 'FINALIZADO CON NOVEDAD')], limit=1)
+        self.write({'stage_id': rs.id})
+
+    def button_marcar_como_hecho(self):
+        rs = self.env['maintenance.stage'].search([('name', '=', 'FINALIZADO')], limit=1)
+        self.write({'stage_id': rs.id})        
             
    #Ventana de advertencia para verificar si una máquina está en mantenimiento
     @api.onchange('equipment_id','schedule_date')

@@ -17,7 +17,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','base_vat'],
+    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','base_vat','mrp_workorder'],
     # always loaded
     'data': [
         'security/mrp_variation_cost_security.xml',

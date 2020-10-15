@@ -20,6 +20,26 @@ _logger = logging.getLogger(__name__)
 class MailMail(models.Model):
     _inherit = 'mail.mail'
 
+    @api.model
+    def create(self, values):
+        # notification field: if not set, set if mail comes from an existing mail.message
+        if 'notification' not in values and values.get('mail_message_id'):
+            values['notification'] = True
+
+        outgoing_obj = self.env['ir.mail_server'].sudo().search([('user_id','=',self.env.uid)],limit=1)
+        if not outgoing_obj:
+            outgoing_obj = self.env['ir.mail_server'].sudo().search([('is_default_server','=',True)],limit=1)
+        if outgoing_obj:
+            values['mail_server_id'] = outgoing_obj.id
+            values['email_from'] = outgoing_obj.smtp_user
+
+        _logger.error(values)
+
+        new_mail = super(MailMail, self).create(values)
+        if values.get('attachment_ids'):
+            new_mail.attachment_ids.check(mode='read')
+        return new_mail
+
     def send(self, auto_commit=False, raise_exception=False):
         """ Sends the selected emails immediately, ignoring their current
             state (mails that have already been sent should not be passed
@@ -37,8 +57,10 @@ class MailMail(models.Model):
         """
         for server_id, batch_ids in self._split_by_server():
             smtp_session = None
-            try:  
+            try:
                 outgoing_obj = self.env['ir.mail_server'].search([('user_id','=',self.create_uid.id)],limit=1)
+                if not outgoing_obj:
+                    outgoing_obj = self.env['ir.mail_server'].search([('is_default_server','=',True)],limit=1)
                 server_id = outgoing_obj.id
                 smtp_session = self.env['ir.mail_server'].connect(mail_server_id=server_id)
                 _logger.error('server_id-------------------------------------------------------')

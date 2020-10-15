@@ -6,15 +6,9 @@
         <field name="model">hr.departure.wizard</field>
         <field name="inherit_id" ref="hr.hr_departure_wizard_view_form"/>
         <field name="arch" type="xml">
-            <field name="departure_reason" position="attributes" >
-                <attribute name="invisible">True</attribute>
-            </field>
-
             <xpath expr="//field[(@name='departure_reason')]" position="after">               
-                <field name="departuree_reason"/>
-                
+                <field name="fecha_retiro"/>
             </xpath>
-               
         </field>
     </record>
  </data>
