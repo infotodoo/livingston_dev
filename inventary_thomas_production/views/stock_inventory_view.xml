@@ -2,22 +2,12 @@
   <data>
     <record id="view_stock_inventory_form_inherit" model="ir.ui.view">
             <field name="name">stock.inventory.form.thomas</field>
-            <field name="model">stock.inventory</field>
-            <field name="inherit_id" ref="stock.view_inventory_tree"/>
+            <field name="model">stock.inventory.line</field>
+            <field name="inherit_id" ref="stock.stock_inventory_line_tree2"/>
             <field name="arch" type="xml">
-              <xpath expr="//tree[1]" position="replace">
-                <tree string="Lot/Serial Number Inventory" decoration-muted="state == 'cancel'" multi_edit="1">
-                  <field name="name" readonly="1"/>
-                  <field name="date" readonly="1"/>
-                  <field name="location_ids" widget="many2many_tags" optional="hide" groups="stock.group_stock_multi_locations"/>
-                  <field name="product_ids" widget="many2many_tags" optional="hide" readonly="1"/>
-                  <field name="diff_motive" optional="show" groups="	inventary_thomas_production.group_stock_thomas_production_user"/>
-                  <field name="state"/>
-                  <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
-                </tree>
+              <xpath expr="//tree[1]/field[@name='difference_qty']" position="after">
+                  <field name="diff_motive" groups="	inventary_thomas_production.group_stock_thomas_production_user"/>
               </xpath>
-              <!--<xpath expr="//field[@name='product_ids']" position="after">
-              </xpath>-->
             </field>
     </record>
     <record model="ir.module.category" id="module_category_stock_thomas_production">
