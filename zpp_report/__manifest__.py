@@ -20,7 +20,8 @@
   
     # always loaded
     'data': [
-        'views/menu_view.xml',
+        'security/ir.model.access.csv',
         'views/pyg_report_view.xml',
+        'views/menu_view.xml',
     ],
 }
