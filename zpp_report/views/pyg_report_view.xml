@@ -1,7 +1,7 @@
 <odoo>
     <data>
-        <record id="pyg_report_action" model="ir.ui.view">
-            <field name="name">PYG Report Product Line</field>
+        <record id="pyg_report_view_tree" model="ir.ui.view">
+            <field name="name">pyg.report.product.line.view.tree</field>
             <field name="model">zpp.report</field>
             <field name="arch" type="xml">
                 <tree string="ZPP">
@@ -10,9 +10,11 @@
             </field>
         </record>
         <record model="ir.actions.act_window" id="pyg_report_action">
-            <field name="name">PYG Report Product Line</field>
+            <field name="name">pyg report action</field>
+            <field name="type">ir.actions.act_window</field>
             <field name="res_model">zpp.report</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="pyg_report_view_tree"/>
         </record>
     </data>
 </odoo>
