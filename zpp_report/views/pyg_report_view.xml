@@ -5,6 +5,7 @@
             <field name="model">zpp.report</field>
             <field name="arch" type="xml">
                 <tree string="ZPP">
+                    <field name="company_id"/>
                     <field name="product_id"/>
                 </tree>
             </field>
@@ -14,6 +15,7 @@
             <field name="model">zpp.report</field>
             <field name="arch" type="xml">
                 <form string="ZPP">
+                    <field name="company_id"/>
                     <field name="product_id"/>
                 </form>
             </field>
