@@ -16,7 +16,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account'],
+    'depends': ['account_accountant','mrp_workorder'],
   
     # always loaded
     'data': [

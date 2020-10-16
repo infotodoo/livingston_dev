@@ -5,8 +5,9 @@
             <field name="model">zpp.report</field>
             <field name="arch" type="xml">
                 <tree string="ZPP">
-                    <field name="company_id"/>
-                    <field name="product_id"/>
+                    <field name="name"/>
+                    <field name="start_date"/>
+                    <field name="final_date"/>
                 </tree>
             </field>
         </record>
@@ -14,17 +15,33 @@
             <field name="name">pyg.report.product.line.view.form</field>
             <field name="model">zpp.report</field>
             <field name="arch" type="xml">
-                <form string="ZPP">
-                    <field name="company_id"/>
-                    <field name="product_id"/>
-                </form>
+                <sheet>
+                    <form string="ZPP">
+                        <group name='head'>
+                            <div class="oe_title">
+                               <label for="name" class="oe_edit_only" string="Name"/>
+                                <h1>
+                                    <field name="name" required="True"/>
+                                </h1>
+                            </div>
+                        </group>
+                        <group name='date'>
+                            <label for="start_time" string="Rango de Fechas"/>
+                            <div class="o_row">
+                                <field name="start_date"/>
+                                <strong> a </strong>
+                                <field name="final_date"/>
+                            </div>
+                        </group>
+                    </form>
+                </sheet>
             </field>
         </record>
         <record model="ir.actions.act_window" id="pyg_report_action">
             <field name="name">pyg report action</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">zpp.report</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
             <field name="view_id" ref="pyg_report_view_tree"/>
         </record>
     </data>
