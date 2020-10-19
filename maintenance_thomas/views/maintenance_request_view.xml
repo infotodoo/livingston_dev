@@ -8,8 +8,8 @@
                 <xpath expr="//button[@name='archive_equipment_request']" position="after">
                     <button name="action_create_wizard" type="object" string="Notify" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
                 </xpath>
-                <!--<xpath expr="//field[@name='stage_id']" position="replace" groups="maintenance_thomas.group_maintenance_thomas_production_user">
-                    <field name="stage_id"/>
+                <!--<xpath expr="//field[@name='stage_id']" position="attributes">
+                    <attribute name="attrs">{'invisible':[('company_id','=',19)]}</attribute>
                 </xpath>-->
                 <xpath expr="//field[@name='maintenance_type']" position="replace">
                     <field name="maintenance_type" widget="radio" />
@@ -50,5 +50,25 @@
             <field name="name">User</field>
             <field name="category_id" ref="module_category_maintenance_thomas_production"/>
         </record>
+        <record id="view_maintenance_stage_tree_inherit" model="ir.ui.view">
+            <field name="name">maintenance.stage.tree.thomas</field>
+            <field name="model">maintenance.stage</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_stage_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='done']" position="after">
+                    <field name="company_id"/>
+                </xpath>
+            </field>
+        </record>
+        <!--<record id="view_maintenance_request_kanban_inherit" model="ir.ui.view">
+            <field name="name">maintenance.request.kanban.thomas</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='stage_id']" position="attributes">
+                    <attribute name="attrs">{'domain':[('company_id','=',company_id)]}</attribute>
+                </xpath>
+            </field>
+        </record>-->
     </data>
 </odoo>
