@@ -5,11 +5,23 @@ class MaterialPurchaseRequisition(models.Model):
 
     responsable_area = fields.Char('Responsable Area',compute='_compute_responsable_area')
     charge_to = fields.Selection([('order','Production Order'),('center','Cost Center')],'Charge To')
-    production_id = fields.Many2one('mrp.production','Production Order')
+    production_id = fields.Many2one('mrp.production','Production Order',domain="[('state', 'in', 'progress'])")
     cost_center_id = fields.Many2one('mrp.workcenter','Cost Center')
     delivery_by = fields.Char('Delivery By',compute="_compute_delivery_by")
     recieved_by = fields.Char('recieved By',compute="_compute_recieve_by")
     security_aux = fields.Char('Security Auxiliar',compute="_compute_security_aux")
+    
+    def cargar(self):
+        if len(self.requisition_line_ids) > 1 and self.production_id:
+            list = []
+            for lines in self.requisition_line_ids:
+                dic{
+                    'product_id':lines.id,
+                }
+                list.append((0,0,dic))
+            if list:
+                self.write({'production_id.movie_raw_ids':list})
+            
     
     def _compute_security_aux(self):
         for record in self:
