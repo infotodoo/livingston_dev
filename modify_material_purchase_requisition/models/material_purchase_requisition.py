@@ -1,11 +1,12 @@
-from odoo import models, api, fields
+from odoo import models, api, fields, _
 
 class MaterialPurchaseRequisition(models.Model):
     _inherit = 'material.purchase.requisition'
 
     responsable_area = fields.Char('Responsable Area',compute='_compute_responsable_area')
     charge_to = fields.Selection([('order','Production Order'),('center','Cost Center')],'Charge To')
-    production_id = fields.Many2one('mrp.production','Production Order',domain="[('state', 'in', 'progress'])")
+    production_id = fields.Many2one('mrp.production','Production Order',domain="[('state', '=','draft')]")
+                                    #['planned','progress'])]")
     cost_center_id = fields.Many2one('mrp.workcenter','Cost Center')
     delivery_by = fields.Char('Delivery By',compute="_compute_delivery_by")
     recieved_by = fields.Char('recieved By',compute="_compute_recieve_by")
@@ -15,12 +16,19 @@ class MaterialPurchaseRequisition(models.Model):
         if len(self.requisition_line_ids) > 1 and self.production_id:
             list = []
             for lines in self.requisition_line_ids:
-                dic{
-                    'product_id':lines.id,
+                dic={
+                    'product_id':lines.product_id.id,
                 }
                 list.append((0,0,dic))
-            if list:
-                self.write({'production_id.movie_raw_ids':list})
+                production_line_ids = self.env['mrp.production'].search([('id','=',production_id.id)])
+                production_line_ids.write({'move_raw_ids':list})
+        else:
+            message = _("Error: Must be select requisition products and production order")
+            mess= {
+                'title': _('Error!'),
+                'message' : message
+                 }
+            return {'warning': mess}
             
     
     def _compute_security_aux(self):

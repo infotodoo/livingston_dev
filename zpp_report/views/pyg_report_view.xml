@@ -18,7 +18,7 @@
                 <form string="ZPP">
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" type="object" string=" Report" icon="fa-pencil-square-o" name="generate_report">
+                            <button class="oe_stat_button" type="object" string=" Report" icon="fa-pencil-square-o" name="report">
                             </button>
                         </div>
                         <group name='head'>
@@ -47,6 +47,19 @@
             <field name="res_model">zpp.report</field>
             <field name="view_mode">tree,form</field>
             <!--<field name="view_id" ref="pyg_report_view_tree"/>-->
+        </record>
+        <record id="zpp_report_view_tree" model="ir.ui.view">
+            <field name="name">zpp.report.product.line.view.tree</field>
+            <field name="model">zpp.report.line</field>
+            <field name="arch" type="xml">
+                <tree string="ZPP lines">
+                    <field name="id" invisible="1"/>
+                    <field name="product_id"/>
+                    <field name="description"/>
+                    <field name="name"/>
+                    <field name="product_qty"/>
+                </tree>
+            </field>
         </record>
     </data>
 </odoo>
