@@ -5,7 +5,7 @@ _logger = logging.getLogger(__name__)
 
 
 class ZppReport(models.Model):
-    _name = 'zpp.report'
+    _name = 'report.zpp'
     _description = 'This is the report ZPP'
     _rec_name = 'report_name'
     
@@ -16,7 +16,7 @@ class ZppReport(models.Model):
     
     def report(self):
         if self.start_date and self.final_date:
-            zpp_line_obj = self.env['zpp.report.line']
+            zpp_line_obj = self.env['report.zpp.line']
             domain = [('date_planned_start','>=',self.start_date),('date_planned_finished','<=',self.final_date)]
             production_ids = self.env['mrp.production'].search([])#(domain)
             zpp_lines_ids = []
@@ -30,7 +30,7 @@ class ZppReport(models.Model):
                         'product_qty': production_id.product_qty,
                         'bom_id': production_id.bom_id.id,
                         'product_uom_id': production_id.product_uom_id.id,
-                        #'company_id': self.company_id.id,
+                        'company_id': self.company_id.id,
                         #'state': workorder.state,
                         #'cif_standard': cif_standard,
                         #'maq_standard': maq_standard,
@@ -53,7 +53,7 @@ class ZppReport(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'PYG Report Lines',
             'view_mode': 'tree',
-            'res_model': 'zpp.report.line',
+            'res_model': 'report.zpp.line',
             'domain': [('id','in',zpp_lines_ids)],
             #'view_id': self.env.ref('zpp_report.zpp_report_view_tree').id,
             'target': 'current'
@@ -63,7 +63,7 @@ class ZppReport(models.Model):
     
     
 class ZppReportLine(models.Model):
-    _name = 'zpp.report.line'
+    _name = 'report.zpp.line'
     _description = 'This is the lines in the zpp report'
     _inherit = ['mrp.production']
     

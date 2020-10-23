@@ -2,7 +2,7 @@
     <data>
         <record id="pyg_report_view_tree" model="ir.ui.view">
             <field name="name">pyg.report.product.line.view.tree</field>
-            <field name="model">zpp.report</field>
+            <field name="model">report.zpp</field>
             <field name="arch" type="xml">
                 <tree string="ZPP">
                     <field name="report_name"/>
@@ -13,7 +13,7 @@
         </record>
         <record id="pyg_report_view_form" model="ir.ui.view">
             <field name="name">pyg.report.product.line.view.form</field>
-            <field name="model">zpp.report</field>
+            <field name="model">report.zpp</field>
             <field name="arch" type="xml">
                 <form string="ZPP">
                     <sheet>
@@ -44,13 +44,13 @@
         <record model="ir.actions.act_window" id="pyg_report_action">
             <field name="name">PYG Report</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">zpp.report</field>
+            <field name="res_model">report.zpp</field>
             <field name="view_mode">tree,form</field>
             <!--<field name="view_id" ref="pyg_report_view_tree"/>-->
         </record>
         <record id="zpp_report_view_tree" model="ir.ui.view">
             <field name="name">zpp.report.product.line.view.tree</field>
-            <field name="model">zpp.report.line</field>
+            <field name="model">report.zpp.line</field>
             <field name="arch" type="xml">
                 <tree string="ZPP lines">
                     <field name="id" invisible="1"/>
