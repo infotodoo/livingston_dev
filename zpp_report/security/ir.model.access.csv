@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_report_zpp,access_report_zpp,report_zpp.model_zpp_report,account.group_account_user,1,1,1,1
-access_report_zpp_line,access_report_zpp_line,report_zpp_line.model_zpp_report,account.group_account_user,1,1,1,1
+access_report_zpp,access_report_zpp,zpp_report.model_report_zpp,account.group_account_user,1,1,1,1
+access_report_zpp_line,access_report_zpp_line,zpp_report.model_report_zpp_line,account.group_account_user,1,1,1,1
