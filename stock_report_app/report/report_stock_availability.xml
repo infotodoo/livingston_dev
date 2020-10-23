@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="stock_report_search_view" model="ir.ui.view">
+        <field name="name">report.stock.availability.view.search</field>
+        <field name="model">report.stock.availability</field>
+        <field name="arch" type="xml">
+            <search>
+                <!--<filter string="Done Transfers" name="done" domain="[('state', '=', 'done')]"/>
+                <filter string="Done Deliveries" name="done_deliveries" domain="[('state', '=', 'done'), ('picking_type_code', '=', 'outgoing')]"/>
+                <filter string="Done Receipts" name="done_receipts" domain="[('state', '=', 'done'), ('picking_type_code', '=', 'incoming')]"/>-->
+            </search>
+        </field>
+    </record>
+
+    <record id="stock_report_availability_tree_view" model="ir.ui.view">
+            <field name="name">report.stock.availability.view.tree</field>
+            <field name="model">report.stock.availability</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="product_id"/>
+                    <field name="product_image" widget="image"/>
+                    <field name="product_sale_price"/>
+                    <field name="warehouse_id"/>
+                    <field name="product_qty" sum="Disponible"/>
+                    <field name="produce_delay"/>
+                    <field name="produce_delay"/>
+                    
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+    <record id="stock_report_availability_view_graph" model="ir.ui.view">
+        <field name="name">report.stock.availability.view.graph</field>
+        <field name="model">report.stock.availability</field>
+        <field name="arch" type="xml">
+            <graph string="report_stock_availability_graph" type="line">
+                    <!--<field name="date" interval="day"/>-->
+                    <field name="product_id" type="row"/>
+                    <field name="warehouse_id" type="row"/>
+                    <field name="product_qty" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="stock_report_availability_view_search" model="ir.ui.view">
+        <field name="name">report.stock.availability.search</field>
+        <field name="model">report.stock.availability</field>
+        <field name="arch" type="xml">
+            <search string="Cuadro de Stock">
+                <field name="product_id"/>
+                <!--<field name="state"/>-->
+                <!--<field name="product_tmpl_id"/>-->
+                <field name="warehouse_id"/>
+                <field name="category_id"/>
+                <!--<field name="company_id"/>-->
+                <group expand="0" string="Disponibilidad">
+                    <filter string="Solo con Disponibilidad" name="filter_with_availability" domain="[('product_qty', '>', 0)]"/>
+                    <filter string="Sin Disponibilidad" name="filter_with_not_availability" domain="[('product_qty', '=', 0)]"/>
+                </group>
+                <group expand="1" string="Agrupar por">
+                    <filter string="Producto" name="groupby_product_id" domain="[('product_qty', '>', 0)]" context="{'group_by':'product_id'}"/>
+                    <filter string="Almacen" name="groupby_warehouse_id" domain="[('product_qty', '>', 0)]" context="{'group_by':'warehouse_id'}"/>
+                    <filter string="Categoría" name="groupby_category_id" domain="[]" context="{'group_by':'category_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="report_stock_availability_action_product" model="ir.actions.act_window">
+        <field name="name">Cuadro de Stock</field>
+        <field name="res_model">report.stock.availability</field>
+        <field name="view_mode">graph</field>
+        <field name="context">{
+            'search_default_filter_with_availability': 1,
+            'graph_groupbys': ['product_id','warehouse_id'],
+        }</field>
+    </record>
+
+    <record id="report_stock_availability_action" model="ir.actions.act_window">
+        <field name="name">Cuadro de Stock</field>
+        <field name="res_model">report.stock.availability</field>
+        <field name="view_mode">tree,graph</field>
+        <field name="context">{
+            'search_default_filter_with_availability': 1,
+            'graph_groupbys': ['product_id','warehouse_id','category_id'],
+            'search_default_groupby_product_id': 1,
+            'search_default_groupby_warehouse_id': 1
+        }</field>
+    </record>
+
+
+
+    <!--<record id="stock_report_availability_view_grid" model="ir.ui.view">
+        <field name="name">stock_report_availability_view_grid</field>
+        <field name="model">report.stock.availability</field>
+        <field name="arch" type="xml">
+            <grid js_class="stock_enterprise_report_grid"
+                string="Quantity"
+                adjustment="object"
+                adjust_name="adjust_grid"
+                class="o_report_stock_quantity">
+                <field name="product_id" type="row"/>
+                <field name="state" type="row"/>
+                <field name="date" type="col">
+                    <range name="week" string="Week" span="week" step="day"/>
+                    <range name="month" string="Month" span="month" step="day"/>
+                </field>
+                <field name="product_qty" type="measure"/>
+            </grid>
+        </field>
+    </record>
+
+
+
+    <record id="report_stock_availability_action_product" model="ir.actions.act_window">
+        <field name="res_model">report.stock.availability</field>
+        <field name="view_mode">graph,grid</field>
+        <field name="context">{
+            'search_default_filter_forecast': 1,
+            'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'),
+            'graph_groupbys': ['product_id'],
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Forecasted Stock
+            </p><p>
+                This analysis gives you an overview of the forecasted stock level of your products.
+                <br/>
+                Plan transfers in order to see their impacts on the forecasted stock level.
+            </p>
+        </field>
+    </record>
+
+    <record id="report_stock_availability_action" model="ir.actions.act_window">
+        <field name="res_model">report.stock.availability</field>
+        <field name="view_mode">grid,graph</field>
+        <field name="context">{
+            'search_default_filter_forecast': 1,
+            'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'),
+            'graph_groupbys': [ 'product_id'],
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Forecasted Stock
+            </p><p>
+                This analysis gives you an overview of the forecasted stock level of your products.
+                <br/>
+                Plan transfers in order to see their impacts on the forecasted stock level.
+            </p>
+        </field>
+    </record>-->
+
+    
+</odoo>
