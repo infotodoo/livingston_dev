@@ -2,7 +2,7 @@
 {
     "name": "Cuadro de Stock",
     "version": "13.0.1.0.0",
-    'depends': ['stock', 'web_dashboard', 'web_cohort', 'web_map', 'web_grid', 'sale_stock_app','product'],
+    'depends': ['stock', 'web_dashboard', 'web_cohort', 'web_map', 'web_grid', 'sale_stock_ap','product'],
     "category": "Warehouse Management",
     "installable": True,
     "license": "AGPL-3",
