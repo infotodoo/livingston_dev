@@ -1,16 +1,20 @@
 <odoo>
     <data>
-        <record id="view_maintenance_request_form_inherit" model="ir.ui.view">
+         <record id="view_maintenance_request_form_inherit" model="ir.ui.view">
             <field name="name">maintenance.request.form.thomas</field>
             <field name="model">maintenance.request</field>
             <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='archive_equipment_request']" position="after">
-                    <button name="action_create_wizard" type="object" string="Notify" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
+                    <field name="production_stage" widget="statusbar" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
+                    <button name="open_state" type="object" string="Open" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
+                    <button name="progress_state" type="object" string="In Progress" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
+                    <button name="pendig_state" type="object" string="Pending" groups="maintenance_thomas.group_maintenance_thomas_production_user"/>
+                    <button name="close_state" type="object" string="Close" groups="maintenance_thomas.module_category_maintenance_thomas_production"/>
                 </xpath>
-                <!--<xpath expr="//field[@name='stage_id']" position="attributes">
+                <xpath expr="//field[@name='stage_id']" position="attributes">
                     <attribute name="attrs">{'invisible':[('company_id','=',19)]}</attribute>
-                </xpath>-->
+                </xpath>
                 <xpath expr="//field[@name='maintenance_type']" position="replace">
                     <field name="maintenance_type" widget="radio" />
                 </xpath>
@@ -50,6 +54,10 @@
             <field name="name">User</field>
             <field name="category_id" ref="module_category_maintenance_thomas_production"/>
         </record>
+        <record id="group_maintenance_thomas_production_admin" model="res.groups">
+            <field name="name">Admin</field>
+            <field name="category_id" ref="module_category_maintenance_thomas_production"/>
+        </record>
         <record id="view_maintenance_stage_tree_inherit" model="ir.ui.view">
             <field name="name">maintenance.stage.tree.thomas</field>
             <field name="model">maintenance.stage</field>
@@ -60,15 +68,5 @@
                 </xpath>
             </field>
         </record>
-        <!--<record id="view_maintenance_request_kanban_inherit" model="ir.ui.view">
-            <field name="name">maintenance.request.kanban.thomas</field>
-            <field name="model">maintenance.request</field>
-            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_kanban"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='stage_id']" position="attributes">
-                    <attribute name="attrs">{'domain':[('company_id','=',company_id)]}</attribute>
-                </xpath>
-            </field>
-        </record>-->
     </data>
 </odoo>

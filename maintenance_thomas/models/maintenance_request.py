@@ -14,7 +14,24 @@ class MaintenanceRequest(models.Model):
     bool_quantity = fields.Boolean(compute='_compute_bool_quantity')
     maintenance_type = fields.Selection([('corrective','Corrective'),('preventive','Preventive'),('autonomous','Autonomous'),('pdae','PDAE')])
     employee_ids = fields.One2many('hr.employee','maintenance_id','Technicians')
-    production_stage = fields.Selection([('open','Open'),('progress','In progress'),('close','Close'),('close','Close'),('pending','Pending by spare parts or field service')])
+    production_stage = fields.Selection([('open','Open'),('progress','In progress'),('pending','Pending by spare parts or field service'),('close','Close')],default='open')
+    
+    def open_state(self):
+        self.production_stage = 'open'
+        self.stage_id.name = 'Open'
+    
+    def progress_state(self):
+        self.production_stage = 'progress'
+        self.stage_id.name = 'In progress'
+        return self.action_create_wizard()
+    
+    def pendig_state(self):
+        self.production_stage = 'pending'
+        self.stage_id.name = 'Pending'
+        
+    def close_state(self):
+        self.production_stage = 'close'
+        self.stage_id.name = 'Close'
 
     @api.depends('maintenance_team_id')
     def _compute_bool_quantity(self):
@@ -50,10 +67,10 @@ class MaintenanceRequest(models.Model):
             'res_id': wiz_id.id,
         }
 
-    def active_wizard(self):
+    """"def active_wizard(self):
         if self.stage_id.name == 'En progreso' or 'In Progress':
             self.action_create_wizard()
-        return super(MaintenanceRequest,self).active_wizard()
+        return super(MaintenanceRequest,self).active_wizard()"""
     
     
 class MaintenanceStage (models.Model):

@@ -29,6 +29,29 @@
             <field name="sequence">10</field>
             <field name="done" eval="True" />
         </record>
-
+        <record id="stage_11" model="maintenance.stage">
+            <field name="name">Open</field>
+            <field name="sequence">11</field>
+            <field name="company_id">19</field>
+            <field name="done" eval="True" />
+        </record>
+        <record id="stage_12" model="maintenance.stage">
+            <field name="name">In progress</field>
+            <field name="sequence">12</field>
+            <field name="company_id">19</field>
+            <field name="done" eval="True" />
+        </record>
+        <record id="stage_13" model="maintenance.stage">
+            <field name="name">Pending by spare parts or field service</field>
+            <field name="sequence">13</field>
+            <field name="company_id">19</field>
+            <field name="done" eval="True" />
+        </record>
+        <record id="stage_14" model="maintenance.stage">
+            <field name="name">Close</field>
+            <field name="sequence">14</field>
+            <field name="company_id">19</field>
+            <field name="done" eval="True" />
+        </record>
     </data>
 </odoo>
