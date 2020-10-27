@@ -5,8 +5,7 @@ class MaterialPurchaseRequisition(models.Model):
 
     responsable_area = fields.Char('Responsable Area',compute='_compute_responsable_area')
     charge_to = fields.Selection([('order','Production Order'),('center','Cost Center')],'Charge To')
-    production_id = fields.Many2one('mrp.production','Production Order',domain="[('state', '=','draft')]")
-                                    #['planned','progress'])]")
+    production_id = fields.Many2one('mrp.production','Production Order',domain="[('state', 'in',['planned','progress'])]")
     cost_center_id = fields.Many2one('mrp.workcenter','Cost Center')
     delivery_by = fields.Char('Delivery By',compute="_compute_delivery_by")
     recieved_by = fields.Char('recieved By',compute="_compute_recieve_by")
@@ -17,10 +16,18 @@ class MaterialPurchaseRequisition(models.Model):
             list = []
             for lines in self.requisition_line_ids:
                 dic={
+                    'name':self.production_id.name,
                     'product_id':lines.product_id.id,
+                    'product_uom':lines.product_id.uom_id.id,
+                    'location_id':self.production_id.location_src_id.id,
+                    'location_dest_id':self.production_id.location_dest_id.id,
+                    'move_line_ids': [(0,0,{'qty_done': 1.000,
+                                             'product_uom_id':lines.product_id.uom_id.id,
+                                             'location_id':self.production_id.location_src_id.id,
+                                             'location_dest_id':self.production_id.location_dest_id.id,})]
                 }
                 list.append((0,0,dic))
-                production_line_ids = self.env['mrp.production'].search([('id','=',production_id.id)])
+                production_line_ids = self.env['mrp.production'].search([('id','=',self.production_id.id)])
                 production_line_ids.write({'move_raw_ids':list})
         else:
             message = _("Error: Must be select requisition products and production order")
