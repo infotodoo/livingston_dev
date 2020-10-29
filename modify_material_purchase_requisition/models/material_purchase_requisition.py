@@ -1,4 +1,6 @@
+import logging
 from odoo import models, api, fields, _
+_logger = logging.getLogger(__name__)
 
 class MaterialPurchaseRequisition(models.Model):
     _inherit = 'material.purchase.requisition'
@@ -11,31 +13,44 @@ class MaterialPurchaseRequisition(models.Model):
     recieved_by = fields.Char('recieved By',compute="_compute_recieve_by")
     security_aux = fields.Char('Security Auxiliar',compute="_compute_security_aux")
     
+    #@api.onchange('requisition_line_ids')
+    
     def cargar(self):
-        if len(self.requisition_line_ids) > 1 and self.production_id:
-            list = []
-            for lines in self.requisition_line_ids:
-                dic={
-                    'name':self.production_id.name,
-                    'product_id':lines.product_id.id,
-                    'product_uom':lines.product_id.uom_id.id,
-                    'location_id':self.production_id.location_src_id.id,
-                    'location_dest_id':self.production_id.location_dest_id.id,
-                    'move_line_ids': [(0,0,{'qty_done': 1.000,
-                                             'product_uom_id':lines.product_id.uom_id.id,
-                                             'location_id':self.production_id.location_src_id.id,
-                                             'location_dest_id':self.production_id.location_dest_id.id,})]
-                }
-                list.append((0,0,dic))
-                production_line_ids = self.env['mrp.production'].search([('id','=',self.production_id.id)])
-                production_line_ids.write({'move_raw_ids':list})
-        else:
-            message = _("Error: Must be select requisition products and production order")
-            mess= {
-                'title': _('Error!'),
-                'message' : message
-                 }
-            return {'warning': mess}
+        if self.charge_to == 'order':
+            if len(self.requisition_line_ids) > 0 and self.production_id:
+                list = []
+                for lines in self.requisition_line_ids:
+                    _logger.error(lines.product_id.uom_id.category_id)
+                    _logger.error(lines.product_id)
+                    dic={
+                        'name':self.production_id.name,
+                        'product_id':lines.product_id.id,
+                        'product_uom':lines.product_id.uom_id.id,
+                        'location_id':self.production_id.location_src_id.id,
+                        'location_dest_id':self.production_id.location_dest_id.id,
+                        'product_uom_qty': 1,
+                        #'product_qty': 1,
+                        'quantity_done': 1,
+                         #'reserved_availability': 1,
+                        #'move_line_ids': [(0,0,{'qty_done': 12,
+                         #                        'product_uom_id':lines.product_id.uom_id.id,
+                          #                       'location_id':self.production_id.location_src_id.id,
+                           #                      'location_dest_id':self.production_id.location_dest_id.id,
+                            #                     'product_id':lines.product_id.id,})]
+                                                 #'product_uom_qty': 1,})]
+                    }
+                    list.append((0,0,dic))
+                    production_line_id = self.env['mrp.production'].browse(self.production_id.id)
+                    #production_line_ids.action_toggle_is_locked()
+                    production_line_id.write({'move_raw_ids':list})
+                    _logger.error("el proceso te termino con exito")
+            else:
+                message = _("Error: Must be select requisition products and production order")
+                mess= {
+                    'title': _('Error!'),
+                    'message' : message
+                     }
+                return {'warning': mess}
             
     
     def _compute_security_aux(self):
