@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "inventory_zero_cost",
+    'name': "Inventory Zero Cost",
 
     'summary': """
         this is the module to configure Stock Module""",
@@ -26,6 +26,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/stock_location_view.xml',
+        'views/stock_picking_view.xml',
         #'views/templates.xml',
     ],
     # only loaded in demonstration mode

@@ -5,9 +5,12 @@
             <field name="model">stock.location</field>
             <field name="inherit_id" ref="stock.view_location_form"/>
             <field name="arch" type="xml">
-              <xpath expr="//group[3]" position="after">
-                <group name="cost_zero">
-                  <field name="cost_zero" widget="checkbox"/>
+              <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
+                <group>
+                    <group/>
+                    <group name="cost_zero">
+                      <field name="cost_zero" widget="checkbox"/>
+                    </group>
                 </group>
               </xpath>
             </field>
