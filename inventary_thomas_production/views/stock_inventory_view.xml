@@ -13,12 +13,12 @@
     <record id="view_stock_inventory_form_inherit" model="ir.ui.view">
             <field name="name">stock.inventory.form.thomas</field>
             <field name="model">stock.inventory</field>
-            <field name="inherit_id" ref="stock.view_inventory_form"/>
+            <field name="inherit_id" ref="stock_account.view_inventory_form_inherit"/>
             <field name="arch" type="xml">
               <xpath expr="//field[@name='accounting_date']" position="before">
-                <field name="assigned_to"  options="{'no_create': True, 'no_create_edit':True}" groups="inventary_thomas_production.group_stock_thomas_production_user"/>
-                <field name="start_date" groups="inventary_thomas_production.group_stock_thomas_production_user"/>
-                <field name="end_date" groups="inventary_thomas_production.group_stock_thomas_production_user"/>
+                    <field name="assigned_to"  options="{'no_create': True, 'no_create_edit':True}" groups="inventary_thomas_production.group_stock_thomas_production_user"/>
+                    <field name="start_date" groups="inventary_thomas_production.group_stock_thomas_production_user"/>
+                    <field name="end_date" groups="inventary_thomas_production.group_stock_thomas_production_user"/>
               </xpath>
             </field>
     </record>

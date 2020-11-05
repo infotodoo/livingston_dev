@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "inventory_thomas_production",
+    'name': "Inventory Thomas Production",
 
     'summary': """
         this is the module to configure Stock Module""",
@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['stock'],
+    'depends': ['stock_account'],
 
     # always loaded
     'data': [
