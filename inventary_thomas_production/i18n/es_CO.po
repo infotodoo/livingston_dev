@@ -6,14 +6,29 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-23 19:36+0000\n"
-"PO-Revision-Date: 2020-09-23 19:36+0000\n"
+"POT-Creation-Date: 2020-11-05 03:55+0000\n"
+"PO-Revision-Date: 2020-11-05 03:55+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: inventary_thomas_production
+#: model:ir.model.fields,field_description:inventary_thomas_production.field_stock_inventory__assigned_to
+msgid "Assigned to"
+msgstr "Assignado a"
+
+#. module: inventary_thomas_production
+#: model:ir.model.fields,field_description:inventary_thomas_production.field_stock_inventory__end_date
+msgid "Date snd programming"
+msgstr "Fecha fin de la programacion"
+
+#. module: inventary_thomas_production
+#: model:ir.model.fields,field_description:inventary_thomas_production.field_stock_inventory__start_date
+msgid "Date start programming"
+msgstr "Fecha de inicio de programacion"
 
 #. module: inventary_thomas_production
 #: model:ir.model.fields,field_description:inventary_thomas_production.field_stock_inventory__diff_motive
@@ -31,9 +46,19 @@ msgid "Inventory"
 msgstr "Inventario"
 
 #. module: inventary_thomas_production
-#: model_terms:ir.ui.view,arch_db:inventary_thomas_production.view_stock_inventory_form_inherit
+#: model_terms:ir.ui.view,arch_db:inventary_thomas_production.view_stock_inventory_tree_inherit
 msgid "Lot/Serial Number Inventory"
 msgstr ""
+
+#. module: inventary_thomas_production
+#: model:ir.model.fields,field_description:inventary_thomas_production.field_stock_quant__production_id
+msgid "Production Order"
+msgstr ""
+
+#. module: inventary_thomas_production
+#: model:ir.model,name:inventary_thomas_production.model_stock_quant
+msgid "Quants"
+msgstr "Cants"
 
 #. module: inventary_thomas_production
 #: model:ir.module.category,name:inventary_thomas_production.module_category_stock_thomas_production
