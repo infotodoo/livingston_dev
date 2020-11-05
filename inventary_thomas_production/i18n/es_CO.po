@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 03:55+0000\n"
-"PO-Revision-Date: 2020-11-05 03:55+0000\n"
+"POT-Creation-Date: 2020-11-05 04:09+0000\n"
+"PO-Revision-Date: 2020-11-05 04:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,9 +31,9 @@ msgid "Date start programming"
 msgstr "Fecha de inicio de programacion"
 
 #. module: inventary_thomas_production
-#: model:ir.model.fields,field_description:inventary_thomas_production.field_stock_inventory__diff_motive
+#: model:ir.model.fields,field_description:inventary_thomas_production.field_stock_inventory_line__diff_motive
 msgid "Difference Reason"
-msgstr "Motivo de Diferencia"
+msgstr "Motivo de diferencia"
 
 #. module: inventary_thomas_production
 #: model:ir.module.category,description:inventary_thomas_production.module_category_stock_thomas_production
@@ -46,9 +46,9 @@ msgid "Inventory"
 msgstr "Inventario"
 
 #. module: inventary_thomas_production
-#: model_terms:ir.ui.view,arch_db:inventary_thomas_production.view_stock_inventory_tree_inherit
-msgid "Lot/Serial Number Inventory"
-msgstr ""
+#: model:ir.model,name:inventary_thomas_production.model_stock_inventory_line
+msgid "Inventory Line"
+msgstr "Línea del Inventario"
 
 #. module: inventary_thomas_production
 #: model:ir.model.fields,field_description:inventary_thomas_production.field_stock_quant__production_id
