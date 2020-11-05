@@ -1,7 +1,7 @@
 <odoo>
   <data>
-    <record id="view_stock_inventory_form_inherit" model="ir.ui.view">
-            <field name="name">stock.inventory.form.thomas</field>
+    <record id="view_stock_inventory_tree_inherit" model="ir.ui.view">
+            <field name="name">stock.inventory.tree.thomas</field>
             <field name="model">stock.inventory</field>
             <field name="inherit_id" ref="stock.view_inventory_tree"/>
             <field name="arch" type="xml">
@@ -11,13 +11,25 @@
                   <field name="date" readonly="1"/>
                   <field name="location_ids" widget="many2many_tags" optional="hide" groups="stock.group_stock_multi_locations"/>
                   <field name="product_ids" widget="many2many_tags" optional="hide" readonly="1"/>
-                  <field name="diff_motive" optional="show" groups="	inventary_thomas_production.group_stock_thomas_production_user"/>
+                  <field name="diff_motive" optional="show" groups="inventary_thomas_production.group_stock_thomas_production_user"/>
                   <field name="state"/>
                   <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
                 </tree>
               </xpath>
               <!--<xpath expr="//field[@name='product_ids']" position="after">
               </xpath>-->
+            </field>
+    </record>
+    <record id="view_stock_inventory_form_inherit" model="ir.ui.view">
+            <field name="name">stock.inventory.form.thomas</field>
+            <field name="model">stock.inventory</field>
+            <field name="inherit_id" ref="stock.view_inventory_form"/>
+            <field name="arch" type="xml">
+              <xpath expr="//field[@name='accounting_date']" position="before">
+                <field name="assigned_to"  options="{'no_create': True, 'no_create_edit':True}" groups="inventary_thomas_production.group_stock_thomas_production_user"/>
+                <field name="start_date" groups="inventary_thomas_production.group_stock_thomas_production_user"/>
+                <field name="end_date" groups="inventary_thomas_production.group_stock_thomas_production_user"/>
+              </xpath>
             </field>
     </record>
     <record model="ir.module.category" id="module_category_stock_thomas_production">
