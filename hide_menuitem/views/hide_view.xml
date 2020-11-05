@@ -8,6 +8,6 @@
             <field name="name">User</field>
             <field name="category_id" ref="module_category_hide"/>
       </record>
-      <menuitem id="sale.menu_sale_order_upselling" groups="inventary_zero_cost.group_hide_user"/>
+      <menuitem id="sale.menu_sale_order_upselling" groups="hide_menuitem.group_hide_user"/>
   </data>
 </odoo>
