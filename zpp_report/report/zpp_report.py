@@ -23,10 +23,7 @@ class ZppReportLine(models.Model):
         query = """
         CREATE or REPLACE VIEW report_zpp AS(
         
-        select row_number() OVER (ORDER BY wp.id) as id,mp.name from mrp_production as mp
-        inner join wizard_zpp as wp on  
-        mp.date_planned_start <= wp.start_date and mp.date_planned_finished >= wp.final_date
-        
+        select row_number() OVER (ORDER BY id) as id,mp.name,mp.product_id from mrp_production as mp
         );
         """
         self.env.cr.execute(query)

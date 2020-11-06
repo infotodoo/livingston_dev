@@ -1,9 +1,9 @@
 {
     'name': "Zpp Report",
 
-    'summary': "- Variation Cost",
+    'summary': "Report ZPP",
 
-    'description': "- Variation Cost",
+    'description': "Report ZPP",
 
     'author': "Todoo SAS",
     'contributors': "Livingston Arias Narváez la@todoo.co",

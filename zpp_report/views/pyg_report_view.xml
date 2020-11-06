@@ -1,53 +1,17 @@
 <odoo>
     <data>
-        <record id="pyg_report_view_form" model="ir.ui.view">
-            <field name="name">pyg.report.product.line.view.form</field>
-            <field name="model">wizard.zpp</field>
-            <field name="arch" type="xml">
-                <form string="ZPP">
-                        <group name='head'>
-                            <div class="oe_title">
-                                <label for="name" class="oe_edit_only" string="Report Name"/>
-                                <h1>
-                                    <field name="report_name" required="True"/>
-                                </h1>
-                            </div>
-                        </group>
-                        <group name='date'>
-                            <label for="start_time" string="Rango de Fechas"/>
-                            <div class="o_row">
-                                <field name="start_date"/>
-                                <strong> a </strong>
-                                <field name="final_date"/>
-                            </div>
-                        </group>
-                        <group>
-                            <button name="%(action_report_zpp)d" type='action' string=" Report"/>
-                        </group>
-                </form>
-            </field>
-        </record>
-        <record model="ir.actions.act_window" id="pyg_report_action">
-            <field name="name">PYG Report</field>
-            <field name="res_model">wizard.zpp</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-            <field name="view_id" ref="zpp_report.zpp_report_view_tree"/>
-        </record>
         <record id="zpp_report_view_tree" model="ir.ui.view">
             <field name="name">zpp.report.product.line.view.tree</field>
              <field name="type">tree</field>
             <field name="model">report.zpp</field>
             <field name="arch" type="xml">
-                <tree string="ZPP lines">
-                    <!--<field name="id"/>
+                <tree string="ZPP lines" create="0" edit="0">
                     <field name="product_id"/>
-                    <field name="description"/>-->
                     <field name="name"/>
                 </tree>
             </field>
         </record>
-        <record model="ir.actions.act_window" id="action_report_zpp">
+        <record model="ir.actions.act_window" id="action_report_zpp_tree">
             <field name="name">PYG Report</field>
             <field name="res_model">report.zpp</field>
             <field name="view_mode">tree</field>
