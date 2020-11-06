@@ -16,3 +16,12 @@ class MrpProduction(models.Model):
         ('block', 'Block')])
         
     bool_state = fields.Boolean()
+    
+    def blocked(self):
+        for record in self:
+            record.state_block = 'block'
+            record.bool_state = True
+            
+    def unblocked(self):
+        for record in self:
+            record.bool_state = False

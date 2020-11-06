@@ -30,16 +30,16 @@
       </record>
       <record id="action_server_blocked" model="ir.actions.server">
           <field name="name">Blocked</field>
-          <field name="model_id" ref="manufacture_masive_block.model_mrp_production"/>
-          <field name="binding_model_id" ref="manufacture_masive_block.model_mrp_production"/>
+          <field name="model_id" ref="model_mrp_production"/>
+          <!--<field name="binding_model_id" ref="manufacture_masive_block.model_mrp_production"/>-->
           <field name="binding_view_types">list</field>
           <field name="state">code</field>
           <field name="code">action = records.blocked()</field>
       </record>
       <record id="action_server_unblocked" model="ir.actions.server">
           <field name="name">Unblocked</field>
-          <field name="model_id" ref="manufacture_masive_block.model_mrp_production"/>
-          <field name="binding_model_id" ref="manufacture_masive_block.model_mrp_production"/>
+          <field name="model_id" ref="model_mrp_production"/>
+          <!--<field name="binding_model_id" ref="manufacture_masive_block.model_mrp_production"/>-->
           <field name="binding_view_types">list</field>
           <field name="state">code</field>
           <field name="code">action = records.unblocked()</field>
