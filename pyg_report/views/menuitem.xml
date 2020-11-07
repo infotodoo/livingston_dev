@@ -1,5 +1,5 @@
 <odoo>
-    <data> <!--noupdate="1"-->
+    <data>
         <menuitem id="pyg_report" name="ZPP report" parent="account.menu_finance_reports" sequence="5" />
         <menuitem id="pyg_report_action" name="PYG Report Product Line" parent="pyg_report" action="zpp_report.action_report_zpp_tree" sequence="5"/>
     </data>

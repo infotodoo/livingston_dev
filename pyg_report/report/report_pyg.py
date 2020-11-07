@@ -23,7 +23,10 @@ class ZppReportLine(models.Model):
         query = """
         CREATE or REPLACE VIEW report_zpp AS(
         
-        select row_number() OVER (ORDER BY id) as id,mp.name,mp.product_id from mrp_production as mp
+        select 
+        row_number() OVER (ORDER BY id) as id,
+        mp.name,mp.product_id,mp.product_qty 
+        from mrp_production as mp
         );
         """
         self.env.cr.execute(query)
