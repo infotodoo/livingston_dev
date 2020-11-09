@@ -27,7 +27,6 @@
         # 'security/ir.model.access.csv',
         'views/mrp_production_view.xml',
         'views/mrp_workorder_view.xml',
-        'views/javascript.xml',
         #'views/templates.xml',
     ],
     # only loaded in demonstration mode
