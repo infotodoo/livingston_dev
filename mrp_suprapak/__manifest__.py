@@ -37,6 +37,7 @@
         #'views/tripulation_form_view.xml',
         'data/accounting_groups.xml',
         'data/accounting_groups.xml',
+        'views/sale_order_view.xml',
         
     ],
 }
