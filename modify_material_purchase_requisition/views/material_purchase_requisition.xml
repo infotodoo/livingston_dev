@@ -13,6 +13,7 @@
                     <xpath expr="//field[@name='requisiton_responsible_id']" position="after">
                         <field name="charge_to"/>
                         <field name="production_id" options="{'no_create': True, 'no_create_edit':True}" />
+                        <button name="cargar" string="Charge" type="object"/>
                         <field name="cost_center_id" options="{'no_create': True, 'no_create_edit':True}" />
                     </xpath>
                     <xpath expr="//field[@name='employee_id']" position="after">
