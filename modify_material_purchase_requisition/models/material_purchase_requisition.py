@@ -12,6 +12,8 @@ class MaterialPurchaseRequisition(models.Model):
     recieved_by = fields.Char('recieved By',compute="_compute_recieve_by")
     security_aux = fields.Char('Security Auxiliar',compute="_compute_security_aux")
     
+    
+    
     def cargar(self):
         if self.charge_to == 'order':
             if len(self.requisition_line_ids) > 0 and self.production_id:
@@ -169,6 +171,22 @@ class MaterialPurchaseRequisitionLine(models.Model):
     inspection_state = fields.Char('Inspection State',compute="_compute_inspection_state")
     analytic_account_id = fields.Many2one('account.analytic.account','Cost Center')
     lot = fields.Char('Lots and Serial Number',compute="_compute_lot")
+    bool_state = fields.Boolean(compute='_compute_bool_state')
+    
+    @api.depends('requisition_id.state')
+    def _compute_bool_state(self):
+        for record in self:
+            if record.requisition_id.state not in ['draft','dept_confirm','ir_approve']:
+                record.bool_state = True
+            else:
+                record.bool_state = False
+            
+    
+    @api.onchange('analytic_account_id')
+    def _onchange_analytic_account_id(self):
+        for record in self:
+            if record.requisition_id.charge_to == 'order' and record.analytic_account_id:
+                raise UserError(_('Do not charge to production order and select cost center'))
     
     @api.depends('product_id')
     def _compute_inspection_state(self):
@@ -202,3 +220,10 @@ class MaterialPurchaseRequisitionLine(models.Model):
             else:
                 record.lot = ''
                 
+    @api.onchange('qty')
+    def _onchange_qty(self):
+        for record in self:
+            if record.qty < 1:
+                raise UserError(_('Do not Use negative values'))
+                
+
