@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="parent_menu_sitrac_interface"
+                  name="Sitrac"
+                  groups="group_sitrac_interface_user"
+                  icon="fa-wrench"
+                  web_icon="sitrac,static/description/thomas.png"
+                  sequence="36"/>
+
+        <menuitem id="menu_sitrac_interface_dashboard"
+                  name="Sitrac"
+                  action="action_sitrac_interface"
+                  parent="parent_menu_sitrac_interface"
+                  sequence="5"/>
+    </data>
+</odoo>
