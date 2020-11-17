@@ -6,6 +6,7 @@
 #from . import country_service
 #from . import purchase_service
 from . import product
+from . import product_product_service
 from . import workorder_service
 from . import production_service
 #from . import workorder_users
