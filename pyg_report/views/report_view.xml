@@ -9,10 +9,16 @@
                     <field name="product_id"/>
                     <field name="description"/>
                     <field name="name"/>
+                    <field name="date_planned_start"/>
+                    <field name="date_planned_finished"/>
+                    <!--<field name="month"/>-->
                     <field name="product_qty"/>
+                    <field name="product_delivery"/>
                     <field name="sale"/>
                     <field name="amount_total"/>
                     <field name="analytic_account_id"/>
+                    <field name="code"/>
+                    <field name="product_requisition"/>
                 </tree>
             </field>
         </record>
