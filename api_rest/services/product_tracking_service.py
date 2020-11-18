@@ -13,41 +13,41 @@ _logger = logging.getLogger(__name__)
 
 class Service(Component):
     _inherit = "base.rest.service"
-    _name = "product.product.service"
-    _usage = "LotesyNumerosdeSerie"
+    _name = "product.tracking.service"
+    _usage = "TrackingProduct"
     _collection = "base.rest.thomasgregandsons.private.services"
     _description = """
-        serial Services
-        Access to the partner services is only allowed to authenticated serials.
+        product Services
+        Access to the partner services is only allowed to authenticated products.
         If you are not authenticated go to <a href='/web/login'>Login</a>
     """
     
     def get(self, _id):
         """
-        Get Lots informations
+        Get Product informations
         """
-        serial = self.env["stock.production.lot"].browse(_id)
-        return self._to_json(serial)
+        product = self.env["product.product"].browse(_id)
+        return self._to_json(product)
 
     def search(self, name):
         """
-        Searh serial by name
+        Searh product by name
         """
         
-        serials = self.env["stock.production.lot"].name_search(name)
-        serials = self.env["stock.production.lot"].browse([i[0] for i in serials])
+        products = self.env["product.product"].name_search(name)
+        products = self.env["product.product"].search([('is_tracking_papper_api','=',True)])#.browse([i[0] for i in products])
         rows = []
-        res = {"count": len(serials), "rows": rows}
-        for serial in serials:
-            rows.append(self._to_json(serial))
+        res = {"count": len(products), "rows": rows}
+        for product in products:
+            rows.append(self._to_json(product))
         return res
 
 
     def _get(self, _id):
-        return self.env["stock.production.lot"].browse(_id)
+        return self.env["product.product"].browse(_id)
 
     def _get_document(self, _id):
-        return self.env["stock.production.lot"].browse(_id)
+        return self.env["product.product"].browse(_id)
 
     # Validator
     def _validator_return_get(self):
@@ -73,9 +73,6 @@ class Service(Component):
         res = {
              
             "name": {"type": "string", "required": True, "empty": False},
-            "product_id": {"type": "integer", "required": True, "empty": False},
-            "product_name": {"type": "string", "required": False, "empty": False},
-
         }
         return res
 
@@ -95,11 +92,9 @@ class Service(Component):
     def _validator_archive(self):
         return {}
 
-    def _to_json(self, serial):
+    def _to_json(self, product):
         res = {
-            "id" : serial.id,
-            "name": serial.name,
-            "product_id": serial.product_id.id,
-            "product_name": serial.product_id.name
+            "id": product.id,
+            "name": product.name
         }
         return res

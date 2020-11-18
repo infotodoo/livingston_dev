@@ -76,7 +76,7 @@ class Service(Component):
             "code": {"type": "string", "required": False, "empty": True},
             "name": {"type": "string", "required": False, "empty": True},
             "product_id": {"type": "integer", "required": False, "empty": True},
-            "qty_done": {"type": "float", "required": False, "empty": True},
+            "lot_id": {"type": "integer", "required": False, "empty": True},
             "product_name": {"type": "string", "required": False, "empty": True},
             "state": {"type": "string", "required": False, "empty": True},
             "company_id": {"type": "integer", "required": False, "empty": True},
@@ -93,7 +93,7 @@ class Service(Component):
         """
         Update production papper consumables informations
         """
-        keys = ['name','product_id','qty_done']
+        keys = ['name','product_id','lot_id']
         for key in keys:
             if key not in params:
                 return {
@@ -105,10 +105,10 @@ class Service(Component):
                 'code': '042',
                 'msg': 'Debe enviar el número de orden de fabricación en campo name!',
             }
-        if not params.get('qty_done'):
+        if not params.get('lot_id'):
             return {
                 'code': '043',
-                'msg': 'Debe enviar la cantidad de papel para orden de fabricación en campo qty_done!',
+                'msg': 'Debe enviar el lote/N.serie de papel para orden de fabricación en campo lot_id!',
             }
         if not params.get('product_id'):
             return {
@@ -126,17 +126,19 @@ class Service(Component):
             for move in production_id.move_raw_ids:
                 _logger.error(move.product_id.is_tracking_papper_api)
                 _logger.error(params.get('product_id'))
-                _logger.error(params.get('qty_done'))
+                _logger.error(params.get('lot_id'))
                 if move.product_id.is_tracking_papper_api and move.product_id.id == params.get('product_id'):
                     _logger.error('Entrando con producto valido')
                     for moveline in move.move_line_ids:
                         _logger.error(moveline)
                         try:
-                            #self.env.cr.execute("""UPDATE stock_move_line set qty_done = 10 where id = 47""")
+                            #self.env.cr.execute("""UPDATE stock_move_line set lot_id = 10 where id = 47""")
                             
                             moveline.sudo().write({
-                                'qty_done': params.get('qty_done'),
+                                'lot_id': params.get('lot_id'),
                             })
+                            _logger.error('+++++++++++++++++++++++++++++++++++++++lot_id')
+                            _logger.error(params.get('lot_id'))
                         except Exception as e:
                             _logger.error(e)
                         _logger.error('Actualizado con exito')
