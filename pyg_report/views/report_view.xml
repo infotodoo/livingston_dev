@@ -19,6 +19,10 @@
                     <field name="analytic_account_id"/>
                     <field name="code"/>
                     <field name="product_requisition"/>
+                    <field name="mod_real"/>
+                    <field name="cif_real"/>
+                    <field name="maq_real"/>
+                    <field name="currency_id"/>
                 </tree>
             </field>
         </record>

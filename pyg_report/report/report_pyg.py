@@ -25,6 +25,10 @@ class ZppReportLine(models.Model):
     product_delivery = fields.Float('Delivered quantity',readonly=True)
     product_requisition = fields.Char('Third Service',readonly=True)
     code = fields.Char('Account Analytic',readonly=True)
+    mod_real = fields.Float('Workforce Cost',readonly=True)
+    cif_real = fields.Float('CIF Cost',readonly=True)
+    maq_real = fields.Float('Machine Cost',readonly=True)
+    currency_id = fields.Many2one('res.currency','Currency',readonly=True)
     
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_zpp')
@@ -34,18 +38,63 @@ class ZppReportLine(models.Model):
         select 
         row_number() OVER (ORDER BY mp.id) as id,
         mp.name,mp.date_planned_start,
-        mp.date_planned_finished,sol.name as description,
+        mp.date_planned_finished,
         mp.product_id,mp.product_qty as product_qty,
-        mp.product_qty as product_delivery
-        ,so.name as sale,so.amount_total,so.analytic_account_id,
-        aaa.code,mprl.product_id as product_requisition
-        from mrp_production mp 
-        inner join sale_order so on (so.manufacture_id = mp.id)
-        inner join sale_order_line sol on(sol.order_id = so.id)
-        inner join account_analytic_account aaa on(aaa.id = so.analytic_account_id)
-        inner join material_purchase_requisition mpr on (mpr.production_id = mp.id)
-        inner join material_purchase_requisition_line mprl on (mprl.requisition_id = mpr.id)
+        mp.product_qty as product_delivery,
+        so.name as sale,so.amount_total,so.analytic_account_id,
+        --so.currency_id,
+        aaa.code,
+        --mprl.product_id as product_requisition,
+        --mvl.mod_real,mvl.cif_real,mvl.maq_real,
+        ( 
+            select sum(mod_real)
+            from mrp_variation_line mvl
+            where mvl.production_id = mp.id
         
+        ) as mod_real,
+        ( 
+            select sum(cif_real)
+            from mrp_variation_line mvl
+            where mvl.production_id = mp.id
+        
+        ) as cif_real,
+        ( 
+            select sum(maq_real)
+            from mrp_variation_line mvl
+            where mvl.production_id = mp.id
+        
+        ) as maq_real,
+        (
+            select sol.name
+            from sale_order_line sol
+            left join sale_order so on so.id = sol.order_id 
+            where so.manufacture_id = mp.id
+            and sol.product_id = mp.product_id
+        ) as description,
+          (
+            select sol.currency_id
+            from sale_order_line sol
+            left join sale_order so on so.id = sol.order_id 
+            where so.manufacture_id = mp.id
+            and sol.product_id = mp.product_id
+        ) as currency_id,
+        (
+            select pt.name
+            from material_purchase_requisition_line mprl
+            left join material_purchase_requisition mpr on mpr.id = mprl.requisition_id
+            left join product_product pp on mprl.product_id = pp.id
+            left join product_template pt on pt.id = pp.product_tmpl_id
+            where mpr.production_id = mp.id
+        ) as product_requisition
+        from mrp_production mp 
+        --left join mrp_variation_line mvl on (mvl.production_id = mp.id)
+        left join sale_order so on (so.manufacture_id = mp.id)
+        --left join sale_order_line sol on(sol.order_id = so.id)
+        left join account_analytic_account aaa on(aaa.id = so.analytic_account_id)
+        left join material_purchase_requisition mpr on (mpr.production_id = mp.id)
+        --left join material_purchase_requisition_line mprl on (mprl.requisition_id = mpr.id)
+        
+        where 1=1
         );
         """
         self.env.cr.execute(query)
