@@ -1,55 +1,57 @@
-# -*- coding: utf-8 -*-
-
+import logging
 from odoo import models, api, fields, _
-from odoo.exceptions import Warning, UserError
+_logger = logging.getLogger(__name__)
 
 class MaterialPurchaseRequisition(models.Model):
     _inherit = 'material.purchase.requisition'
 
     responsable_area = fields.Char('Responsable Area',compute='_compute_responsable_area')
     charge_to = fields.Selection([('order','Production Order'),('center','Cost Center')],'Charge To')
-    production_id = fields.Many2one('mrp.production','Production Order',domain=[('state','not in',('draft','done','cancel'))])
+    production_id = fields.Many2one('mrp.production','Production Order',domain="[('state', 'in',['planned','progress'])]")
     cost_center_id = fields.Many2one('mrp.workcenter','Cost Center')
     delivery_by = fields.Char('Delivery By',compute="_compute_delivery_by")
     recieved_by = fields.Char('recieved By',compute="_compute_recieve_by")
     security_aux = fields.Char('Security Auxiliar',compute="_compute_security_aux")
     
-    
+    #@api.onchange('requisition_line_ids')
     
     def cargar(self):
         if self.charge_to == 'order':
             if len(self.requisition_line_ids) > 0 and self.production_id:
-                if not self.production_id.bool_state:
-                    list = []
-                    for lines in self.requisition_line_ids:
-                        dic={
-                            'name':self.production_id.name,
-                            'product_id':lines.product_id.id,
-                            'product_uom':lines.product_id.uom_id.id,
-                            'location_id':self.production_id.location_src_id.id,
-                            'location_dest_id':self.production_id.location_dest_id.id,
-                            'product_uom_qty': lines.qty,
-                            #'product_qty': 1,
-                            'quantity_done': lines.qty,
-                             #'reserved_availability': 1,
-                            #'move_line_ids': [(0,0,{'qty_done': 12,
-                             #                        'product_uom_id':lines.product_id.uom_id.id,
-                              #                       'location_id':self.production_id.location_src_id.id,
-                               #                      'location_dest_id':self.production_id.location_dest_id.id,
-                                #                     'product_id':lines.product_id.id,})]
-                                                     #'product_uom_qty': 1,})]
-                        }
-                        list.append((0,0,dic))
-                        production_line_id = self.env['mrp.production'].browse(self.production_id.id)
-                        #production_line_ids.action_toggle_is_locked()
-                        production_line_id.write({'move_raw_ids':list})
-                else:
-                    res = {'warning': {
-                        'title': _('Warning'),
-                        'message': _('No puede dargar productos a ordenes en estado bloqueado')}
-                          }
-                    return res
-                    
+                list = []
+                for lines in self.requisition_line_ids:
+                    _logger.error(lines.product_id.uom_id.category_id)
+                    _logger.error(lines.product_id)
+                    dic={
+                        'name':self.production_id.name,
+                        'product_id':lines.product_id.id,
+                        'product_uom':lines.product_id.uom_id.id,
+                        'location_id':self.production_id.location_src_id.id,
+                        'location_dest_id':self.production_id.location_dest_id.id,
+                        'product_uom_qty': 1,
+                        #'product_qty': 1,
+                        'quantity_done': 1,
+                         #'reserved_availability': 1,
+                        #'move_line_ids': [(0,0,{'qty_done': 12,
+                         #                        'product_uom_id':lines.product_id.uom_id.id,
+                          #                       'location_id':self.production_id.location_src_id.id,
+                           #                      'location_dest_id':self.production_id.location_dest_id.id,
+                            #                     'product_id':lines.product_id.id,})]
+                                                 #'product_uom_qty': 1,})]
+                    }
+                    list.append((0,0,dic))
+                    production_line_id = self.env['mrp.production'].browse(self.production_id.id)
+                    #production_line_ids.action_toggle_is_locked()
+                    production_line_id.write({'move_raw_ids':list})
+                    _logger.error("el proceso te termino con exito")
+            else:
+                message = _("Error: Must be select requisition products and production order")
+                mess= {
+                    'title': _('Error!'),
+                    'message' : message
+                     }
+                return {'warning': mess}
+            
     
     def _compute_security_aux(self):
         for record in self:
@@ -79,7 +81,7 @@ class MaterialPurchaseRequisition(models.Model):
     @api.depends('department_id')
     def _compute_responsable_area(self):
         if self.department_id:
-            self.responsable_area =  self.department_id.sudo().manager_id.name if self.department_id.sudo().manager_id else ''
+            self.responsable_area =  self.department_id.manager_id.name
         else:
             self.responsable_area = ''
     
@@ -181,23 +183,6 @@ class MaterialPurchaseRequisitionLine(models.Model):
     inspection_state = fields.Char('Inspection State',compute="_compute_inspection_state")
     analytic_account_id = fields.Many2one('account.analytic.account','Cost Center')
     lot = fields.Char('Lots and Serial Number',compute="_compute_lot")
-    bool_state = fields.Boolean(compute='_compute_bool_state')
-    uom_id = fields.Many2one('uom.uom','Unit of Measure',related='product_id.uom_id')
-    
-    @api.depends('requisition_id.state')
-    def _compute_bool_state(self):
-        for record in self:
-            if record.requisition_id.state != 'draft':
-                record.bool_state = True
-            else:
-                record.bool_state = False
-            
-    
-    @api.onchange('analytic_account_id')
-    def _onchange_analytic_account_id(self):
-        for record in self:
-            if record.requisition_id.charge_to == 'order' and record.analytic_account_id:
-                raise UserError(_('Do not charge to production order and select cost center'))
     
     @api.depends('product_id')
     def _compute_inspection_state(self):
@@ -231,12 +216,3 @@ class MaterialPurchaseRequisitionLine(models.Model):
             else:
                 record.lot = ''
                 
-    @api.onchange('qty')
-    def _onchange_qty(self):
-        for record in self:
-            if record.qty < 1:
-                raise UserError(_('Do not Use negative values'))
-                
-
-
-

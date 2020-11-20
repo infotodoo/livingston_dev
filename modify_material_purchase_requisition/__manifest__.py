@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 {
     'name': 'Modify Purchase Requisition',
     'version': '1.0',
