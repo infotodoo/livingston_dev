@@ -7,6 +7,20 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
     manufacture_id = fields.Many2one('mrp.production',store=True)
+    
+    
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+    
+    standard_price = fields.Float('Cost',compute='_compute_standard_price',store=True)
+    
+    @api.depends('product_id')
+    def _compute_standard_price(self):
+        for record in self:
+            if record.product_id:
+                record.standard_price = record.product_id.standard_price
+            else:
+                record.standard_price = 0
                 
                 
 class MrpProduction(models.Model):

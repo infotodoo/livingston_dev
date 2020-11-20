@@ -17,7 +17,6 @@ class ZppReportLine(models.Model):
     date_planned_finished = fields.Datetime('End Date',readonly=True)
     product_id = fields.Many2one('product.product','Product',readonly=True)
     product_qty = fields.Float('Quantity Planned',readonly=True)
-    bom_id = fields.Many2one('mrp.bom','Bill of Material',readonly=True)
     description = fields.Char('Description',readonly=True)
     sale = fields.Char('No.Order',readonly=True)
     amount_total = fields.Float('Sale Price',readonly=True)
@@ -29,6 +28,8 @@ class ZppReportLine(models.Model):
     cif_real = fields.Float('CIF Cost',readonly=True)
     maq_real = fields.Float('Machine Cost',readonly=True)
     currency_id = fields.Many2one('res.currency','Currency',readonly=True)
+    standard_price = fields.Float('Cost x Unit',readonly=True)
+    value = fields.Float('Material cost')
     
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_zpp')
@@ -71,13 +72,26 @@ class ZppReportLine(models.Model):
             where so.manufacture_id = mp.id
             and sol.product_id = mp.product_id
         ) as description,
-          (
+        (
+            select sol.standard_price
+            from sale_order_line sol
+            left join sale_order so on so.id = sol.order_id 
+            where so.manufacture_id = mp.id
+            and sol.product_id = mp.product_id
+        ) as standard_price,
+        (
             select sol.currency_id
             from sale_order_line sol
             left join sale_order so on so.id = sol.order_id 
             where so.manufacture_id = mp.id
             and sol.product_id = mp.product_id
         ) as currency_id,
+        (
+            select
+            abs(SUM(svl.quantity)) FROM stock_move AS sm full join      
+            stock_valuation_layer AS svl ON svl.stock_move_id = sm.id 
+            where mp.id = sm.raw_material_production_id
+        )  as value,
         (
             select pt.name
             from material_purchase_requisition_line mprl
