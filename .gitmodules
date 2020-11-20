@@ -1,0 +1,4 @@
+[submodule "OCA/queue"]
+	path = OCA/queue
+	url = gh repo clone OCA/queue
+	branch = 13
