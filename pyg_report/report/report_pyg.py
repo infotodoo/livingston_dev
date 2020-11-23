@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 from odoo import fields, models, tools, api,_
 from datetime import datetime
@@ -30,6 +31,9 @@ class ZppReportLine(models.Model):
     currency_id = fields.Many2one('res.currency','Currency',readonly=True)
     standard_price = fields.Float('Cost x Unit',readonly=True)
     value = fields.Float('Material cost')
+    total_cost = fields.Float('Total Cost')
+    liquidation_order = fields.Float('Liquidation Order')
+    entry = fields.Float('Entry')
     
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_zpp')
@@ -85,27 +89,119 @@ class ZppReportLine(models.Model):
             left join sale_order so on so.id = sol.order_id 
             where so.manufacture_id = mp.id
             and sol.product_id = mp.product_id
+            limit 1
         ) as currency_id,
         (
             select
-            abs(SUM(svl.quantity)) FROM stock_move AS sm full join      
+            abs(SUM(svl.value)) FROM stock_move AS sm full join      
             stock_valuation_layer AS svl ON svl.stock_move_id = sm.id 
             where mp.id = sm.raw_material_production_id
         )  as value,
-        (
-            select pt.name
-            from material_purchase_requisition_line mprl
-            left join material_purchase_requisition mpr on mpr.id = mprl.requisition_id
+        ( 
+            select sum(svl.value)
+            from mrp_production mp2
+            left join material_purchase_requisition mpr on mp.id = mpr.production_id
+            left join material_purchase_requisition_line mprl on mprl.requisition_id = mpr.id
             left join product_product pp on mprl.product_id = pp.id
-            left join product_template pt on pt.id = pp.product_tmpl_id
-            where mpr.production_id = mp.id
-        ) as product_requisition
+            left join stock_valuation_layer svl on svl.product_id = pp.id
+            where mp2.id = mp.id
+
+        ) as product_requisition,
+        
+        (
+            select sum(value)
+            from (
+                select
+                abs(SUM(svl.value)) as value
+                FROM stock_move AS sm full join      
+                stock_valuation_layer AS svl ON svl.stock_move_id = sm.id 
+                where mp.id = sm.raw_material_production_id
+
+                UNION ALL
+                
+                select sum(mvl.mod_real) as value
+                from mrp_variation_line mvl
+                where mvl.production_id = mp.id
+                
+                UNION ALL
+                
+                select sum(mvl.cif_real) as value
+                from mrp_variation_line mvl
+                where mvl.production_id = mp.id
+                
+                UNION ALL
+                
+                select sum(mvl.maq_real) as value
+                from mrp_variation_line mvl
+                where mvl.production_id = mp.id
+
+            ) as sum_total
+        ) as total_cost,
+        (
+            select sum(value)
+            from(
+                select sum(mvl.mod_real) as value
+                from mrp_variation_line mvl
+                where mvl.production_id = mp.id
+                
+                UNION ALL
+                
+                select sum(mvl.cif_real) as value
+                from mrp_variation_line mvl
+                where mvl.production_id = mp.id
+                
+                UNION ALL
+                
+                select sum(mvl.maq_real) as value
+                from mrp_variation_line mvl
+                where mvl.production_id = mp.id
+                ) as liquidation_order
+
+        ) as liquidation_order,
+        (
+            
+            select sum(value)
+            from (
+                select sol.price_subtotal * -1 as value
+                from sale_order_line sol
+                left join sale_order so on so.id = sol.order_id 
+                where so.manufacture_id = mp.id
+                and sol.product_id = mp.product_id
+                
+                UNION ALL
+                
+                select
+                abs(SUM(svl.value)) as value
+                FROM stock_move AS sm full join      
+                stock_valuation_layer AS svl ON svl.stock_move_id = sm.id 
+                where mp.id = sm.raw_material_production_id
+
+                UNION ALL
+                
+                select sum(mvl.mod_real) as value
+                from mrp_variation_line mvl
+                where mvl.production_id = mp.id
+                
+                UNION ALL
+                
+                select sum(mvl.cif_real) as value
+                from mrp_variation_line mvl
+                where mvl.production_id = mp.id
+                
+                UNION ALL
+                
+                select sum(mvl.maq_real) as value
+                from mrp_variation_line mvl
+                where mvl.production_id = mp.id
+
+            ) as sum_total
+        )as entry
         from mrp_production mp 
         --left join mrp_variation_line mvl on (mvl.production_id = mp.id)
         left join sale_order so on (so.manufacture_id = mp.id)
         --left join sale_order_line sol on(sol.order_id = so.id)
         left join account_analytic_account aaa on(aaa.id = so.analytic_account_id)
-        left join material_purchase_requisition mpr on (mpr.production_id = mp.id)
+        --left join material_purchase_requisition mpr on (mpr.production_id = mp.id)
         --left join material_purchase_requisition_line mprl on (mprl.requisition_id = mpr.id)
         
         where 1=1

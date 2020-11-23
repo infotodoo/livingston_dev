@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': "Zpp Report",
 
@@ -16,7 +17,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account','mrp_suprapak','sale_management'],
+    'depends': ['account','mrp_suprapak','sale_management','modify_material_purchase_requisition'],
   
     # always loaded
     'data': [
