@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="vnr_report_view_tree" model="ir.ui.view">
+            <field name="name">vnr.report.product.line.view.tree</field>
+             <field name="type">tree</field>
+            <field name="model">report.vnr</field>
+            <field name="arch" type="xml">
+                <tree string="VNR lines" create="0" edit="0">
+                   <field name="name"/>
+                   <field name="default_code"/>
+                   <field name="description"/>
+                   <field name="total_stock"/>
+                   <field name="total"/>
+                   <field name="unit_price"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_report_vnr_tree">
+            <field name="name">VNR Report</field>
+            <field name="res_model">report.vnr</field>
+            <field name="view_mode">tree</field>
+        </record>
+    </data>
+</odoo>
