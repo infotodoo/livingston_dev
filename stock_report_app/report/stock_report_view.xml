@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data>
-    	<menuitem id="menu_availability_inventory" name="Cuadro de Stock" parent="stock.menu_warehouse_report" sequence="101" action="stock_report_app.report_stock_availability_action"/>
-    </data>
-</odoo>
