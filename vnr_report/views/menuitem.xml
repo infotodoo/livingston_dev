@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <menuitem id="vnr_report" name="ZPP report" parent="account.menu_finance_reports" sequence="10" />
-        <menuitem id="vnr_report_action" name="vnr Report Product Line" parent="vnr_report" action="vnr_report.action_report_vnr_tree" sequence="5"/>
+        <menuitem id="vnr_report" name="VNR report" parent="account.menu_finance_reports" sequence="10" />
+        <menuitem id="vnr_report_action" name="VNR Report Product Line" parent="vnr_report" action="vnr_report.action_report_vnr_tree" sequence="5"/>
     </data>
 </odoo>
