@@ -13,34 +13,40 @@
                     <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='button_mark_done']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
+                    <attribute name="attrs">{'invisible':['|',('bool_state','=',True),('state', '!=', 'to_close')]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_confirm']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
+                    <attribute name="attrs">{'invisible':['|',('bool_state','=',True),('state', '!=', 'draft'), ('is_locked', '=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_assign']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
+                    <attribute name="attrs">{'invisible':['|','|','|',('bool_state','=',True),('is_locked', '=', False), ('state', 'in', ('draft', 'done', 'cancel')), ('reservation_state', '=', 'assigned')]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='button_plan']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
+                    <attribute name="attrs">{'invisible':['|','|',('bool_state','=',True),('state', '!=', 'confirmed'), ('routing_id', '=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='button_unplan']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
+                    <attribute name="attrs">{'invisible':['|','|','|',('bool_state','=',True),('state', '!=', 'planned'), ('date_planned_start', '=', False), ('date_planned_finished', '=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='open_produce_product'][hasclass('oe_highlight')]" position="attributes">
+                    <attribute name="attrs">{'invisible':['|','|','|','|',('bool_state','=',True),('state', '=', 'to_close'), ('is_locked', '=', False), ('reservation_state', '!=', 'assigned'), ('routing_id', '!=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='open_produce_product']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
+                    <attribute name="attrs">{'invisible':['|','|','|','|',('bool_state','=',True),('state', '=', 'to_close'), ('is_locked', '=', False), ('reservation_state', 'not in', ('confirmed', 'waiting')), ('routing_id', '!=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='post_inventory']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
+                    <attribute name="attrs">{'invisible':['|',('bool_state','=',True),('post_visible', '=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='button_scrap']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
+                    <attribute name="attrs">{'invisible':['|','|',('bool_state','=',True),('state', 'in', ('cancel', 'draft')), ('is_locked', '=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='button_unreserve']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
+                    <attribute name="attrs">{'invisible':['|',('bool_state','=',True),('unreserve_visible', '=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_toggle_is_locked'][hasclass('oe_highlight')]" position="attributes">
+                    <attribute name="attrs">{'invisible':['|',('bool_state','=',True),('is_locked', '=', True)]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_toggle_is_locked']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
+                    <attribute name="attrs">{'invisible':['|','|','|',('bool_state','=',True),('state', 'in', ('cancel', 'draft')), ('id', '=', False), ('is_locked', '=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="attributes">
                     <attribute name="attrs">{'invisible':[('bool_state','=',True)]}</attribute>
