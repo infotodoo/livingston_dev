@@ -14,6 +14,8 @@
                    <field name="unit_price"/>
                    <!--<field name="price_unit"/>-->
                    <field name="sale_price"/>
+                   <field name="cost_by_sale"/>
+                   <field name="vnr_estimate"/>
                 </tree>
             </field>
         </record>
