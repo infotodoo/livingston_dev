@@ -20,7 +20,8 @@
     'depends': ['mrp_suprapak','account'],
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
+        #'security/ir.model.access.csv',
+        'views/mrp_workcenter_view.xml',
+        'views/mrp_workorder_view.xml',
     ],
 }
-
