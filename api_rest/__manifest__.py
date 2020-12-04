@@ -9,7 +9,9 @@
     "maintainers": ["lmignon"],
     "website": "https://acsone.eu/",
     "depends": ["base_rest", "component", "mrp","mrp_workorder"],
-    "data": [],
+    "data": [
+        'views/mrp_workcenter_productivity_loss_view.xml',
+    ],
     "demo": [],
     "external_dependencies": {"python": ["jsondiff"]},
     "installable": True,

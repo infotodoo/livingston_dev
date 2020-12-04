@@ -82,6 +82,7 @@ class Service(Component):
             "name": {"type": "string", "required": False, "empty": True},
             "product_id": {"type": "integer", "required": False, "empty": True},
             "production_id": {"type": "integer", "required": False, "empty": True},
+            "workcenter_id": {"type": "string", "required": False, "empty": True},
             "company_name": {"type": "string", "required": False, "empty": True},
             "date_planned_start": {"type": "string", "required": False, "empty": True},
             "state": {"type": "string", "required": False, "empty": True},
@@ -135,8 +136,10 @@ class Service(Component):
         time_ids = params.pop('time_ids')
         production_name = params.pop('name')
         workorder_vals = params
-        
         for line in time_ids:
+            lost_name = line.get('loss_id')
+            productivity_loss = self.env['mrp.workcenter.productivity.loss'].search([('code_tracking','=',lost_name)])
+            line['loss_id'] = productivity_loss.id
             time_lines = []
             _logger.error('****************************\jn+++++++++++++++++')
             _logger.error(line)
@@ -181,6 +184,7 @@ class Service(Component):
             "id" : workorder.id,
             "name": workorder.name,
             "production_id": workorder.production_id.id,
+            "workcenter_name": workorder.workcenter_id.name,
             "production_name": workorder.production_id.name,
             "company_name": workorder.company_id.name,
             "date_planned_start": str(workorder.date_planned_start),
