@@ -178,6 +178,49 @@
                             </table>
                         </div>
                     </div>
+                    <!-- Prelimit -->
+                    <t t-if="line['prelimit']">
+                        <h3 class="o_mrp_header o_mrp_table_header"> Prelimit Cost</h3>
+                        <table class="table table-sm o_mrp_report_table">
+                            <thead>
+                                <tr class="o_mrp_report_header">
+                                    <th class="o_mrp_report_line_header"><span>Operation</span></th>
+                                    <th class="o_mrp_report_line_header"><span>Time to Work</span></th>
+                                    <th class="o_mrp_report_line_header"><span>Cost Distribution HH</span></th>
+                                    <th class="o_mrp_report_line_header"><span>Cost Distribution HC</span></th>
+                                    <th class="o_mrp_report_line_header"><span>Cost Distribution HM</span></th>
+                                    <th class="o_mrp_report_line_header"><span>Total</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="line['prelimit']" t-as="pre" class="o_mrp_data">
+                                    <t t-foreach="line['prelimit_cost']" t-as="cost" class="o_mrp_data">
+                                        <t t-if="pre[0] == cost[0]">
+                                            <td>
+                                                <span t-esc="pre[0]"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="pre[1]"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="cost[1]"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="cost[2]"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="cost[3]"/>
+                                            </td>
+                                            <td>
+                                                <t t-set="total" t-value="cost[1]+cost[2]+cost[3]"/>
+                                                <span t-esc="total"/>
+                                            </td>
+                                        </t>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
                 </t>
             </div>
         </t>

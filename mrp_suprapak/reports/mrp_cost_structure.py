@@ -34,6 +34,31 @@ class MrpCostStructureSupra(models.AbstractModel):
                 self.env.cr.execute(query_str, (tuple(Workorders.ids), ))
                 for op_id, op_name, user, duration, cost_hour in self.env.cr.fetchall():
                     operations.append([user, op_id, op_name, duration / 60.0, cost_hour])
+                    
+            prelimit = []
+            prelimit_cost = []
+            Workorders_id = self.env['mrp.workorder'].search([('production_id', 'in', mos.ids)])
+            prelimit_ids = self.env['mrp.prelimit'].search([('production_id','in',mos.ids)])
+            if Workorders_id:
+                query_str = """select wc.name as workcenter, p.hours as hours
+                               from mrp_prelimit p
+                               left join mrp_workcenter wc on (wc.id = p.workcenter_id)
+                               left join mrp_production mp on (mp.id = p.production_id)
+                               left join mrp_workorder mw on (mw.production_id = mp.id)
+                               where mp.id = p.production_id and mw.id in %s
+                               group by wc.name, p.production_id,p.hours
+                            """
+                self.env.cr.execute(query_str, (tuple(Workorders_id.ids), ))
+                for workcenter, hours in self.env.cr.fetchall():
+                    prelimit.append([workcenter, hours])
+                    for pre in prelimit_ids:
+                        if workcenter == pre.workcenter_id.name:
+                            workcenters = pre.workcenter_id.name
+                            mod = pre.cost_mod
+                            cif = pre.cost_cif
+                            maq = pre.cost_maq
+                            prelimit_cost.append([workcenters,mod,cif,maq])    
+                            
 
             #get the cost of raw material effectively used
             raw_material_moves = []
@@ -84,6 +109,8 @@ class MrpCostStructureSupra(models.AbstractModel):
                 'mo_qty': mo_qty,
                 'mo_uom': uom,
                 'operations': operations,
+                'prelimit': prelimit,
+                'prelimit_cost': prelimit_cost,
                 'currency': self.env.company.currency_id,
                 'raw_material_moves': raw_material_moves,
                 'total_cost': total_cost,
