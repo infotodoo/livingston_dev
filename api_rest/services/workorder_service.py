@@ -82,6 +82,7 @@ class Service(Component):
             "name": {"type": "string", "required": False, "empty": True},
             "product_id": {"type": "integer", "required": False, "empty": True},
             "production_id": {"type": "integer", "required": False, "empty": True},
+            "production_name": {"type": "string", "required": False, "empty": True},
             "workcenter_id": {"type": "string", "required": False, "empty": True},
             "company_name": {"type": "string", "required": False, "empty": True},
             "date_planned_start": {"type": "string", "required": False, "empty": True},
@@ -140,7 +141,7 @@ class Service(Component):
             lost_name = line.get('loss_id')
             productivity_loss = self.env['mrp.workcenter.productivity.loss'].search([('code_tracking','=',lost_name)])
             line['loss_id'] = productivity_loss.id
-            time_lines = []
+            time_lines = [(5,0,0)]
             _logger.error('****************************\jn+++++++++++++++++')
             _logger.error(line)
             production_id = self.env['mrp.production'].search([('name','=',production_name)])
