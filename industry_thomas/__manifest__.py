@@ -20,7 +20,9 @@
          'views/res_partner.xml',
          'views/maintenance_equipment.xml', 
          'views/sale_order.xml',
-         'views/sale_order_line.xml',   
+         'views/sale_order_line.xml',
+         'views/res_company.xml',
+         'views/res_user.xml',    
          'reports/worksheet_new.xml',
          
          

@@ -36,14 +36,16 @@ billing_cut = [
 
 class Todoo(models.Model):
     _inherit = 'res.partner'
-    
+
     no_contract = fields.Char(string="No del Contrato", tracking=True)
     start_date_contract = fields.Date(string="Fecha de Inicio del Contrato", tracking=True)
     end_date_contract = fields.Date(string="Fecha Fin del Contrato", tracking=True)
     billing_cut_day = fields.Selection(billing_cut, string="Día de corte Facturación",tracking=True) 
     approver_type  = fields.Selection([('instalacion sin aprobacion', 'INSTALACIÓN SIN APROBACIÓN'),('instalacion con aprobacion', 'INSTALACIÓN CON APROBACIÓN')],string="Tipo de aprobación para instalación de repuestos",tracking=True) 
-    sap = fields.Char(string="Código SAP del Cliente",  tracking=True)
-
+    sap = fields.Char(string="Código SAP del Cliente")
+    
+    
+     
 
      
     

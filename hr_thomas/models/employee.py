@@ -284,6 +284,21 @@ class Todoo(models.Model):
     check = fields.Boolean(string="Retiro")
     check_tag_ids = fields.Boolean(compute='_compute_check_tag_ids', invisible=True)
 
+    departure_reason = fields.Selection(selection_add=[
+        ('mutuo acuerdo', 'Mutuo Acuerdo'),
+        ('expiracion plazo fijo pactado', 'Expiración plazo fijo pactado'),
+        ('terminacion de la obra o labor', 'Terminación de la obra o labor'),
+        ('retiro con justa causa','Retiro con justa causa'),
+        ('retiro sin justa causa','Retiro sin justa causa'),
+        ('invalidez total para trabajar','Invalidez total para trabajar'),
+        ('muerte del trabajador','Muerte del trabajador'),
+        ('liquidacion o clausura empresa','Liquidación o clausura empresa'),
+        ('jubilacion por vejez','Jubilación por vejez'),
+        ('terminacion cont.aprendizaje','Terminación Cont. Aprendizaje'),
+        ('terminacion periodo prueba','Terminación Período Prueba'),
+        ('renuncia','Renuncia'),
+    ], string="Motivo de salida")
+
     @api.onchange('requisition_id')
     def action_req(self):
       for record in self:
@@ -300,24 +315,18 @@ class Todoo(models.Model):
             record.manejo_vacaciones_req = record.requisition_id.manejo_vacaciones
             record.nivel_riesgo = record.requisition_id.nivel_riesgo_arl
 
-    # funcion para colocar nombres en mayusculas
-    @api.onchange('name', 'first_name', 'second_name', 'third_name', 'fourth_name')
-    def _compute_maj_employee(self):
-        self.name = self.name.upper() if self.name else False
-        self.first_name = self.first_name.upper() if self.first_name else False
-        self.second_name = self.second_name.upper() if self.second_name else False
-        self.third_name = self.third_name.upper() if self.third_name else False
-        self.fourth_name = self.fourth_name.upper() if self.fourth_name else False
-
     @api.depends('category_ids')
     def _compute_check_tag_ids(self):
         for record in self:
             record.check_tag_ids = True if record.category_ids and record.category_ids[0].name == 'APRENDIZ' else False    
 
     # concatenar nombre completo del empleado
-
     @api.onchange('tratamiento_emp', 'name', 'first_name', 'second_name', 'third_name', 'fourth_name')
     def _onchange_nombre_completo(self):
+        self.first_name = self.first_name.upper() if self.first_name else False
+        self.second_name = self.second_name.upper() if self.second_name else False
+        self.third_name = self.third_name.upper() if self.third_name else False
+        self.fourth_name = self.fourth_name.upper() if self.fourth_name else False
         self.name = "%s %s %s %s  %s" % (
             self.tratamiento_emp if self.tratamiento_emp else "",
             self.first_name if self.first_name else "",

@@ -4,10 +4,10 @@ from odoo import api, fields, models
 
 
 
-class todoo(models.TransientModel):
+class HrDepartureWizard(models.TransientModel):
     _inherit = "hr.departure.wizard"
-
-    departuree_reason = fields.Selection([
+    
+    departure_reason = fields.Selection(selection_add=[
         ('mutuo acuerdo', 'Mutuo Acuerdo'),
         ('expiracion plazo fijo pactado', 'Expiración plazo fijo pactado'),
         ('terminacion de la obra o labor', 'Terminación de la obra o labor'),
@@ -20,7 +20,14 @@ class todoo(models.TransientModel):
         ('terminacion cont.aprendizaje','Terminación Cont. Aprendizaje'),
         ('terminacion periodo prueba','Terminación Período Prueba'),
         ('renuncia','Renuncia'),
-    ], string="Motivo de salida", tracking=True)
+    ], string="Motivo de salida")
 
     fecha_retiro = fields.Date(string="Fecha de Retiro")
     plan_id = fields.Many2one('hr.plan', default=lambda self: self.env['hr.plan'].search([], limit=1))
+
+    def action_register_departure(self):
+        res = super(HrDepartureWizard,self).action_register_departure()
+        employee = self.employee_id
+        employee.fourth_name = employee.fourth_name + ' ARCHIVADO'
+        employee.name = employee.name + ' ARCHIVADO'
+        return res

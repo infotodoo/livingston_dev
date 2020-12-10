@@ -1668,6 +1668,7 @@ class ResUsersSync(models.Model):
 
     replicated_id = fields.Char(store=True)
 
+    
     @api.model
     def create(self, vals_list):
         model = self.env["ir.config_parameter"]
@@ -1691,6 +1692,7 @@ class ResUsersSync(models.Model):
                 if replicated_id:
                     res.replicated_id = replicated_id
         return res
+    
 
     def unlink(self):
         if self and self.replicated_id:

@@ -22,6 +22,11 @@ _test_logger = logging.getLogger('odoo.tests')
 
 SMTP_TIMEOUT = 60
 
+class MailDeliveryException(except_orm):
+    """Specific exception subclass for mail delivery errors"""
+    def __init__(self, name, value):
+        super(MailDeliveryException, self).__init__(name, value)
+
 class WriteToLogger(object):
     def write(self, s):
         _logger.debug(s)
@@ -122,6 +127,7 @@ class IrMailServer(models.Model):
     _inherit = "ir.mail_server"
 
     user_id = fields. Many2one('res.users','User')
+    is_default_server = fields.Boolean('Is Default Server')
 
     def build_email(self, email_from, email_to, subject, body, email_cc=None, email_bcc=None, reply_to=False,
                 attachments=None, message_id=None, references=None, object_id=False, subtype='plain', headers=None,
@@ -129,7 +135,7 @@ class IrMailServer(models.Model):
         """Constructs an RFC2822 email.message.Message object based on the keyword arguments passed, and returns it.
 
             :param string email_from: sender email address
-            :param list email_to: list of recipient addresses (to be joined with commas) 
+            :param list email_to: list of recipient addresses (to be joined with commas)
             :param string subject: email subject (no pre-encoding/quoting necessary)
             :param string body: email body, of the type ``subtype`` (by default, plaintext).
                                 If html subtype is used, the message will be automatically converted
@@ -233,7 +239,7 @@ class IrMailServer(models.Model):
                 encoders.encode_base64(part)
                 msg.attach(part)
         return msg
-    
+
     @api.model
     def send_email(self, message, mail_server_id=None, smtp_server=None, smtp_port=None,
                    smtp_user=None, smtp_password=None, smtp_encryption=None, smtp_debug=False,
@@ -270,12 +276,19 @@ class IrMailServer(models.Model):
         # Use the default bounce address **only if** no Return-Path was
         # provided by caller.  Caller may be using Variable Envelope Return
         # Path (VERP) to detect no-longer valid email addresses.
+        _logger.error("mail_server_id --------------------")
+        _logger.error(mail_server_id)
+        _logger.error("smtp_session --------------------")
+        _logger.error(smtp_session)
+
         if smtp_user:
             _logger.error("smpt session --------------------")
             _logger.error(smtp_user)
             smtp_from = smtp_user
         else:
             smtp_from = message['Return-Path'] or self._get_default_bounce_address() or message['From']
+            _logger.error("smtp_from --------------------")
+            _logger.error(smtp_from)
             assert smtp_from, "The Return-Path or From header is required for any outbound email"
 
         # The email's "Envelope From" (Return-Path), and all recipient addresses must only contain ASCII characters.
@@ -327,4 +340,3 @@ class IrMailServer(models.Model):
             _logger.info(msg)
             raise MailDeliveryException(_("Mail Delivery Failed"), msg)
         return message_id
-

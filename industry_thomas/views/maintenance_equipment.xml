@@ -6,9 +6,8 @@
         <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
         <field name="arch" type="xml">            
             
-
-            <field name="company_id" position="attributes">
-                <attribute name="invisible">1</attribute>
+            <field name="serial_no" position="attributes" >
+                <attribute name="required">0</attribute>
             </field>
 
             <xpath expr="//div[(@class='oe_button_box')]" position="inside">
@@ -33,12 +32,15 @@
                    <field name="date_start_contract"/>
                    <field name="date_end"/>
                    <field name="maintenance_value"/>
+                   <field name="maintenance_value_corrective"/>
                    <field name="maintenance_cant"/>
                    <field name="maintenance_total"/>
                    <field name="maintenance_frequency"/>
                  </group>
-            </xpath>          
-             
+            </xpath>
+            <xpath expr="//field[(@name='department_id')]" position="after">
+               <field name="rental_contract"/>
+            </xpath>        
         </field>
     </record>
     <record model="ir.ui.view" id="view_maintenance_equipment_tree">
