@@ -38,6 +38,7 @@
         'data/accounting_groups.xml',
         'data/accounting_groups.xml',
         'views/sale_order_view.xml',
+        'views/mrp_prelimit_view.xml',
         
     ],
 }

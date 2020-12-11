@@ -8,3 +8,4 @@ from . import mrp_variation
 from . import mrp_variation_line
 from . import tripulacion
 from . import sale_order
+from . import mrp_prelimit
