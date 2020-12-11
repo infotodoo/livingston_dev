@@ -56,7 +56,7 @@
             <field name="name">Prelimit</field>
             <field name="res_model">mrp.prelimit</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="prelimit.mrp_prelimit_tree"/>
+            <field name="view_id" ref="mrp_prelimit_tree"/>
         </record>
         <record id="action_account_report_analytic_prelimit" model="ir.actions.client">
             <field name="name">Analytic Report</field>
@@ -64,7 +64,7 @@
             <field name="context" eval="{'model': 'account.analytic.report'}" />
         </record>
         <menuitem id="preliminares" name="Preliminares" parent="account.menu_finance_reports" sequence="15"
-                  action="prelimit.mrp_prelimit_tree_action"/>
+                  action="mrp_prelimit_tree_action"/>
         <menuitem id="menu_action_report_account_analytic_prelimit" name="Analytic Prelimit Report" action="action_account_report_analytic_prelimit" parent="account.menu_finance_reports" sequence="20" groups="analytic.group_analytic_accounting"/>
     </data>
 </odoo>
