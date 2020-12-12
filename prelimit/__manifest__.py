@@ -17,7 +17,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp_suprapak','account'],
+    'depends': ['mrp_cost_and_prelimit','account'],
     # always loaded
     'data': [
         'security/ir.model.access.csv',
