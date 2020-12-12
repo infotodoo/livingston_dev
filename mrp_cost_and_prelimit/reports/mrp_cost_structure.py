@@ -5,7 +5,7 @@ from odoo import api, models
 
 
 class MrpCostStructureSupra(models.AbstractModel):
-    _name = 'report.mrp_suprapak.mrp_cost_structure'
+    _name = 'report.mrp_cost_and_prelimit.mrp_cost_structure'
     _description = 'MRP Cost Structure Report'
 
     def get_lines(self, productions):
@@ -132,11 +132,11 @@ class MrpCostStructureSupra(models.AbstractModel):
 
 
 class ProductTemplateCostStructureSupra(models.AbstractModel):
-    _name = 'report.mrp_suprapak.product_template_cost_structure'
+    _name = 'report.mrp_cost_and_prelimit.product_template_cost_structure'
     _description = 'Product Template Cost Structure Report'
 
     @api.model
     def _get_report_values(self, docids, data=None):
         productions = self.env['mrp.production'].search([('product_id', 'in', docids), ('state', '=', 'done')])
-        res = self.env['report.mrp_suprapak.mrp_cost_structure'].get_lines(productions)
+        res = self.env['report.mrp_cost_and_prelimit.mrp_cost_structure'].get_lines(productions)
         return {'lines': res}

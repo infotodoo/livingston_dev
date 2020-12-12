@@ -23,7 +23,7 @@ class MrpVariation(models.Model):
     def block_workorders(self):
         self.ensure_one()
         mrp_wkc_prod_obj = self.env['mrp.workcenter.productivity']
-        loss_id = self.env['ir.model.data'].get_object('mrp_suprapak', 'mrp_workcenter_productivity_loss_variation')
+        loss_id = self.env['ir.model.data'].get_object('mrp_cost_and_prelimit', 'mrp_workcenter_productivity_loss_variation')
         domain = []
         if self.production_ids:
             domain.append(('production_id','in',self.production_ids.ids))
