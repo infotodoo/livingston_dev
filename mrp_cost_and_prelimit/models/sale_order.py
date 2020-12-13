@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from odoo import models,fields,api,_
 import logging
 
@@ -26,11 +27,15 @@ class SaleOrderLine(models.Model):
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
     
+    @api.model
     def create(self,values):
         _logger.error('este logger +++++++++++++++++++++++++++++++++++++++++++++++++')
-        sale_obj = self.env['sale.order'].search([('name','=',values[0]['origin'])])
         res = super(MrpProduction,self).create(values)
-        sale_obj.manufacture_id = res.id
-        _logger.error('este logger imprime los vals de mrp produccion')
-        _logger.error(values)
+        _logger.error(res)
+        if res.origin:
+            _logger.error('values--------------------------------------')
+            sale_obj = self.env['sale.order'].search([('name','=',res.origin)])
+            sale_obj.manufacture_id = res.id
+            _logger.error('este logger imprime los vals de mrp produccion')
+            _logger.error(values)
         return res
