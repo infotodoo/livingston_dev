@@ -6,15 +6,16 @@
             <field name="model">report.distribution.assessment</field>
             <field name="arch" type="xml">
                 <tree string="Distribution Assessment" create="0" edit="0">
+                   <field name="code"/>
                    <field name="name"/>
                    <field name="hours"/>
                    <field name="percentage"/>
-                   <!--<field name="total"/>
-                   <field name="unit_price"/>
-                   <field name="price_unit"/>
-                   <field name="sale_price"/>
-                   <field name="cost_by_sale"/>
-                   <field name="distribution_assessment_estimate"/>-->
+                   <field name="management"/>
+                   <field name="laboratory"/>
+                   <field name="dispatch"/>
+                   <field name="maintenance"/>
+                   <field name="disused_assets"/>
+                   <field name="alternative_center"/>
                 </tree>
             </field>
         </record>

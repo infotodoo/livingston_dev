@@ -17,18 +17,18 @@ class DistributionAssessment(models.Model):
     hours = fields.Float('Hours',readonly=True)
     total_time = fields.Float('Total Times',readonly=True)
     percentage = fields.Float('%',readonly=True)
-    #total = fields.Float('Total Value',readonly=True)
-    #unit_price = fields.Float('Unit Value',readonly=True)
-    #price_unit = fields.Float('Sale Value Unitary',readonly=True)
-    #sale_price = fields.Float('Sale price',readonly=True)
-    #cost_by_sale = fields.Float('Cost by sale Unitary',readonly=True)
-    #vnr_estimate = fields.Float('VNR estimate')
+    management = fields.Float('Operation Management',readonly=True)
+    laboratory = fields.Float('Laboratory',readonly=True)
+    dispatch = fields.Float('Dispatch',readonly=True)
+    maintenance = fields.Float('Maintenance',readonly=True)
+    disused_assets = fields.Float('Disused Assets',readonly=True)
+    alternative_center = fields.Float('Alternative Center',readonly=True)
+    code = fields.Char('Code',readonly=True)
     
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_distribution_assessment')
         query = """
             CREATE or REPLACE VIEW report_distribution_assessment AS(
-            --with total_time as (select sum(mwp.duration) from mrp_workcenter_productivity mwp)
             select 
             row_number() OVER (ORDER BY w.id)as id,
             w.name,sum(mwp.duration) as hours,
@@ -39,12 +39,98 @@ class DistributionAssessment(models.Model):
             (
              sum(mwp.duration)/(select sum(mwp.duration) 
              from mrp_workcenter_productivity mwp)
-            )as percentage
+            )as percentage,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             where aml.analytic_account_id = 16
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as management,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             where aml.analytic_account_id = 37
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as laboratory,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             where aml.analytic_account_id = 40
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as dispatch,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             where aml.analytic_account_id = 39
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as maintenance,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             where aml.analytic_account_id = 38
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as disused_assets,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             where aml.analytic_account_id = 36
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as Alternative_center,
+            (
+             --select aaa.code 
+             --from account_analytic_account aaa
+             --left join mrp_workcenter w on (w.account_analytic_real = aaa.id)
+             --left join mrp_workcenter_productivity mwp on (mwp.workcenter_id = w.id)
+             --where mwp.workcenter_id = w.id
+             --group by w.id, w.name, aaa.code
+            aaa.code ) as code
             from mrp_workcenter_productivity mwp
             left join mrp_workcenter w on (w.id = mwp.workcenter_id)
-            --left join mrp_workorder mp on (mp.workcenter_id = w.id)
+            left join account_analytic_account aaa on (aaa.id = w.account_analytic_real)
             where 1=1
-            group by w.id, w.name
+            group by w.id, w.name, aaa.code
             );
             """
         self.env.cr.execute(query)
