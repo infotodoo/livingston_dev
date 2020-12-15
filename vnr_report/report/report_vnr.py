@@ -24,6 +24,7 @@ class ZppReportLine(models.Model):
     sale_price = fields.Float('Sale price',readonly=True)
     cost_by_sale = fields.Float('Cost by sale Unitary',readonly=True)
     vnr_estimate = fields.Float('VNR estimate')
+   
     
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_vnr')
@@ -88,6 +89,7 @@ class ZppReportLine(models.Model):
                 where pp.id = ppi.product_id
                 )as vnr
         )as vnr_estimate
+        --)as sale_price
         from product_product pp
         --left join stock_valuation_layer svl on (svl.product_id = pp.id)
         where 1=1
