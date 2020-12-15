@@ -13,7 +13,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account','stock','sale_management'],
+    'depends': ['account','sale','stock_account'],
   
     # always loaded
     'data': [
