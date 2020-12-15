@@ -20,10 +20,11 @@
 
     # always loaded
     'data': [
-        'views/purchase_order_view.xml',
-        'views/account_move_view.xml',
-        'wizard/wizard_purchase_view.xml',
         'security/ir.model.access.csv',
+        'views/purchase_order_view.xml',
+        'views/crossovered_budget_lines_view.xml',
+        'wizard/wizard_purchase_view.xml',
+        'wizard/wizard_account_view.xml',
     ],
     # only loaded in demonstration mode
     'images': [],

@@ -23,6 +23,14 @@ class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
     state = fields.Selection(selection_add=[('budget', 'Blocked to Approve')])
+    bool_validation = fields.Boolean(compute='_compute_bool_validation')
+
+    def _compute_bool_validation(self):
+        user = self.env['res.users'].browse(self.env.uid)
+        if user.has_group('budget_control.module_category_budget_control'):
+            self.bool_validation = True
+        else:
+            self.bool_validation = False
     
     @api.onchange('date_order')
     def onchange_date_order(self):
