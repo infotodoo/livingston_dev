@@ -13,12 +13,13 @@
                     <button name="button_confirm" type="object" states="draft" string="Confirm Order" id="draft_confirm" invisible="1"/>
                 </xpath>
                 <xpath expr="//button[@name='button_confirm']" position="attributes">
-                    <field name="invisible">{'bool_validation':True}</field>
+                    <attribute name="invisible">{'invisible':[('bool_validation','=',True),('state','in',('draft','sent'))]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='button_confirm']" position="after">
                     <button name="button_confirm_purchase" type="object" 
                     string="Confirm Order" class="oe_highlight"
-                    attrs="{invisible': [('state', 'not in',['sent','budget','draft']),('bool_validation','=',True)]}"/>
+                    attrs="{'invisible': [('state', 'not in',('sent','budget','draft')),('bool_validation','=',True)]}"/>
+                    <field name="bool_validation" invisible="1"/>
                 </xpath>
                 <xpath expr="//button[@name='button_cancel']" position="replace">
                     <button name="button_cancel" states="draft,to approve,sent,purchase,budget" string="Cancel" type="object"/>

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Purchase Suprapak",
+    'name': "Budget Comtrol",
 
     'summary': "",
 
-    'description': "This is a module for Suprapak",
+    'description': "This is a module for control Budgets",
 
     'author': "Todoo",
     'website': "http://www.todoo.co",
