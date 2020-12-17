@@ -6,3 +6,5 @@ from . import mrp_cost_structure
 from . import mrp_workorder
 from . import mrp_variation
 from . import mrp_variation_line
+from . import sale_order
+from . import mrp_prelimit

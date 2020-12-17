@@ -17,7 +17,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field'],
+    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','mrp_workorder','sale_management'],
 
     # always loaded
     'data': [
@@ -30,5 +30,7 @@
         'views/mrp_variation_cost_menus.xml',
         'views/mrp_workorder_view.xml',
         'views/mrp_variation_line_view.xml',
+        'views/sale_order_view.xml',
+        'views/mrp_prelimit_view.xml',
     ],
 }
