@@ -45,7 +45,7 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 16
+             where aml.analytic_account_id = 3436
              )
              *
              (
@@ -58,7 +58,7 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 37
+             where aml.analytic_account_id = 3437
              )
              *
              (
@@ -71,7 +71,7 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 40
+             where aml.analytic_account_id = 3438
              )
              *
              (
@@ -84,7 +84,7 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 39
+             where aml.analytic_account_id = 3439
              )
              *
              (
@@ -97,7 +97,7 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 38
+             where aml.analytic_account_id = 3441
              )
              *
              (
@@ -110,7 +110,7 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 36
+             where aml.analytic_account_id = 3442
              )
              *
              (
@@ -166,5 +166,3 @@ class DistributionAssessment(models.Model):
     #    workorders = self.env['mrp.workorder']
     #        res = self.get_lines(workorders)
     #    return {'lines': res}
-    
-    
