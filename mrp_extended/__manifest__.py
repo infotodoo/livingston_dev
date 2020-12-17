@@ -30,6 +30,7 @@
         'views/mrp_variation_cost_menus.xml',
         'views/mrp_workorder_view.xml',
         'views/mrp_variation_line_view.xml',
+        'views/mrp_production_view.xml',
         'views/sale_order_view.xml',
         'views/mrp_prelimit_view.xml',
     ],
