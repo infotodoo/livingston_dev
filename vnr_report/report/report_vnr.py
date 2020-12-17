@@ -24,6 +24,7 @@ class ZppReportLine(models.Model):
     sale_price = fields.Float('Sale price',readonly=True)
     cost_by_sale = fields.Float('Cost by sale Unitary',readonly=True)
     vnr_estimate = fields.Float('VNR estimate')
+    minor = fields.Float('Minor between VNR and CTO',readonly=True)
    
     
     def init(self):
@@ -88,10 +89,52 @@ class ZppReportLine(models.Model):
                 from product_pricelist_item ppi
                 where pp.id = ppi.product_id
                 )as vnr
-        )as vnr_estimate
-        --)as sale_price
+        )as vnr_estimate,
+         (
+          (
+            select sum(value),
+            case when sum(value) > 0 then
+                (
+                select sum(value)
+                from (
+                   select sum(ppi.fixed_price)/count(ppi.product_id) as value
+                   from product_pricelist_item ppi
+                   where pp.id = ppi.product_id
+
+                    UNION ALL
+
+                    select (sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1) as value
+                    from product_pricelist_item ppi
+                    where pp.id = ppi.product_id
+                    )as vnr
+                )
+            else
+                (
+                select sum(ppi.cost_by_sale)/count(ppi.product_id)
+                from product_pricelist_item ppi
+                where pp.id = ppi.product_id
+                )
+            end
+            from (
+               select sum(ppi.fixed_price)/count(ppi.product_id) as value
+               from product_pricelist_item ppi
+               where pp.id = ppi.product_id
+
+                UNION ALL
+                
+                select (sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1) as value
+                from product_pricelist_item ppi
+                where pp.id = ppi.product_id
+                
+                UNION ALL
+                
+                select (sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1) as value
+                from product_pricelist_item ppi
+                where pp.id = ppi.product_id
+                )as test 
+         )    
+        ) as minor
         from product_product pp
-        --left join stock_valuation_layer svl on (svl.product_id = pp.id)
         where 1=1
         );
         """

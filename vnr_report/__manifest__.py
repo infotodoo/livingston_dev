@@ -17,6 +17,7 @@
   
     # always loaded
     'data': [
+        'views/product_pricelist_item_view.xml',
         'security/ir.model.access.csv',
         'views/report_view.xml',
         'views/menuitem.xml',
