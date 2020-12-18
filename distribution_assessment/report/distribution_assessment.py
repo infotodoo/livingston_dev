@@ -131,7 +131,7 @@ class DistributionAssessment(models.Model):
             left join mrp_workcenter w on (w.id = mwp.workcenter_id)
             left join account_analytic_account aaa on (aaa.id = w.account_analytic_real)
             where 1=1
-            group by w.id, w.name, aaa.code
+            group by w.id, w.name, aaa.code, mwp.date_end
             );
             """
         self.env.cr.execute(query)
