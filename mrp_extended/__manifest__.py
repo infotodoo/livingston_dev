@@ -31,6 +31,7 @@
         'views/mrp_workorder_view.xml',
         'views/mrp_variation_line_view.xml',
         'views/mrp_production_view.xml',
+        'views/cost_structure_report.xml',
         'views/sale_order_view.xml',
         'views/mrp_prelimit_view.xml',
     ],

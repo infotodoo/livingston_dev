@@ -14,6 +14,7 @@ class DistributionAssessment(models.Model):
     _description = 'This is the lines in the Distribution Assessment report'
     
     name = fields.Char('Workcenter',readonly=True)
+    date_end = fields.Datetime('Date',readonly=True)
     hours = fields.Float('Hours',readonly=True)
     total_time = fields.Float('Total Times',readonly=True)
     percentage = fields.Float('%',readonly=True)
@@ -31,7 +32,7 @@ class DistributionAssessment(models.Model):
             CREATE or REPLACE VIEW report_distribution_assessment AS(
             select 
             row_number() OVER (ORDER BY w.id)as id,
-            w.name,sum(mwp.duration) as hours,
+            w.name,sum(mwp.duration) as hours,mwp.date_end,
             (
              select sum(mwp.duration) 
              from mrp_workcenter_productivity mwp
