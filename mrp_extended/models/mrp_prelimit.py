@@ -26,7 +26,9 @@ class MrpPrelimit(models.Model):
     def _compute_cost_maq(self):
         for record in self:
             if record.workcenter_id:
-                account_id_maq = sum(record.env['account.move.line'].search([('account_id','=',record.workcenter_id.maq_account_id_real.id),('date','>=',record.date_start),('date','<=',record.date_end)]).mapped('debit'))
+                account_id_maq = sum(record.env['account.move.line'].search([('account_id','=',record.workcenter_id.account_maq_id_real.id),('date','>=',record.date_start),('date','<=',record.date_end),('analytic_account_id','=',record.workcenter_id.account_analytic_real.id)]).mapped('debit'))
+                _logger.error("--------------account_id_maq-----------------------------------")
+                _logger.error(account_id_maq)
                 record.cost_maq = record.distribution_percentage * account_id_maq
             else:
                 record.cost_maq = 0
@@ -36,7 +38,9 @@ class MrpPrelimit(models.Model):
     def _compute_cost_cif(self):
         for record in self:
             if record.workcenter_id:
-                account_id_cif = sum(record.env['account.move.line'].search([('account_id','=',record.workcenter_id.cif_account_id_real.id),('date','>=',record.date_start),('date','<=',record.date_end)]).mapped('debit'))
+                account_id_cif = sum(record.env['account.move.line'].search([('account_id','=',record.workcenter_id.account_cif_id_real.id),('date','>=',record.date_start),('date','<=',record.date_end),('analytic_account_id','=',record.workcenter_id.account_analytic_real.id)]).mapped('debit'))
+                _logger.error("--------------account_id_cif-----------------------------------")
+                _logger.error(account_id_cif)
                 record.cost_cif = record.distribution_percentage * account_id_cif
             else:
                 record.cost_cif = 0
@@ -46,7 +50,9 @@ class MrpPrelimit(models.Model):
     def _compute_cost_mod(self):
         for record in self:
             if record.workcenter_id:
-                account_id_mod = sum(record.env['account.move.line'].search([('account_id','=',record.workcenter_id.mod_account_id_real.id),('date','>=',record.date_start),('date','<=',record.date_end)]).mapped('debit'))
+                account_id_mod = sum(record.env['account.move.line'].search([('account_id','=',record.workcenter_id.account_mod_id_real.id),('date','>=',record.date_start),('date','<=',record.date_end),('analytic_account_id','=',record.workcenter_id.account_analytic_real.id)]).mapped('debit'))
+                _logger.error("--------------account_id_mod-----------------------------------")
+                _logger.error(account_id_mod)
                 record.cost_mod = record.distribution_percentage * account_id_mod
             else:
                 record.cost_mod = 0
@@ -61,9 +67,7 @@ class MrpPrelimit(models.Model):
     @api.depends('workcenter_id')
     def _compute_distribution_percentage(self):
         for record in self:
-            if record.workcenter_id.id == 1 and record.distribution != 0:
-                record.distribution_percentage = record.hours/record.distribution
-            elif record.workcenter_id.id == 2 and record.distribution != 0:
+            if record.workcenter_id and record.distribution != 0:
                 record.distribution_percentage = record.hours/record.distribution
             else:
                 record.distribution_percentage = 0

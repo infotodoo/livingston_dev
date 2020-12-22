@@ -14,9 +14,9 @@ class StockPicking(models.Model):
     @api.depends('picking_type_id')
     def _compute_bool_wizard(self):
         for record in self:
-            if record.picking_type_id.warehouse_id.name == 'PRODUCTO SEMIELABORADO TGS COL':
+            if record.picking_type_id.warehouse_distribution_id.name == 'PRODUCTO SEMIELABORADO TGS COL':
                 record.bool_wizard = True
-            elif record.picking_type_id.warehouse_id.name == 'ALMACEN GENERAL TGS COL' and record.picking_type_id.name in ['Órdenes de Entrega','Fabricación']:
+            elif record.picking_type_id.warehouse_distribution_id.name == 'ALMACEN GENERAL TGS COL' and record.picking_type_id.name in ['Órdenes de Entrega','Fabricación']:
                 record.bool_wizard = True
             else:
                 record.bool_wizard = False

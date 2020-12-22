@@ -25,13 +25,25 @@ class DistributionAssessment(models.Model):
     disused_assets = fields.Float('Disused Assets',readonly=True)
     alternative_center = fields.Float('Alternative Center',readonly=True)
     code = fields.Char('Code',readonly=True)
-    
+    company_id = fields.Many2one('res.company',readonly=True)
+    plan_department_id = fields.Float('Plan Department',readonly=True)
+    shipping_department_id = fields.Float('Shipping Department',readonly=True)
+    plant_maintenance_id = fields.Float('Plant Maintenance',readonly=True)
+    plant_overhead_id = fields.Float('Plant Overhead',readonly=True)
+    transport_id = fields.Float('Transport',readonly=True)
+    rm_id = fields.Float('Rm',readonly=True)
+    plant_support_id = fields.Float('Plant Support',readonly=True)
+    proyect_id = fields.Float('Proyect',readonly=True)
+    warehouse_distribution_id = fields.Float('Warehouse',readonly=True)
+    prepress_id = fields.Float('Prepress',readonly=True)
+    supplies_id = fields.Float('Supplies',readonly=True)
+
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_distribution_assessment')
         query = """
             CREATE or REPLACE VIEW report_distribution_assessment AS(
             select 
-            row_number() OVER (ORDER BY w.id)as id,
+            row_number() OVER (ORDER BY w.id)as id,mwp.company_id,
             w.name,sum(mwp.duration) as hours,mwp.date_end,
             (
              select sum(mwp.duration) 
@@ -46,7 +58,8 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 3436
+             left join res_company rc on (rc.management_id = aaa.id)
+             where rc.id = mwp.company_id
              )
              *
              (
@@ -59,7 +72,8 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 3437
+             left join res_company rc on (rc.laboratory_id = aaa.id)
+             where rc.id = mwp.company_id
              )
              *
              (
@@ -72,7 +86,8 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 3438
+             left join res_company rc on (rc.dispatch_id = aaa.id)
+             where rc.id = mwp.company_id
              )
              *
              (
@@ -85,7 +100,8 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 3439
+             left join res_company rc on (rc.maintenance_id = aaa.id)
+             where rc.id = mwp.company_id
              )
              *
              (
@@ -98,7 +114,8 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 3441
+             left join res_company rc on (rc.disused_assets_id = aaa.id)
+             where rc.id = mwp.company_id
              )
              *
              (
@@ -111,14 +128,169 @@ class DistributionAssessment(models.Model):
              select sum(aml.debit) 
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             where aml.analytic_account_id = 3442
+             left join res_company rc on (rc.alternative_center_id = aaa.id)
+             where rc.id = mwp.company_id
              )
              *
              (
              sum(mwp.duration)/(select sum(mwp.duration) 
              from mrp_workcenter_productivity mwp)
              )
-            )as Alternative_center,
+            )as alternative_center,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.plan_department_id = aaa.id)
+             where rc.id = mwp.company_id
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as plan_department_id,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.plan_department_id = aaa.id)
+             where rc.id = mwp.company_id
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as shipping_department_id,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.plant_maintenance_id = aaa.id)
+             where rc.id = mwp.company_id
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as plant_maintenance_id,
+             (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.plant_overhead_id = aaa.id)
+             where rc.id = mwp.company_id
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as plant_overhead_id,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.transport_id = aaa.id)
+             where rc.id = mwp.company_id
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as transport_id,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.rm_id = aaa.id)
+             where rc.id = mwp.company_id
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as rm_id,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.plant_support_id = aaa.id)
+             where rc.id = mwp.company_id
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as plant_support_id,
+             (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.proyect_id = aaa.id)
+             where rc.id = mwp.company_id = 3442
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as proyect_id,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.warehouse_distribution_id = aaa.id)
+             where rc.id = mwp.company_id
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as warehouse_distribution_id,
+             (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.prepress_id = aaa.id)
+             where rc.id = mwp.company_id
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as prepress_id,
+            (
+             (
+             select sum(aml.debit) 
+             from account_move_line aml
+             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+             left join res_company rc on (rc.supplies_id = aaa.id)
+             where rc.id = mwp.company_id
+             )
+             *
+             (
+             sum(mwp.duration)/(select sum(mwp.duration) 
+             from mrp_workcenter_productivity mwp)
+             )
+            )as supplies_id,
             (
              --select aaa.code 
              --from account_analytic_account aaa
@@ -131,7 +303,7 @@ class DistributionAssessment(models.Model):
             left join mrp_workcenter w on (w.id = mwp.workcenter_id)
             left join account_analytic_account aaa on (aaa.id = w.account_analytic_real)
             where 1=1
-            group by w.id, w.name, aaa.code, mwp.date_end
+            group by w.id, w.name, aaa.code, mwp.date_end, mwp.company_id
             );
             """
         self.env.cr.execute(query)
