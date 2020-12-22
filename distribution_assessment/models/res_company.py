@@ -4,6 +4,7 @@ from odoo import fields,models,api
 class ResCompany(models.Model):
     _inherit = "res.company"
 
+    # account analytic by search in report
     management_id = fields.Many2one('account.analytic.account','Operation Management')
     laboratory_id = fields.Many2one('account.analytic.account','Laboratory')
     dispatch_id = fields.Many2one('account.analytic.account','Dispatch')
@@ -21,3 +22,6 @@ class ResCompany(models.Model):
     warehouse_distribution_id = fields.Many2one('account.analytic.account','Warehouse')
     prepress_id = fields.Many2one('account.analytic.account','Prepress')    
     supplies_id = fields.Many2one('account.analytic.account','Supplies')   
+    
+    # account account by search in report
+    account_management_id = fields.Many2one('account.account','Account to Management')

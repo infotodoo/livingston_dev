@@ -52,19 +52,22 @@ class DistributionAssessment(models.Model):
             (
              sum(mwp.duration)/(select sum(mwp.duration) 
              from mrp_workcenter_productivity mwp)
+             --left join res_company rc on (rc.id = mwp.company_id))
             )as percentage,
             (
              (
              select sum(aml.debit) 
              from account_move_line aml
+             left join res_company rc on (rc.account_management_id = aml.account_id)
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.management_id = aaa.id)
-             where rc.id = mwp.company_id
+             --left join res_company rc on (rc.management_id = aaa.id)
+             where rc.management_id = aaa.id
              )
              *
              (
              sum(mwp.duration)/(select sum(mwp.duration) 
              from mrp_workcenter_productivity mwp)
+             --left join res_company rc on (rc.id = mwp.company_id))
              )
             )as management,
             (
@@ -241,7 +244,7 @@ class DistributionAssessment(models.Model):
              from account_move_line aml
              left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
              left join res_company rc on (rc.proyect_id = aaa.id)
-             where rc.id = mwp.company_id = 3442
+             where rc.id = mwp.company_id
              )
              *
              (
