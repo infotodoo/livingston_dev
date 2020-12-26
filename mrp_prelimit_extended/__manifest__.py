@@ -17,6 +17,7 @@
   
     # always loaded
     'data': [
-        
+        'security/ir.model.acces.csv',
+        'views/mrp_prelimit_distribution_view.xml',
     ],
 }
