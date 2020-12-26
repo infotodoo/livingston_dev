@@ -40,275 +40,283 @@ class DistributionAssessment(models.Model):
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_distribution_assessment')
-        query = """
-            CREATE or REPLACE VIEW report_distribution_assessment AS(
-            select 
-            row_number() OVER (ORDER BY w.id)as id,mwp.company_id,
-            w.name,sum(mwp.duration) as hours,mwp.date_end,
-            (
-             select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp
-            ) as total_time,
-            (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             --left join res_company rc on (rc.id = mwp.company_id))
-            )as percentage,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join res_company rc on (rc.account_management_id = aml.account_id)
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             --left join res_company rc on (rc.management_id = aaa.id)
-             where rc.management_id = aaa.id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             --left join res_company rc on (rc.id = mwp.company_id))
-             )
-            )as management,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.laboratory_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as laboratory,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.dispatch_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as dispatch,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.maintenance_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as maintenance,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.disused_assets_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as disused_assets,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.alternative_center_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as alternative_center,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.plan_department_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as plan_department_id,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.plan_department_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as shipping_department_id,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.plant_maintenance_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as plant_maintenance_id,
-             (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.plant_overhead_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as plant_overhead_id,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.transport_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as transport_id,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.rm_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as rm_id,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.plant_support_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as plant_support_id,
-             (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.proyect_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as proyect_id,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.warehouse_distribution_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as warehouse_distribution_id,
-             (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.prepress_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as prepress_id,
-            (
-             (
-             select sum(aml.debit) 
-             from account_move_line aml
-             left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
-             left join res_company rc on (rc.supplies_id = aaa.id)
-             where rc.id = mwp.company_id
-             )
-             *
-             (
-             sum(mwp.duration)/(select sum(mwp.duration) 
-             from mrp_workcenter_productivity mwp)
-             )
-            )as supplies_id,
-            (
-             --select aaa.code 
-             --from account_analytic_account aaa
-             --left join mrp_workcenter w on (w.account_analytic_real = aaa.id)
-             --left join mrp_workcenter_productivity mwp on (mwp.workcenter_id = w.id)
-             --where mwp.workcenter_id = w.id
-             --group by w.id, w.name, aaa.code
-            aaa.code ) as code
-            from mrp_workcenter_productivity mwp
-            left join mrp_workcenter w on (w.id = mwp.workcenter_id)
-            left join account_analytic_account aaa on (aaa.id = w.account_analytic_real)
-            where 1=1
-            group by w.id, w.name, aaa.code, mwp.date_end, mwp.company_id
-            );
-            """
+        company_ids = self.env['res.company'].search([])
+        query = """CREATE or REPLACE VIEW report_distribution_assessment AS("""
+        count = 0
+        for record in company_ids:
+            if count:
+                query += """UNION ALL"""
+            count += 1
+            
+            query += """
+                select 
+                row_number() OVER (ORDER BY w.id)as id,mwp.company_id,
+                w.name,sum(mwp.duration) as hours,mwp.date_end,
+                (
+                 select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp
+                ) as total_time,
+                (
+                 sum(mwp.duration)/(select sum(p.duration) 
+                 from mrp_workcenter_productivity p
+                 where mwp.company_id = p.company_id)
+                )as percentage,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join res_company rc on (rc.account_management_id = aml.account_id)
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 --left join res_company rc on (rc.management_id = aaa.id)
+                 where rc.management_id = aaa.id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 --left join res_company rc on (rc.id = mwp.company_id))
+                 )
+                )as management,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.laboratory_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as laboratory,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.dispatch_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as dispatch,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.maintenance_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as maintenance,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.disused_assets_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as disused_assets,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.alternative_center_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as alternative_center,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.plan_department_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as plan_department_id,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.plan_department_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as shipping_department_id,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.plant_maintenance_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as plant_maintenance_id,
+                 (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.plant_overhead_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as plant_overhead_id,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.transport_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as transport_id,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.rm_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as rm_id,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.plant_support_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as plant_support_id,
+                 (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.proyect_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as proyect_id,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.warehouse_distribution_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as warehouse_distribution_id,
+                 (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.prepress_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as prepress_id,
+                (
+                 (
+                 select sum(aml.debit) 
+                 from account_move_line aml
+                 left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
+                 left join res_company rc on (rc.supplies_id = aaa.id)
+                 where rc.id = mwp.company_id
+                 )
+                 *
+                 (
+                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 from mrp_workcenter_productivity mwp)
+                 )
+                )as supplies_id,
+                (
+                 --select aaa.code 
+                 --from account_analytic_account aaa
+                 --left join mrp_workcenter w on (w.account_analytic_real = aaa.id)
+                 --left join mrp_workcenter_productivity mwp on (mwp.workcenter_id = w.id)
+                 --where mwp.workcenter_id = w.id
+                 --group by w.id, w.name, aaa.code
+                aaa.code ) as code
+                from mrp_workcenter_productivity mwp
+                left join mrp_workcenter w on (w.id = mwp.workcenter_id)
+                left join account_analytic_account aaa on (aaa.id = w.account_analytic_real)
+                where 1=1 and mwp.company_id = %s
+                group by w.id, w.name, aaa.code, mwp.date_end, mwp.company_id
+                """ % (record.id)
+        query += """);"""
+        _logger.error(query)
         self.env.cr.execute(query)
     
 #class MrpCostStructureSupra(models.AbstractModel):

@@ -46,8 +46,15 @@
             <field name="name">Distribution Assessment Report</field>
             <field name="res_model">report.distribution.assessment</field>
             <field name="view_id" ref="distribution_assessment_report_view_tree"/>
+            <field name="context">{'group_by':'name'}</field>
             <field name="view_mode">tree</field>
             <field name="search_view_id" ref="view_distribution_search"/>
+        </record>
+        <record id="report_distribution_assessment_rule" model="ir.rule">
+            <field name="name">Distribution Assessment</field>
+            <field name="model_id" ref="model_report_distribution_assessment"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id','in',company_ids)]</field>
         </record>
     </data>
 </odoo>
