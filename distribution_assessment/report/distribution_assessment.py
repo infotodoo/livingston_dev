@@ -14,7 +14,7 @@ class DistributionAssessment(models.Model):
     _description = 'This is the lines in the Distribution Assessment report'
     
     name = fields.Char('Workcenter',readonly=True)
-    date_end = fields.Datetime('Date',readonly=True)
+    date_end = fields.Char('Date',readonly=True)
     hours = fields.Float('Hours',readonly=True)
     total_time = fields.Float('Total Times',readonly=True)
     percentage = fields.Float('%',readonly=True)
@@ -37,6 +37,7 @@ class DistributionAssessment(models.Model):
     warehouse_distribution_id = fields.Float('Warehouse',readonly=True)
     prepress_id = fields.Float('Prepress',readonly=True)
     supplies_id = fields.Float('Supplies',readonly=True)
+    check = fields.Boolean(related="company_id.laboratory")
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_distribution_assessment')
@@ -51,7 +52,7 @@ class DistributionAssessment(models.Model):
             query += """
                 select 
                 row_number() OVER (ORDER BY w.id)as id,mwp.company_id,
-                w.name,sum(mwp.duration) as hours,mwp.date_end,
+                w.name,sum(mwp.duration) as hours,to_char(mwp.date_end,'YYYY-MM') as date_end,
                 (
                  select sum(mwp.duration) 
                  from mrp_workcenter_productivity mwp
@@ -313,7 +314,7 @@ class DistributionAssessment(models.Model):
                 left join mrp_workcenter w on (w.id = mwp.workcenter_id)
                 left join account_analytic_account aaa on (aaa.id = w.account_analytic_real)
                 where 1=1 and mwp.company_id = %s
-                group by w.id, w.name, aaa.code, mwp.date_end, mwp.company_id
+                group by w.id, w.name, aaa.code, to_char(mwp.date_end,'YYYY-MM'), mwp.company_id
                 """ % (record.id)
         query += """);"""
         _logger.error(query)

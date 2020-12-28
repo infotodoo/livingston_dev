@@ -42,6 +42,25 @@
                         <group name="account" string="Account Account">
                             <field name="account_management_id" options="{'no_create': True, 'no_create_edit':True}"/>
                         </group>
+                        <group>
+                             <field name="management"/>
+                             <field name="laboratory"/>
+                             <field name="dispatch"/>
+                             <field name="maintenance"/>
+                             <field name="disused_assets"/>
+                             <field name="alternative_center"/>
+                             <field name="plan_department"/>
+                             <field name="shipping_department"/>
+                             <field name="plant_maintenance"/>
+                             <field name="plant_overhead"/>
+                             <field name="transport"/>
+                             <field name="rm"/>
+                             <field name="plant_support"/>
+                             <field name="proyect"/>
+                             <field name="warehouse_distribution"/>
+                             <field name="prepress"/>
+                             <field name="supplies"/>
+                        </group>
                     </page>
                 </xpath>
             </field>
