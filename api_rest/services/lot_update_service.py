@@ -33,27 +33,19 @@ class Service(Component):
         """
         Searh picking by name
         """
-        pickings = self.env["stock.picking"].name_search(name,limit=100)
+        pickings = self.env["stock.picking"].name_search(name)
         pickings = self.env["stock.picking"].browse([i[0] for i in pickings])
         rows = []
         res = {"count": len(pickings), "rows": rows}
         for picking in pickings:
             rows.append(self._to_json(picking))
         return res
-
-
-    """"def _get(self, name, workcenter_id):
-        picking_id = self.env['mrp.production'].search([('name','=',name)])
-        workcenter_id = self.env['stock.picking'].search([
-            ('picking_id','=',picking_id.id),
-            ('workcenter_id','=',workcenter_id)
-        ],limit=1, order="id desc")
-        return workcenter_id"""
+    
+    def _get(self, _id):
+        return self.env["stock.picking"].browse(_id)
 
     def _get_document(self, _id):
         return self.env["stock.picking"].browse(_id)
-
-    
 
     # Validator
     def _validator_return_get(self):
@@ -90,7 +82,7 @@ class Service(Component):
                     "type" : "dict",
                     "schema":{
                         "product_id" : {"type": "integer", "required": False, "empty": True},
-                        "product_uom_qty" : {"type": "string", "required": False, "empty": True},
+                        "qty_done" : {"type": "float", "required": False, "empty": True},
                         "lot_id" : {"type": "integer", "required": False, "empty": True},
                     },
                 },
@@ -107,9 +99,11 @@ class Service(Component):
         """
         Update lot papper consumables informations
         """
-        keys = ['name','product_id','lot_id']
+        keys = ['name','move_line_ids_without_package']
         for key in keys:
             if key not in params:
+                _logger.error('****************************keys+++++++++++++++++')
+                _logger.error(keys)
                 return {
                     'code': '041',
                     'msg': 'No están bien definidos los nombres de los campos en el json!',
@@ -119,50 +113,49 @@ class Service(Component):
                 'code': '042',
                 'msg': 'Debe enviar el número de orden de fabricación en campo name!',
             }
-        if not params.get('lot_id'):
+        if not params.get('move_line_ids_without_package'):
             return {
                 'code': '043',
-                'msg': 'Debe enviar el lote/N.serie de papel para orden de fabricación en campo lot_id!',
-            }
-        if not params.get('product_id'):
-            return {
-                'code': '044',
-                'msg': 'Debe enviar el código del producto papel para orden de fabricación en campo product_id!',
+                'msg': 'Debe enviar lleno el campo move_line_ids_without_package',
             }
         
-        
-        _logger.error(params)
-        picking_id = self.env['stock.picking'].search([('name','=',params.get('name'))])
-        _logger.error('****************************\jn+++++++++++++++++')
-        _logger.error(picking_id)
-        if picking_id.state == 'assigned':
-            _logger.error(picking_id.state)
-            for move in picking_id.move_line_ids_without_package:
-                _logger.error(params.get('product_id'))
-                _logger.error(params.get('lot_id'))
-                if move.product_id.is_tracking_papper_api and move.product_id.id == params.get('product_id'):
-                    _logger.error('Entrando con producto valido')
-                    try:
-                        move.sudo().write({'lot_id': params.get('lot_id'),})
-                        _logger.error('+++++++++++++++++++++++++++++++++++++++lot_id')
-                        _logger.error(params.get('lot_id'))
-                    except Exception as e:
-                        _logger.error(e)
-                        _logger.error('Actualizado con exito')
-                    return {
-                            'code': '021',
-                            'msg': 'Lote actualizada con exito!',
-                        }
-                else:
-                    return {
-                            'code': '045',
-                            'msg': 'Código de producto papel no valido.',
-                        }
-        else:
-            return {
-                'code': '046',
-                'msg': 'El estado del movimiento no es valido. El movimiento debe estar en estado hecho en Odoo',
-            }
+        name = params.pop('name')
+        move_line = params.pop('move_line_ids_without_package')
+        for lines in move_line:
+            _logger.error(params)
+            picking_id = self.env['stock.picking'].search([('name','=',name)])
+            _logger.error('****************************\jn+++++++++++++++++')
+            _logger.error(picking_id)
+            if picking_id.state == 'assigned':
+                _logger.error(picking_id.state)
+                for move in picking_id.move_line_ids_without_package:
+                    _logger.error('****************************\product_id+++++++++++++++++')
+                    _logger.error(lines.get('product_id'))
+                    _logger.error('****************************\lot_id+++++++++++++++++')
+                    _logger.error(lines.get('lot_id'))
+                    if move.product_id.is_tracking_papper_api and move.product_id.id == lines.get('product_id'):
+                        _logger.error('Entrando con producto valido')
+                        try:
+                            move.sudo().write({'lot_id': lines.get('lot_id'),'qty_done': lines.get('qty_done')})
+                            _logger.error('+++++++++++++++++++++++++++++++++++++++lot_id')
+                            _logger.error(params.get('lot_id'))
+                        except Exception as e:
+                            _logger.error(e)
+                            _logger.error('Actualizado con exito')
+                        return {
+                                'code': '021',
+                                'msg': 'Lote actualizada con exito!',
+                            }
+                    else:
+                        return {
+                                'code': '045',
+                                'msg': 'Código de producto papel no valido.',
+                            }
+            else:
+                return {
+                    'code': '046',
+                    'msg': 'El estado del movimiento no es valido. El movimiento debe estar en estado hecho en Odoo',
+                }
 
     
     def _validator_update(self):
@@ -179,6 +172,7 @@ class Service(Component):
         return {}
 
     def _to_json(self, picking):
+        _logger.error('-------------------------test-----------------')
         res = {
             "id" : picking.id,
             "name": picking.name,

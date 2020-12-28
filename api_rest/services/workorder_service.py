@@ -7,6 +7,7 @@ from odoo import api, fields, models, SUPERUSER_ID, _
 from datetime import datetime
 import logging
 import json
+import datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -141,6 +142,16 @@ class Service(Component):
             lost_name = line.get('loss_id')
             productivity_loss = self.env['mrp.workcenter.productivity.loss'].search([('code_tracking','=',lost_name)])
             line['loss_id'] = productivity_loss.id
+            date_start = line.get('date_start')
+            _logger.error("date_start---------------------------------------")
+            date_start = datetime.datetime.strptime(date_start, '%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=5)
+            _logger.error(date_start)
+            line['date_start'] = date_start
+            date_end = line.get('date_end')
+            _logger.error("date_end---------------------------------------")
+            date_end = datetime.datetime.strptime(date_end, '%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=5)
+            _logger.error(date_end)
+            line['date_end'] = date_end
             time_lines = [(5,0,0)]
             _logger.error('****************************\jn+++++++++++++++++')
             _logger.error(line)
