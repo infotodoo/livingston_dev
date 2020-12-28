@@ -17,7 +17,11 @@
   
     # always loaded
     'data': [
+<<<<<<< HEAD
         'security/ir.model.access.csv',
         'views/mrp_prelimit_distribution_view.xml',
+=======
+        
+>>>>>>> parent of d320eb5... [ADD] cambios manifest
     ],
 }
