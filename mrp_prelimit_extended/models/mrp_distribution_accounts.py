@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from odoo import fields,models,api,_
 
-class MrpAssessmentDistribution(models.Model):
-    _name = 'mrp.assessment.distribution'
-    _description = 'mrp assessment distribution'
+class MrpDistributionAccounts(models.Model):
+    _name = 'mrp.distribution.accounts'
+    _description = 'mrp distribution acoounts'
 
     #first option
+    name = fields.Selection([('prelimit', 'Prelimit Report'),('distribution','Distribution assessment')],'Acouunts to')
     first_account_id = fields.Many2one('account.account','From')
     second_account_id = fields.Many2one('account.account','To')
     extra_account1 = fields.Many2one('account.account','MOD Account 1')

@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <!--<record id="mrp_distribution_accounts_view_tree" model="ir.ui.view">
+            <field name="name">mrp.distribution.accounts.tree</field>
+            <field name="model">mrp.distribution.accounts</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>-->
+        <record id="mrp_distribution_accounts_view_from" model="ir.ui.view">
+            <field name="name">mrp.distribution.accounts.form</field>
+            <field name="model">mrp.distribution.accounts</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                   <sheet>
+                       <div class="o_row o_td_label">
+                           <label for="name" string="Acouunts to"/>
+                           <field name="name"/>
+                       </div>
+                       <div class="o_row o_td_label">
+                            <label for="first_account_id" string="From"/>
+                            <field name="first_account_id"/>
+                            <label for="second_account_id" string="to"/>
+                            <field name="second_account_id"/>
+                            <label for="extra_account1" string="MOD Account 1"/>
+                            <field name="extra_account1"/>
+                            <label for="extra_account2" string="MOD Account 2"/>
+                            <field name="extra_account2"/>
+                            <label for="extra_account3" string="MOD Account 3"/>
+                            <field name="extra_account3"/>
+                       </div>
+                   </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_mrp.distribution.accounts">
+            <field name="name"> assessment Distribution</field>
+            <field name="res_model">mrp.distribution.accounts</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="mrp.distribution.accounts" name="Distribution assessment" parent="account.menu_finance_reports" action="mrp_prelimit_extended.action_mrp.distribution.accounts" sequence="40" />
+    </data>
+</odoo>
