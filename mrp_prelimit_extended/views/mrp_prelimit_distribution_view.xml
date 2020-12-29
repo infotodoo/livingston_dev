@@ -19,7 +19,7 @@
         <record model="ir.actions.act_window" id="action_mrp_prelimit_distribution_tree">
             <field name="name"> Prelimit Distribution</field>
             <field name="res_model">mrp.prelimit.distribution</field>
-            <field name="view_id" ref="mrp_prelimit_distribution_view_tree"/>
+            <field name="view_id" ref="mrp_prelimit_extended.mrp_prelimit_distribution_view_tree"/>
             <field name="view_mode">tree</field>
         </record>
     </data>
