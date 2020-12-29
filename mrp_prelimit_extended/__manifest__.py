@@ -19,5 +19,6 @@
     'data': [
         'security/ir.model.access.csv',
         'views/mrp_prelimit_distribution_view.xml',
+        'views/mrp_assessment_distribution_view.xml',
     ],
 }

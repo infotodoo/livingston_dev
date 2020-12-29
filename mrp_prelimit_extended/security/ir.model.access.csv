@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_mrp_prelimit_distribution_user,mrp_prelimit_extended.mrp.prelimit.distribution,model_mrp_prelimit_distribution,account.group_account_user,1,1,1,1
+access_mrp_assessment_distribution_user,mrp_prelimit_extended.mrp_assessment_distribution,model_mrp_assessment_distribution,account.group_account_user,1,1,1,1
