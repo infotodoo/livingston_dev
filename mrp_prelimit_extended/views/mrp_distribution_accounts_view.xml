@@ -1,19 +1,17 @@
 <odoo>
     <data>
-        <!--<record id="mrp_distribution_accounts_view_tree" model="ir.ui.view">
+        <record id="mrp_distribution_accounts_view_tree" model="ir.ui.view">
             <field name="name">mrp.distribution.accounts.tree</field>
-            <field name="model">mrp.distribution.accounts</field>
             <field name="type">tree</field>
+            <field name="model">mrp.distribution.accounts</field>
             <field name="arch" type="xml">
-                <tree>
-                    <field name="name"/>
-                </tree>
+                <tree><field name="name"/></tree>
             </field>
-        </record>-->
+        </record>
         <record id="mrp_distribution_accounts_view_from" model="ir.ui.view">
             <field name="name">mrp.distribution.accounts.form</field>
-            <field name="model">mrp.distribution.accounts</field>
             <field name="type">form</field>
+            <field name="model">mrp.distribution.accounts</field>
             <field name="arch" type="xml">
                 <form>
                    <sheet>
@@ -21,27 +19,52 @@
                            <label for="name" string="Acouunts to"/>
                            <field name="name"/>
                        </div>
+                   </sheet>
+                   <sheet>
+                       <h4 style="text-align:center">MOD Accounts</h4>
                        <div class="o_row o_td_label">
                             <label for="first_account_id" string="From"/>
-                            <field name="first_account_id"/>
+                            <field name="first_account_id" options="{'no_create': True, 'no_create_edit':True}"/>
                             <label for="second_account_id" string="to"/>
-                            <field name="second_account_id"/>
+                            <field name="second_account_id" options="{'no_create': True, 'no_create_edit':True}"/>
                             <label for="extra_account1" string="MOD Account 1"/>
-                            <field name="extra_account1"/>
+                            <field name="extra_account1" options="{'no_create': True, 'no_create_edit':True}"/>
                             <label for="extra_account2" string="MOD Account 2"/>
-                            <field name="extra_account2"/>
+                            <field name="extra_account2" options="{'no_create': True, 'no_create_edit':True}"/>
                             <label for="extra_account3" string="MOD Account 3"/>
-                            <field name="extra_account3"/>
+                            <field name="extra_account3" options="{'no_create': True, 'no_create_edit':True}"/>
+                       </div>
+                   </sheet>
+                   <sheet>
+                       <h4 style="text-align:center">CIF Accounts</h4>
+                       <div class="o_row o_td_label">
+                            <label for="first_option_account_id" string="From"/>
+                            <field name="first_option_account_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                            <label for="second_option_account_id" string="to"/>
+                            <field name="second_option_account_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                            <label for="exclude_account1" string="Exclude CIF Account 1"/>
+                            <field name="exclude_account1" options="{'no_create': True, 'no_create_edit':True}"/>
+                            <label for="exclude_account2" string="Exclude CIF Account 2"/>
+                            <field name="exclude_account2" options="{'no_create': True, 'no_create_edit':True}"/>
+                       </div>
+                   </sheet>
+                   <sheet>
+                       <h4 style="text-align:center">MAQ Accounts</h4>
+                       <div class="o_row o_td_label">
+                            <label for="maq_account1" string="Maq Account 1"/>
+                            <field name="maq_account1" options="{'no_create': True, 'no_create_edit':True}"/>
+                            <label for="maq_account2" string="Maq Account 2"/>
+                            <field name="maq_account2" options="{'no_create': True, 'no_create_edit':True}"/>
                        </div>
                    </sheet>
                 </form>
             </field>
         </record>
-        <record model="ir.actions.act_window" id="action_mrp.distribution.accounts">
-            <field name="name"> assessment Distribution</field>
+        <record model="ir.actions.act_window" id="action_mrp_distribution_accounts">
+            <field name="name">Distribution Accounts Report</field>
             <field name="res_model">mrp.distribution.accounts</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <menuitem id="mrp.distribution.accounts" name="Distribution assessment" parent="account.menu_finance_reports" action="mrp_prelimit_extended.action_mrp.distribution.accounts" sequence="40" />
+        <menuitem id="mrp_distribution_accounts" name="Distribution assessment" parent="account.menu_finance_reports" action="action_mrp_distribution_accounts" sequence="40" />
     </data>
 </odoo>

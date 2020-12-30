@@ -18,7 +18,7 @@ class AccountAnalyticDistribution(models.Model):
     @api.depends('tag_id.fiscal_id')
     def _compute_suggested_percentage(self):
         for record in self:
-            analytic_account_id = record.env['mrp.workcenter'].search([('account_analytic_real','=',record.account_id.id),limit=1])
+            analytic_account_id = record.env['mrp.workcenter'].search([('account_analytic_real','=',record.account_id.id)],limit=1)
             if record.tag_id.fiscal_id:
                 date = record.tag_id.fiscal_id.date_to
                 date = date.strftime("%Y-%m")
