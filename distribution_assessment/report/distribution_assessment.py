@@ -71,7 +71,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.management_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -89,7 +89,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.laboratory_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
 
                  )
                  *
@@ -107,7 +107,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.dispatch_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -124,7 +124,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.maintenance_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -141,7 +141,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.disused_assets_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -158,7 +158,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.alternative_center_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -175,7 +175,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plan_department_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -192,7 +192,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.shipping_department_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -209,7 +209,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plant_maintenance_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -226,7 +226,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plant_overhead_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -243,7 +243,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.transport_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -260,7 +260,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.rm_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -277,7 +277,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plant_support_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -294,7 +294,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.proyect_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -311,7 +311,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.warehouse_distribution_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -328,7 +328,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.prepress_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
@@ -345,7 +345,7 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.supplies_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
                  )
                  *
                  (
