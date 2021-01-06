@@ -23,9 +23,6 @@ class ResCompany(models.Model):
     prepress_id = fields.Many2one('account.analytic.account','Prepress')    
     supplies_id = fields.Many2one('account.analytic.account','Supplies')   
     
-    # account account by search in report
-    account_management_id = fields.Many2one('account.account','Account to Management')
-    
     #bools to condition
     management = fields.Boolean(compute="_compute_management")
     laboratory = fields.Boolean(compute="_compute_laboratory")

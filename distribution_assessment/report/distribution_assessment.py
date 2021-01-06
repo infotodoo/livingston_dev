@@ -17,7 +17,7 @@ class DistributionAssessment(models.Model):
     date_end = fields.Char('Date',readonly=True)
     hours = fields.Float('Hours',readonly=True)
     total_time = fields.Float('Total Times',readonly=True)
-    percentage = fields.Float('%',readonly=True)
+    percentage = fields.Float('%',readonly=True,digits=(6,6))
     management = fields.Float('Operation Management',readonly=True)
     laboratory = fields.Float('Laboratory',readonly=True)
     dispatch = fields.Float('Dispatch',readonly=True)
@@ -38,6 +38,18 @@ class DistributionAssessment(models.Model):
     prepress_id = fields.Float('Prepress',readonly=True)
     supplies_id = fields.Float('Supplies',readonly=True)
     check = fields.Boolean(related="company_id.laboratory")
+    
+    def percentage_value(self):
+        date = []
+        percentage_value = 0
+        for record in self:
+            if record.date_end:
+                date.append(record.date_end)
+                for i in date:
+                    if i == record.date_end:
+                        percentage_value = sum(record.hours)
+                    else:
+                        percentage_value = 0 
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_distribution_assessment')
@@ -52,15 +64,17 @@ class DistributionAssessment(models.Model):
             query += """
                 select 
                 row_number() OVER (ORDER BY w.id)as id,mwp.company_id,
-                w.name,sum(mwp.duration) as hours,to_char(mwp.date_end,'YYYY-MM') as date_end,
+                w.name,sum(mwp.duration)/60 as hours,to_char(mwp.date_end,'YYYY-MM') as date_end,
                 (
-                 select sum(mwp.duration) 
+                 select (sum(mwp.duration)/60)
                  from mrp_workcenter_productivity mwp
                 ) as total_time,
                 (
-                 sum(mwp.duration)/(select sum(p.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(p.duration)/60) 
                  from mrp_workcenter_productivity p
-                 where mwp.company_id = p.company_id)
+                 where to_char(p.date_end,'YYYY-MM') = date_end::char
+                 --group by to_char(mwp.date_end,'YYYY-MM') date_end::char
+                 )
                 )as percentage,
                 (
                  (
@@ -71,13 +85,13 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.management_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.management_id = aml.analytic_account_id and ((aat.id = 9 or aat.id = 10 or aat.id = 11))
+                 --group by to_char(aml.date,'YYYY-MM')
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
-                 --left join res_company rc on (rc.id = mwp.company_id))
                  )
                 )as management,
                 (
@@ -89,12 +103,12 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.laboratory_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.laboratory_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
 
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as laboratory,
@@ -107,11 +121,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.dispatch_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.dispatch_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as dispatch,
@@ -124,11 +138,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.maintenance_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.maintenance_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as maintenance,
@@ -141,11 +155,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.disused_assets_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.disused_assets_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as disused_assets,
@@ -158,11 +172,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.alternative_center_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.alternative_center_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as alternative_center,
@@ -175,11 +189,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plan_department_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.plan_department_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as plan_department_id,
@@ -192,11 +206,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.shipping_department_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.shipping_department_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as shipping_department_id,
@@ -209,11 +223,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plant_maintenance_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.plant_maintenance_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as plant_maintenance_id,
@@ -226,11 +240,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plant_overhead_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.plant_overhead_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as plant_overhead_id,
@@ -243,11 +257,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.transport_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.transport_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as transport_id,
@@ -260,11 +274,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.rm_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.rm_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as rm_id,
@@ -277,11 +291,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plant_support_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.plant_support_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as plant_support_id,
@@ -294,11 +308,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.proyect_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.proyect_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as proyect_id,
@@ -311,11 +325,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.warehouse_distribution_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.warehouse_distribution_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as warehouse_distribution_id,
@@ -328,11 +342,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.prepress_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.prepress_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as prepress_id,
@@ -345,11 +359,11 @@ class DistributionAssessment(models.Model):
                  left join account_move_line aml on (aml.account_id = aa.id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.supplies_id = aml.analytic_account_id)
-                 where rc.management_id = aaa.id and to_char(mwp.date_end,'YYYY-MM') = to_char(aml.date,'YYYY-MM') and aat.id = 9 or aat.id = 10 or aat.id = 11
+                 where rc.supplies_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
                  (
-                 sum(mwp.duration)/(select sum(mwp.duration) 
+                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
                  from mrp_workcenter_productivity mwp)
                  )
                 )as supplies_id,
@@ -380,7 +394,7 @@ class DistributionAssessment(models.Model):
      #   workorder = []
       #  total_hours = []
        # query_str = """select row_number() OVER (ORDER BY w.id)as id,
-        #                w.name as name,sum(mwp.duration) as hours,sum(mwp.)
+        #                w.name as name,sum(mwp.duration)/60 as hours,sum(mwp.)
         #                from mrp_workcenter_productivity mwp
         #                left join mrp_workcenter w on (w.id = mwp.workcenter_id)
         #                in %s 

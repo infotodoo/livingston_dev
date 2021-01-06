@@ -20,7 +20,7 @@
                    <field name="code"/>
                    <field name="name"/>
                    <field name="date_end"/>
-                   <field name="hours"/>
+                   <field name="hours" sum="hours"/>
                    <field name="percentage"/>
                    <field name="management"/>
                    <field name="laboratory"/>

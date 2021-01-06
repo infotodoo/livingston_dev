@@ -39,10 +39,7 @@
                                 <field name="supplies_id" options="{'no_create': True, 'no_create_edit':True}"/>
                             </group>
                         </group>
-                        <group name="account" string="Account Account">
-                            <field name="account_management_id" options="{'no_create': True, 'no_create_edit':True}"/>
-                        </group>
-                        <group>
+                        <group invisible="1">
                              <field name="management"/>
                              <field name="laboratory"/>
                              <field name="dispatch"/>
