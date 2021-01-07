@@ -19,7 +19,7 @@
                             ],
  
   "application"          :  True,
-  "installable"          :  True,
+  #"installable"          :  True,
   "auto_install"         :  False,
 
 }

@@ -31,6 +31,6 @@
                             ],
   "images"               :  ['static/description/Banner.png'],
   "application"          :  True,
-  "installable"          :  True,
+  #"installable"          :  True,
   "auto_install"         :  False,
 }
