@@ -14,10 +14,11 @@ class DistributionAssessment(models.Model):
     _description = 'This is the lines in the Distribution Assessment report'
     
     name = fields.Char('Workcenter',readonly=True)
-    date_end = fields.Char('Date',readonly=True)
+    month = fields.Integer('Date',readonly=True)
+    year = fields.Integer('end',readonly=True)
     hours = fields.Float('Hours',readonly=True)
     total_time = fields.Float('Total Times',readonly=True)
-    percentage = fields.Float('%',readonly=True,digits=(6,6))
+    (subquery.hours/(select (sum(p.duration)/60)                   from mrp_workcenter_productivity p where extract(month from p.date_end) = subquery.month and extract(year from p.date_end) = subquery.year)) = fields.Float('%',readonly=True,digits=(6,6))#,compute='_(subquery.hours/(select (sum(p.duration)/60)                   from mrp_workcenter_productivity p where extract(month from p.date_end) = subquery.month and extract(year from p.date_end) = subquery.year))_value')
     management = fields.Float('Operation Management',readonly=True)
     laboratory = fields.Float('Laboratory',readonly=True)
     dispatch = fields.Float('Dispatch',readonly=True)
@@ -39,17 +40,6 @@ class DistributionAssessment(models.Model):
     supplies_id = fields.Float('Supplies',readonly=True)
     check = fields.Boolean(related="company_id.laboratory")
     
-    def percentage_value(self):
-        date = []
-        percentage_value = 0
-        for record in self:
-            if record.date_end:
-                date.append(record.date_end)
-                for i in date:
-                    if i == record.date_end:
-                        percentage_value = sum(record.hours)
-                    else:
-                        percentage_value = 0 
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_distribution_assessment')
@@ -62,21 +52,10 @@ class DistributionAssessment(models.Model):
             count += 1
             
             query += """
-                select 
-                row_number() OVER (ORDER BY w.id)as id,mwp.company_id,
-                w.name,sum(mwp.duration)/60 as hours,to_char(mwp.date_end,'YYYY-MM') as date_end,
-                (
-                 select (sum(mwp.duration)/60)
-                 from mrp_workcenter_productivity mwp
-                ) as total_time,
-                (
-                 (sum(mwp.duration)/60)/(select (sum(p.duration)/60) 
-                 from mrp_workcenter_productivity p
-                 where to_char(p.date_end,'YYYY-MM') = date_end::char
-                 --group by to_char(mwp.date_end,'YYYY-MM') date_end::char
-                 )
-                )as percentage,
-                (
+                select row_number() OVER (ORDER BY subquery.id) as id,company_id,code,name,hours,month,year,total_time,
+                (subquery.hours/(select (sum(p.duration)/60) 
+                 from mrp_workcenter_productivity p where extract(month from p.date_end) = subquery.month and extract(year from p.date_end) = subquery.year)) as percentage,
+                 (
                  (
                  select sum(aml.debit) 
                  from account_account_tag aat
@@ -89,9 +68,10 @@ class DistributionAssessment(models.Model):
                  --group by to_char(aml.date,'YYYY-MM')
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
+                 (subquery.hours/(select (sum(p.duration)/60)
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year)
                  )
                 )as management,
                 (
@@ -107,9 +87,10 @@ class DistributionAssessment(models.Model):
 
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year)
                  )
                 )as laboratory,
                 (
@@ -124,10 +105,10 @@ class DistributionAssessment(models.Model):
                  where rc.dispatch_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as dispatch,
                 (
                  (
@@ -141,10 +122,10 @@ class DistributionAssessment(models.Model):
                  where rc.maintenance_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as maintenance,
                 (
                  (
@@ -158,10 +139,10 @@ class DistributionAssessment(models.Model):
                  where rc.disused_assets_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as disused_assets,
                 (
                  (
@@ -175,10 +156,10 @@ class DistributionAssessment(models.Model):
                  where rc.alternative_center_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as alternative_center,
                 (
                  (
@@ -192,10 +173,10 @@ class DistributionAssessment(models.Model):
                  where rc.plan_department_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as plan_department_id,
                 (
                  (
@@ -209,10 +190,10 @@ class DistributionAssessment(models.Model):
                  where rc.shipping_department_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as shipping_department_id,
                 (
                  (
@@ -226,10 +207,10 @@ class DistributionAssessment(models.Model):
                  where rc.plant_maintenance_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as plant_maintenance_id,
                  (
                  (
@@ -243,10 +224,10 @@ class DistributionAssessment(models.Model):
                  where rc.plant_overhead_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as plant_overhead_id,
                 (
                  (
@@ -260,10 +241,10 @@ class DistributionAssessment(models.Model):
                  where rc.transport_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as transport_id,
                 (
                  (
@@ -277,10 +258,10 @@ class DistributionAssessment(models.Model):
                  where rc.rm_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as rm_id,
                 (
                  (
@@ -294,10 +275,10 @@ class DistributionAssessment(models.Model):
                  where rc.plant_support_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as plant_support_id,
                  (
                  (
@@ -311,10 +292,10 @@ class DistributionAssessment(models.Model):
                  where rc.proyect_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as proyect_id,
                 (
                  (
@@ -328,10 +309,10 @@ class DistributionAssessment(models.Model):
                  where rc.warehouse_distribution_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as warehouse_distribution_id,
                  (
                  (
@@ -345,10 +326,10 @@ class DistributionAssessment(models.Model):
                  where rc.prepress_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
                 )as prepress_id,
                 (
                  (
@@ -362,11 +343,21 @@ class DistributionAssessment(models.Model):
                  where rc.supplies_id = aaa.id and (aat.id = 9 or aat.id = 10 or aat.id = 11)
                  )
                  *
-                 (
-                 (sum(mwp.duration)/60)/(select (sum(mwp.duration)/60) 
-                 from mrp_workcenter_productivity mwp)
-                 )
-                )as supplies_id,
+                 (subquery.hours/(select (sum(p.duration)/60)                   
+                 from mrp_workcenter_productivity p 
+                 where extract(month from p.date_end) = subquery.month and 
+                 extract(year from p.date_end) = subquery.year))
+                )as supplies_id
+                from (
+                select 
+                row_number() OVER (ORDER BY w.id) as id,mwp.company_id,
+                w.name,
+                sum(mwp.duration)/60 as hours,extract(MONTH from mwp.date_end) as month,extract(YEAR 
+                from mwp.date_end) as year,
+                (
+                 select (sum(mwp.duration)/60)
+                 from mrp_workcenter_productivity mwp
+                ) as total_time,
                 (
                  --select aaa.code 
                  --from account_analytic_account aaa
@@ -379,7 +370,7 @@ class DistributionAssessment(models.Model):
                 left join mrp_workcenter w on (w.id = mwp.workcenter_id)
                 left join account_analytic_account aaa on (aaa.id = w.account_analytic_real)
                 where 1=1 and mwp.company_id = %s
-                group by w.id, w.name, aaa.code, to_char(mwp.date_end,'YYYY-MM'), mwp.company_id
+                group by w.id, w.name, aaa.code, month, year, mwp.company_id) as subquery
                 """ % (record.id)
         query += """);"""
         _logger.error(query)
