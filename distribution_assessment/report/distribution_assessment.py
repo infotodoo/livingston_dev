@@ -18,7 +18,7 @@ class DistributionAssessment(models.Model):
     year = fields.Integer('end',readonly=True)
     hours = fields.Float('Hours',readonly=True)
     total_time = fields.Float('Total Times',readonly=True)
-    (subquery.hours/(select (sum(p.duration)/60)                   from mrp_workcenter_productivity p where extract(month from p.date_end) = subquery.month and extract(year from p.date_end) = subquery.year)) = fields.Float('%',readonly=True,digits=(6,6))#,compute='_(subquery.hours/(select (sum(p.duration)/60)                   from mrp_workcenter_productivity p where extract(month from p.date_end) = subquery.month and extract(year from p.date_end) = subquery.year))_value')
+    percentage = fields.Float('%',readonly=True,digits=(6,6))
     management = fields.Float('Operation Management',readonly=True)
     laboratory = fields.Float('Laboratory',readonly=True)
     dispatch = fields.Float('Dispatch',readonly=True)
