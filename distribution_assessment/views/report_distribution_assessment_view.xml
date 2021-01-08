@@ -10,8 +10,8 @@
                 </search>
             </field>
         </record>
-        <record id="distribution_assessment_report_view_tree" model="ir.ui.view">
-            <field name="name">distribution.assessment.report.view.tree</field>
+        <record id="distribution_assessment_report_view_tree_colombia" model="ir.ui.view">
+            <field name="name">distribution.assessment.report.view.tree.colombia</field>
              <field name="type">tree</field>
             <field name="model">report.distribution.assessment</field>
             <field name="arch" type="xml">
@@ -28,7 +28,7 @@
                    <field name="maintenance"/>
                    <field name="disused_assets"/>
                    <field name="alternative_center"/>
-                   <field name="plan_department_id"/>
+                   <!--<field name="plan_department_id"/>
                    <field name="shipping_department_id"/>
                    <field name="plant_maintenance_id" /> 
                    <field name="plant_overhead_id" />
@@ -38,14 +38,14 @@
                    <field name="proyect_id"/>
                    <field name="warehouse_distribution_id"/> 
                    <field name="prepress_id"/>
-                   <field name="supplies_id"/>
+                   <field name="supplies_id"/>-->
                 </tree>
             </field>
         </record>
-        <record model="ir.actions.act_window" id="action_report_distribution_assessment_tree">
+        <record model="ir.actions.act_window" id="action_report_distribution_assessment_tree_colombia">
             <field name="name">Distribution Assessment Report</field>
             <field name="res_model">report.distribution.assessment</field>
-            <field name="view_id" ref="distribution_assessment_report_view_tree"/>
+            <field name="view_id" ref="distribution_assessment_report_view_tree_colombia"/>
             <field name="view_mode">tree</field>
             <field name="search_view_id" ref="view_distribution_search"/>
         </record>
