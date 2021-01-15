@@ -38,6 +38,7 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree>
+                    <button name="prelimit_journal" type="object" string="Create Jornal"/>
                     <field name="prelimit_code" />
                     <field name="workcenter_id"/>
                     <field name="date_start"/>

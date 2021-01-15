@@ -17,7 +17,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','mrp_workorder','sale_management'],
+    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','mrp_workorder','sale_management','account_accountant'],
 
     # always loaded
     'data': [
