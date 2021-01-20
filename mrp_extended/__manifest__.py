@@ -17,12 +17,13 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','mrp_workorder','sale_management','account_accountant'],
+    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','mrp_workorder','sale_management'],
 
     # always loaded
     'data': [
         'security/mrp_variation_cost_security.xml',
         'security/ir.model.access.csv',
+        'data/accounting_groups.xml',
         'data/mrp_workcenter_productivity_loss_data.xml',
         'views/mrp_workcenter_view.xml',
         'views/mrp_cost_structure_template.xml',
@@ -34,5 +35,6 @@
         'views/cost_structure_report.xml',
         'views/sale_order_view.xml',
         'views/mrp_prelimit_view.xml',
+        'views/account_line.xml',
     ],
 }

@@ -10,7 +10,7 @@
                     <field name="costs_hour_cif"/>
                     <field name="costs_hour_maq"/>
                 </xpath>
-                <xpath expr="//notebook/page[1]/group[1]" position="attributes">
+                <xpath expr="//notebook/page[1]/group[1]/group[2]" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
                 <xpath expr="//notebook/page[1]" position="after">

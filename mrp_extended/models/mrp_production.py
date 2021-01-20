@@ -7,10 +7,19 @@ from odoo.exceptions import ValidationError
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
-    def button_mark_done(self):
-        res = super(MrpProduction, self).button_mark_done()
-        self.create_move_test()
-        return res
+    # def button_mark_done(self):
+    #     res = super(MrpProduction, self).button_mark_done()
+    #     #self.create_move_test()
+    #     return res
+    
+    @api.onchange('sale_order_id','product_id')
+    def validation_sale_order(self):
+        for record in self:
+            if record.sale_order_id:
+                if not record.sale_order_id.order_line:
+                    raise ValidationError("El pedido de venta seleccionado no tiene líneas de órdenes")
+                if record.product_id.name != record.sale_order_id.order_line.product_template_id.name:
+                    raise ValidationError("El producto seleccionado en la orden de producción no es igual al del pedido de venta")
 
     def create_move_workcenter(self):
         am_obj = self.env['account.move']
@@ -60,19 +69,31 @@ class MrpProduction(models.Model):
                 cif = []
                 maq = []
                 for workorder in record.workorder_ids:
-                    workorder.button_pending()
-                    time = sum([x.duration for x in workorder.time_ids])
+                    #workorder.button_pending()
+                    #workorder.end_previous()
+                    #time = sum([x.duration for x in workorder.time_ids])
+                    time= workorder.duration
                     time_corte= time
                     time = (time - workorder.estimated_time) / 60
-                    cost_mod = workorder.workcenter_id.costs_hour_mod
-                    cost_cif = workorder.workcenter_id.costs_hour_cif
-                    cost_maq = workorder.workcenter_id.costs_hour_maq
-                    account_mod = workorder.workcenter_id.mod_account_id
-                    account_mod_c = workorder.workcenter_id.account_mod_id
-                    account_cif = workorder.workcenter_id.cif_account_id
-                    account_cif_c = workorder.workcenter_id.account_cif_id
-                    account_maq = workorder.workcenter_id.maq_account_id
-                    account_maq_c = workorder.workcenter_id.account_maq_id
+                    cost_mod = workorder.workcenter_id.costs_hour_mod_real
+                    cost_cif = workorder.workcenter_id.costs_hour_cif_real
+                    cost_maq = workorder.workcenter_id.costs_hour_maq_real
+                    account_mod = workorder.workcenter_id.mod_account_id_real
+                    account_mod_c = workorder.workcenter_id.account_mod_id_real
+                    account_cif = workorder.workcenter_id.cif_account_id_real
+                    account_cif_c = workorder.workcenter_id.account_cif_id_real
+                    account_maq = workorder.workcenter_id.maq_account_id_real
+                    account_maq_c = workorder.workcenter_id.account_maq_id_real
+
+                    # cost_mod = workorder.workcenter_id.costs_hour_mod
+                    # cost_cif = workorder.workcenter_id.costs_hour_cif
+                    # cost_maq = workorder.workcenter_id.costs_hour_maq
+                    # account_mod = workorder.workcenter_id.mod_account_id
+                    # account_mod_c = workorder.workcenter_id.account_mod_id
+                    # account_cif = workorder.workcenter_id.cif_account_id
+                    # account_cif_c = workorder.workcenter_id.account_cif_id
+                    # account_maq = workorder.workcenter_id.maq_account_id
+                    # account_maq_c = workorder.workcenter_id.account_maq_id
                     #########################################################################
                     if cost_mod == 0:
                         raise ValidationError("El costo MOD por hora no esta definido en el centro productivo: [%s]" % workorder.workcenter_id.name)
@@ -187,21 +208,17 @@ class MrpProduction(models.Model):
                     account_move = am_obj.sudo().create(move)
                     account_move.post()
                     acc_move_ids.append(account_move.id)
-                
-                # if acc_move_ids:
-                #     return {
-                #         'type': 'ir.actions.act_window',
-                #         'name': 'Asientos ' + record.name,
-                #         # 'view_type': 'tree',
-                #         'view_mode': 'tree,form',
-                #         'res_model': 'account.move',
-                #         # 'res_id': acc_move_ids,
-                #         'domain': [('id','in',acc_move_ids)],
-                #         'target': 'current'}
     
-    def post_inventory(self):
+    def automated_assent_line(self):
 
-        res = super(MrpProduction, self).post_inventory()
-        for record in self:
-            record.create_move_test()
-        return res
+        line_assents = self.search([])
+        line_assents.create_move_test()
+
+
+    
+    # def post_inventory(self):
+
+    #     res = super(MrpProduction, self).post_inventory()
+    #     for record in self:
+    #         record.create_move_test()
+    #     return res

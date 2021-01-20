@@ -64,7 +64,7 @@ class DistributionAssessment(models.Model):
                  from mrp_workcenter_productivity p where extract(month from p.date_end) = subquery.month and extract(year from p.date_end) = subquery.year)) as percentage,
                  (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -72,7 +72,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.management_id = aml.analytic_account_id)
-                 where rc.management_id = aml.analytic_account_id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.management_id = aml.analytic_account_id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)
@@ -83,7 +83,7 @@ class DistributionAssessment(models.Model):
                 )as management,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -91,7 +91,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.laboratory_id = aml.analytic_account_id)
-                 where rc.laboratory_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.laboratory_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
 
                  )
                  *
@@ -103,7 +103,7 @@ class DistributionAssessment(models.Model):
                 )as laboratory,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -111,7 +111,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.dispatch_id = aml.analytic_account_id)
-                 where rc.dispatch_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.dispatch_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -121,7 +121,7 @@ class DistributionAssessment(models.Model):
                 )as dispatch,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -129,7 +129,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.maintenance_id = aml.analytic_account_id)
-                 where rc.maintenance_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.maintenance_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -139,7 +139,7 @@ class DistributionAssessment(models.Model):
                 )as maintenance,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -147,7 +147,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.disused_assets_id = aml.analytic_account_id)
-                 where rc.disused_assets_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.disused_assets_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -157,7 +157,7 @@ class DistributionAssessment(models.Model):
                 )as disused_assets,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -165,7 +165,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.alternative_center_id = aml.analytic_account_id)
-                 where rc.alternative_center_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.alternative_center_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -175,7 +175,7 @@ class DistributionAssessment(models.Model):
                 )as alternative_center,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -183,7 +183,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plan_department_id = aml.analytic_account_id)
-                 where rc.plan_department_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.plan_department_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -193,7 +193,7 @@ class DistributionAssessment(models.Model):
                 )as plan_department_id,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -201,7 +201,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.shipping_department_id = aml.analytic_account_id)
-                 where rc.shipping_department_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.shipping_department_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -211,7 +211,7 @@ class DistributionAssessment(models.Model):
                 )as shipping_department_id,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -219,7 +219,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plant_maintenance_id = aml.analytic_account_id)
-                 where rc.plant_maintenance_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.plant_maintenance_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -229,7 +229,7 @@ class DistributionAssessment(models.Model):
                 )as plant_maintenance_id,
                  (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -237,7 +237,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plant_overhead_id = aml.analytic_account_id)
-                 where rc.plant_overhead_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.plant_overhead_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -247,7 +247,7 @@ class DistributionAssessment(models.Model):
                 )as plant_overhead_id,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -255,7 +255,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.transport_id = aml.analytic_account_id)
-                 where rc.transport_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.transport_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -265,7 +265,7 @@ class DistributionAssessment(models.Model):
                 )as transport_id,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -273,7 +273,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.rm_id = aml.analytic_account_id)
-                 where rc.rm_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.rm_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -283,7 +283,7 @@ class DistributionAssessment(models.Model):
                 )as rm_id,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -291,7 +291,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.plant_support_id = aml.analytic_account_id)
-                 where rc.plant_support_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.plant_support_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -301,7 +301,7 @@ class DistributionAssessment(models.Model):
                 )as plant_support_id,
                  (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -309,7 +309,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.proyect_id = aml.analytic_account_id)
-                 where rc.proyect_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.proyect_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -319,7 +319,7 @@ class DistributionAssessment(models.Model):
                 )as proyect_id,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -327,7 +327,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.warehouse_distribution_id = aml.analytic_account_id)
-                 where rc.warehouse_distribution_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.warehouse_distribution_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -337,7 +337,7 @@ class DistributionAssessment(models.Model):
                 )as warehouse_distribution_id,
                  (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -345,7 +345,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.prepress_id = aml.analytic_account_id)
-                 where rc.prepress_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.prepress_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   
@@ -355,7 +355,7 @@ class DistributionAssessment(models.Model):
                 )as prepress_id,
                 (
                  (
-                 select sum(aml.debit) 
+                 select (sum(aml.debit)-sum(aml.credit)) 
                  from account_account_tag aat
                  left join account_account_account_tag aaat on (aaat.account_account_tag_id = aat.id)
                  left join account_account aa on (aa.id = aaat.account_account_id)
@@ -363,7 +363,7 @@ class DistributionAssessment(models.Model):
                  left join account_move am on (am.id = aml.move_id)
                  left join account_analytic_account aaa on (aaa.id = aml.analytic_account_id)
                  left join res_company rc on (rc.supplies_id = aml.analytic_account_id)
-                 where rc.supplies_id = aaa.id and ((aat.id = 9 or aat.id = 10 or aat.id = 11)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
+                 where rc.supplies_id = aaa.id and ((aat.id = 7 or aat.id = 8 or aat.id = 9)) and extract(month from aml.date) = subquery.month and extract(year from aml.date) = subquery.year and am.state = 'posted'
                  )
                  *
                  (subquery.hours/(select (sum(p.duration)/60)                   

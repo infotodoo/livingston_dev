@@ -25,27 +25,24 @@ class MrpPrelimit(models.Model):
     
     @api.depends('workcenter_id')
     def _compute_distribution_percentage(self):
+        dates = []
         for record in self:
             if record.workcenter_id and record.distribution != 0:
                 account_obj = record.env['account.move']
                 account_date = """
-                               select to_char(date,'MM-YYYY') from account_move
+                               select to_char(date,'MM-YYYY') as date from account_move
+                               where company_id = 19 and state = 'posted'
                                group by to_char(date,'MM-YYYY');
                                """
                 record.env.cr.execute(account_date, (tuple(account_obj.ids), ))
                 for date in record.env.cr.fetchall():
+                    _logger.error('-----------------------------datos de fechas----------')
+                    _logger.error(date[0])
                     _logger.error(record.date_end.strftime("%m-%Y"))
-                    _logger.error(date)
-                    for i in date:
-                        if i == record.date_end.strftime("%m-%Y"):
-                            record.distribution_percentage = record.hours/record.distribution
-                        else:
-                            _logger.error("--------------distribution-----------------------------------")
-                            _logger.error(record.date_end.strftime("%m-%Y"))
-                            _logger.error(date)
-                            record.distribution_percentage = 0
-            else:
-                record.distribution_percentage = 0
+                    if date[0] == record.date_end.strftime("%m-%Y"):
+                        _logger.error('---------------------if------------------------')
+                        record.distribution_percentage = record.hours/record.distribution
+                        _logger.error(record.distribution_percentage)
     
     
     @api.depends('workcenter_id')
@@ -63,19 +60,15 @@ class MrpPrelimit(models.Model):
                                 left join account_account_account_tag aaat on 
                                 (aaat.account_account_id = aa.id) 
                                 left join account_move am on (am.id = aml.move_id) 
-                                where aml.analytic_account_id = wc.account_analytic_real 
-                                and aaat.account_account_tag_id = 11 and am.state = 'posted' 
-                                and am.state = 'posted' group by to_char(am.date,'MM-YYYY'); 
-                                """
+                                where wc.account_analytic_real = %s 
+                                and aaat.account_account_tag_id = 9 and am.state = 'posted' 
+                                group by to_char(am.date,'MM-YYYY'); 
+                                """%(record.workcenter_id.account_analytic_real.id)
                 record.env.cr.execute(account_id_maq, (tuple(prelimit.ids), ))
                 for date,debit in record.env.cr.fetchall():
                     if date == record.date_end.strftime("%m-%Y"):
                         account_maq = debit
                         record.cost_maq = record.distribution_percentage * account_maq
-                    else:
-                        record.cost_maq = 0
-            else:
-                record.cost_maq = 0
                 
     
     @api.depends('workcenter_id')
@@ -93,21 +86,15 @@ class MrpPrelimit(models.Model):
                                 left join account_account_account_tag aaat on 
                                 (aaat.account_account_id = aa.id) 
                                 left join account_move am on (am.id = aml.move_id) 
-                                where aml.analytic_account_id = wc.account_analytic_real 
-                                and aaat.account_account_tag_id = 10 and am.state = 'posted' 
-                                and am.state = 'posted' group by to_char(am.date,'MM-YYYY');  
-                                """
+                                where wc.account_analytic_real = %s 
+                                and aaat.account_account_tag_id = 8 and am.state = 'posted' 
+                                group by to_char(am.date,'MM-YYYY');  
+                                """%(record.workcenter_id.account_analytic_real.id)
                 record.env.cr.execute(account_id_cif, (tuple(prelimit.ids), ))
                 for date,debit in record.env.cr.fetchall():
                     if date == record.date_end.strftime("%m-%Y"):
-                        _logger.error('-------------------------date----------------')
-                        _logger.error(date)
                         account_cif = debit
                         record.cost_cif = record.distribution_percentage * account_cif
-                    else:
-                        record.cost_cif = 0
-            else:
-                record.cost_cif = 0
                 
             
     @api.depends('workcenter_id')
@@ -125,19 +112,15 @@ class MrpPrelimit(models.Model):
                                 left join account_account_account_tag aaat on 
                                 (aaat.account_account_id = aa.id) 
                                 left join account_move am on (am.id = aml.move_id) 
-                                where aml.analytic_account_id = wc.account_analytic_real 
-                                and aaat.account_account_tag_id = 10 and am.state = 'posted' 
-                                and am.state = 'posted' group by to_char(am.date,'MM-YYYY'); 
-                                """
+                                where wc.account_analytic_real = %s
+                                and aaat.account_account_tag_id = 7 and am.state = 'posted' 
+                                group by to_char(am.date,'MM-YYYY'); 
+                                """%(record.workcenter_id.account_analytic_real.id)
                 record.env.cr.execute(account_id_mod, (tuple(prelimit.ids), ))
                 for date,debit in record.env.cr.fetchall():
                     if date == record.date_end.strftime("%m-%Y"):
                         account_mod = debit
                         record.cost_mod = record.distribution_percentage * account_mod
-                    else:
-                        record.cost_mod = 0
-            else:
-                record.cost_mod = 0
                 
     
     @api.depends('hours')
@@ -221,7 +204,7 @@ class MrpPrelimit(models.Model):
             if cif:
                 move = {
                         'journal_id': record.production_id.product_id.categ_id.property_stock_journal.id,
-                        'line_ids': mod,
+                        'line_ids': cif,
                         'date': fields.Date.today(),
                         'ref': record.production_id.name + ' - CIF'+' - '+record.workcenter_id.account_analytic_real.name,
                         'type': 'entry'
@@ -232,7 +215,7 @@ class MrpPrelimit(models.Model):
             if maq:
                 move = {
                         'journal_id': record.production_id.product_id.categ_id.property_stock_journal.id,
-                        'line_ids': mod,
+                        'line_ids': maq,
                         'date': fields.Date.today(),
                         'ref': record.production_id.name + ' - MAQ'+' - '+record.workcenter_id.account_analytic_real.name,
                         'type': 'entry'
@@ -240,3 +223,5 @@ class MrpPrelimit(models.Model):
                 account_move = account_obj.sudo().create(move)
                 account_move.post()
                 acc_move_ids.append(account_move.id)
+
+

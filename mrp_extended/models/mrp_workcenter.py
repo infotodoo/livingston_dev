@@ -37,6 +37,9 @@ class MrpWorkcenter(models.Model):
     @api.onchange('costs_hour_mod', 'costs_hour_cif', 'costs_hour_maq')
     def _onchange_costs(self):
         self.costs_hour = self.costs_hour_mod + self.costs_hour_cif + self.costs_hour_maq
+    @api.onchange('costs_hour_mod_real', 'costs_hour_cif_real', 'costs_hour_maq_real')
+    def _onchange_costs_real(self):
+        self.costs_hour_real = self.costs_hour_mod_real + self.costs_hour_cif_real + self.costs_hour_maq_real
 
     def _prepare_move_line(self, ids, name):
         line_ids = []
