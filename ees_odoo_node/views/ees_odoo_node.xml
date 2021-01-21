@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><!-- OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO -->
+<!-- OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO Frontend essets -->
+
+<record id="ees_odoo_node.script_form" model="ir.ui.view"><field name="name">ees_odoo_node.script_form</field>
+<field name="model">ees_odoo_node.script</field><field eval="18" name="priority"/><field name="arch" type="xml"><form>
+	<sheet><div class="oe_button_box" name="button_box"><button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+		<field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/></button>
+	</div><div class="oe_title"><label class="oe_edit_only" for="name" string="Nome"/><h1><field name="name"/></h1></div>
+	<hr/>	
+	<label for="desc" string="Descrizione"/><field name="desc"/><field name="pid" invisible="1"/>
+	<notebook>
+		<page string="Node-Js console">
+			<button name="run_script_once" string="esegui" type="object" class="btn-primary" attrs="{'invisible':[('pid','>',0)]}"/>
+			<button	name="stop_script_once" string="stop" type="object" class="btn-primary" attrs="{'invisible':[('pid','=',0)]}" />
+			<button name="fake_refresh" string="aggiorna console" type="object" class="btn-primary" />
+			<button name="clean_console" string="pulisci console" type="object" class="btn-primary" />
+			<field name="console_js" readonly="1"/>		
+		</page>
+		<page string="Node-Js code"><field name="jscontents" widget="ace" ace-mode="javascript"/></page>
+		<page string="Service console">
+			<button	name="install_service" string="install service" type="object" class="btn-primary" />
+			<button	name="remove_service" string="remove service" type="object" class="btn-primary" />
+			<button	name="state_service" string="state service" type="object" class="btn-primary" />
+			<button	name="start_service" string="start service" type="object" class="btn-primary" />
+			<button	name="stop_service" string="stop service" type="object" class="btn-primary" />
+			<br/>
+			<button name="fake_refresh" string="aggiorna console" type="object" class="btn-primary" />
+			<button name="clean_console_service" string="pulisci console" type="object" class="btn-primary" />
+			<field name="console_service" readonly="1"/>	
+		</page>
+		<page string="Schedule Task">
+			<button	name="schedule_task" string="schedule task" type="object" class="btn-primary" />
+			<br/>
+			<field name="frequency" widget="selection"/>
+			<field name="dayTime"/>
+		</page>
+	</notebook>
+</sheet></form></field></record>
+<record id="ees_odoo_node.script_tree" model="ir.ui.view"><field name="name">ees_odoo_node.script_tree</field>
+<field name="model">ees_odoo_node.script</field><field eval="18" name="priority"/><field name="arch" type="xml"><tree string="Views">
+    <field name="name"/><field name="desc"/>
+</tree></field></record>
+<record id="ees_odoo_node.script_search" model="ir.ui.view"><field name="name">ees_odoo_node.script_search</field>
+<field name="model">ees_odoo_node.script</field><field eval="18" name="priority"/><field name="arch" type="xml"><search string="Views">
+    <field name="name" filter_domain="['|', '|', ('name','ilike',self), ('model','ilike',self), ('model_data_id','ilike',self)]" string="Script"/>
+    <filter string="Active" name="active" domain="[('active', '=',True)]"/>
+    <filter string="Inactive" name="inactive" domain="[('active', '=',False)]"/>
+</search></field></record>
+<record id="ees_odoo_node.script_search_action" model="ir.actions.act_window">
+	<field name="name">Find script</field>
+	<field name="res_model">ees_odoo_node.script</field>
+	<field name="view_mode">tree,form,pivot,graph</field>
+</record>
+<record id="ees_odoo_node.theonlyconfig" model="ees_odoo_node.config">
+	<field name="name">EESTISOFT NODE CONFIG</field>
+	<field name="nodejs_folder">C:\Program Files\nodejs\</field>
+	<field name="nssm_folder">C:\Program Files (x86)\Odoo 11.0\nssm\win64\</field>
+	<field name="pgconfig">{host: "localhost",port: 5432,database:"ODOO11-SALOTTO",user:"your_pg_user_for_node",password:"your_password"}</field>
+	<field name="dbtools">const {Pool,Client}=require("pg");const fs=require("fs");const pgescape=require("pg-escape");const pgpool=new Pool(
+	%PG-CONFIG
+);var elog=new Date().toLocaleTimeString()+":started";console.olog=console.log;var esync=true;console.log=function(msg){elog=new Date().toLocaleTimeString()+":"+msg+"\n"+elog;if(esync){esync=false;setTimeout(function(){esync=true},2500);if(elog.length>10000){elog=elog.substring(0,5000)}var cmd=pgescape("UPDATE public.ees_odoo_node_script SET console_js=CONCAT(%L,'\n',console_js) WHERE id="+script_dbid+";",elog);elog='';pgpool.query(cmd,(err2,pgdata)=>{if(err2){console.olog(err2.message)}console.olog(msg)});}};
+
+	</field>
+	<field name="postexe">const {exec}=require('child_process');const {Pool,Client}=require("pg");const pgescape=require("pg-escape");const fs=require("fs");const pgpool=new Pool(
+	%PG-CONFIG
+);console.olog=console.log;var esync=true;console.log=function(msg){msg=new Date().toLocaleTimeString()+":"+msg;if(esync){esync=false;setTimeout(function(){esync=true},2500);var cmd=pgescape("UPDATE public.ees_odoo_node_script SET console_js=CONCAT(%L,'\n',console_js) WHERE id="+script_dbid+";",msg);pgpool.query(cmd,(err2,pgdata)=>{if(err2){console.olog(err2.message)}console.olog(msg)});}};
+exec('"%NODEFOLDERnode.exe" "'+scriptfile+'"',(err1,stdout,stderr)=>{
+ if(!err1){pgpool.query('UPDATE public.ees_odoo_node_script SET pid=0 WHERE id='+script_dbid,function(err,data){console.log('ended ok');});}
+ else{pgpool.query('UPDATE public.ees_odoo_node_script SET pid=0 WHERE id='+script_dbid,function(err,data){console.log('ended with error '+err1.message);});}
+});
+	</field>
+	<field name="service">const {exec}=require('child_process');const {Pool,Client}=require("pg");const pgescape=require("pg-escape");const fs=require("fs");const pgpool=new Pool(
+	%PG-CONFIG
+);var elog='';console.olog=console.log;var esync=true;console.log=function(msg){elog=new Date().toLocaleTimeString()+":"+msg+"\n"+elog;if(esync){esync=false;setTimeout(function(){esync=true},2500);var cmd=pgescape("UPDATE public.ees_odoo_node_script SET console_service=CONCAT(%L,console_service) WHERE id="+script_dbid+";",elog);elog='';pgpool.query(cmd,(err2,pgdata)=>{if(err2){console.olog(err2.message)}console.olog(msg)});}};
+var MAXERRORS=5;var IN_MINUTES=5;
+var RESTART_COUNT=0;
+
+function decrease(){RESTART_COUNT=RESTART_COUNT-1}
+function increase(){RESTART_COUNT=RESTART_COUNT+1;setTimeout(decrease,1000*60*IN_MINUTES);return RESTART_COUNT;}
+function start(){
+	exec('"%NODEFOLDERnode.exe" "'+scriptfile+'"',(err1,stdout,stderr)=>{console.olog('one');
+		if(increase()&lt;MAXERRORS){
+			if(!err1){console.log('restarted service');}else{console.log('restarted after error '+err1.message);}
+			start();
+		}else{
+			//proc = subprocess.Popen([fld+'nssm', 'status', fname], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+			if(!err1){console.log('service ended ok');}else{console.log('service ended with error '+err1.message);}
+		}
+	});
+}
+start();
+console.log(new Date().toLocaleTimeString()+":Service started");
+	</field>
+<field name="createFile">const {exec}=require('child_process');const {Pool,Client}=require("pg");const pgescape=require("pg-escape");const fs=require("fs");const pgpool=new Pool(
+	%PG-CONFIG
+);console.olog=console.log;var esync=true;console.log=function(msg){msg=new Date().toLocaleTimeString()+":"+msg;if(esync){esync=false;setTimeout(function(){esync=true},2500);var cmd=pgescape("UPDATE public.ees_odoo_node_script SET console_js=CONCAT(%L,'\n',console_js) WHERE id="+script_dbid+";",msg);pgpool.query(cmd,(err2,pgdata)=>{if(err2){console.olog(err2.message)}console.olog(msg)});}};
+ 
+fs.writeFile('eesti.txt', 'Learn Node FS module', function (err) {
+  if (err) throw err;
+  console.log('File is created successfully.');
+}); 
+
+	</field>
+<field name="dbAccess">const {exec}=require('child_process');const {Pool,Client}=require("pg");const pgescape=require("pg-escape");const fs=require("fs");const pgpool=new Pool(
+	%PG-CONFIG
+);console.olog=console.log;var esync=true;console.log=function(msg){msg=new Date().toLocaleTimeString()+":"+msg;if(esync){esync=false;setTimeout(function(){esync=true},2500);var cmd=pgescape("UPDATE public.ees_odoo_node_script SET console_js=CONCAT(%L,'\n',console_js) WHERE id="+script_dbid+";",msg);pgpool.query(cmd,(err2,pgdata)=>{if(err2){console.olog(err2.message)}console.olog(msg)});}};
+ 
+async function dbAccess(){
+    
+    await pgpool.connect();
+    const res = await pgpool.query('SELECT $1::text as message', ['Hello world!']);
+    console.log(res.rows[0].message); // Hello world!
+    await pgpool.end();
+};
+
+dbAccess()
+  .then(console.log)
+  .catch(console.error)	
+	</field>
+	
+	</record>
+<record id="ees_odoo_node.config_form" model="ir.ui.view"><field name="name">ees_odoo_node.config_form</field>
+<field name="model">ees_odoo_node.config</field><field eval="18" name="priority"/>
+<field name="arch" type="xml"><form create="false"><sheet>
+<div class="oe_title"><h1><field name="name" readonly="1" invisible="0"/></h1></div>
+<group><field name="nodejs_folder"/><field name="nssm_folder"/><field name="pgconfig" widget="ace" ace-mode="json"/></group>
+<label for="install_node_modules" string="Prerequisites for db functionalities"/><button name="install_node_modules" string="npm for postgres" type="object" class="btn-primary" />
+<br/>
+<!-- ::::::::::::::::::::::::::::::::::::
+<label for="test_node" string="Test Node File"/><button name="test_node_file" string="test node" type="object" class="btn-primary" />
+<field name="testNode" widget="boolean_button" options="{'terminology':{'string_true': 'True','hover_true': 'True','string_false': 'False','hover_false': 'False'}}"/>
+<br/>
+<label for="test_npm" string="Test Npm"/><button name="test_npm" string="test npm" type="object" class="btn-primary" />
+<field name="testNpm" widget="boolean_button" options="{'terminology':{'string_true': 'True','hover_true': 'True','string_false': 'False','hover_false': 'False'}}"/>
+<br/>
+<label for="test_db_access" string="Test Db Access"/><button name="test_db_access" string="test db access" type="object" class="btn-primary" />
+<field name="testDbAccess" widget="boolean_button" options="{'terminology':{'string_true': 'True','hover_true': 'True','string_false': 'False','hover_false': 'False'}}"/>
+<br/>
+<label for="test_db_write" string="Test Db Write"/><button name="test_db_write" string="test db write" type="object" class="btn-primary" />
+<field name="testDbWrite" widget="boolean_button" options="{'terminology':{'string_true': 'True','hover_true': 'True','string_false': 'False','hover_false': 'False'}}"/>
+<br/>
+<button name="set_all_test_false" string="reset test" type="object" class="btn-primary" />
+:::::::::::::::::::::::::::::::::::::::::-->
+<notebook>
+<page string="dbtools"><field name="dbtools" widget="ace" ace-mode="javascript"/></page>
+<page string="post exec"><field name="postexe" widget="ace" ace-mode="javascript"/></page>
+</notebook>
+</sheet></form></field></record>
+<record id="ees_odoo_node.config_action" model="ir.actions.act_window">
+	<field name="name">Node-Js - Configuration</field>
+	<field name="res_model">ees_odoo_node.config</field>
+	<field name="view_mode">form</field>
+	<field name="context">{'form_view_initial_mode': 'edit', 'force_detailed_view': 'true'}</field>
+	<field name="res_id">1</field><field name="search_view_id" ref=""/>
+	<field name="view_ids" eval="[(5, 0, 0),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('ees_odoo_node.config_form')}), 
+        (0, 0, {'view_mode': 'tree', 'view_id': False})]"/>
+</record>
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+<record id="ees_odoo_node.g_node" model="res.groups">
+	<field name="name">EES Node-Js</field>
+</record>
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+<menuitem id="ees_odoo_node.main_menu" name="Node-Js" groups="ees_odoo_node.g_node" sequence="5" />
+	<menuitem id="ees_odoo_node.scripts_menu" name="Scripts" groups="base.group_user" parent="ees_odoo_node.main_menu" action="ees_odoo_node.script_search_action" sequence="5" />
+<menuitem id="ees_odoo_node.config_menu" name="Configuration" groups="base.group_user" parent="ees_odoo_node.main_menu" action="ees_odoo_node.config_action" sequence="6" />
+<!-- OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+	 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO--> 
+<record id="ees_odoo_node.script_sample1" model="ees_odoo_node.script">
+<field name="name">Node-Js Sample1</field>
+<field name="desc">This is a sample script.</field>
+<field name="jscontents">
+	console.log('test');
+	setTimeout(function(){console.log('ended');},5000);
+</field></record>
+
+<record id="ees_odoo_node.script_sample2" model="ees_odoo_node.script">
+<field name="name">Node-Js Sample2</field>
+<field name="desc">This is a sample script.</field>
+<field name="jscontents">
+//Read the data
+ees.select('res_partner','id=1',function(err,data1){
+	//After the data is read output
+	console.log(JSON.stringify(data1.rows));
+	//Now update something
+	ees.update('res_partner','id=1',['name'],["'Administrator NODE'"],function(err,data2){
+		//Now do something else
+		console.log(JSON.stringify(data2));
+	});
+});
+</field></record>
+
+<record id="ees_odoo_node.script_sample3" model="ees_odoo_node.script">
+<field name="name">Node-Js Sample3</field>
+<field name="desc">This is a sample script.</field>
+<field name="jscontents">
+var MAXERRORS=5;var IN_MINUTES=5;
+var RESTART_COUNT=0;
+
+function decrease(){RESTART_COUNT=RESTART_COUNT-1}
+function increase(){RESTART_COUNT=RESTART_COUNT+1;setTimeout(decrease,1000*60*IN_MINUTES);return RESTART_COUNT;}
+function start(){
+	exec('"%NODEFOLDERnode.exe" "'+scriptfile+'"',(err1,stdout,stderr)=>{console.olog('one');
+		if(increase()&lt;MAXERRORS){
+			if(!err1){console.log('restarted service');}else{console.log('restarted after error '+err1.message);}
+			start();
+		}else{
+			//proc = subprocess.Popen([fld+'nssm', 'status', fname], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+			if(!err1){console.log('service ended ok');}else{console.log('service ended with error '+err1.message);}
+		}
+	});
+}
+start();
+console.log(new Date().toLocaleTimeString()+":Service started");
+</field>
+</record>
+</odoo>
