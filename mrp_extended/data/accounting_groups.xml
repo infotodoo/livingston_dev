@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data>
-        <record id="group_generate_assents_line" model="res.groups">
-            <field name="name">Generar asientos contables</field>
-        </record>
-    </data>
-</odoo>

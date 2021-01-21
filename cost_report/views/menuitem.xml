@@ -1,6 +1,0 @@
-<odoo>
-    <data>
-        <menuitem id="cost_report" name="Cost report" parent="account.menu_finance_reports" sequence="10" />
-        <menuitem id="cost_report_action" name="cost Report Product Line" parent="cost_report" action="cost_report.action_report_cost_tree" sequence="5"/>
-    </data>
-</odoo>
