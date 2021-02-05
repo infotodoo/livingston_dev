@@ -210,10 +210,12 @@ class MrpProduction(models.Model):
                     acc_move_ids.append(account_move.id)
     
     def automated_assent_line(self):
-
+        
+        ir_cron_line = self.env['ir.cron'].search([('name','=','Generar asientos final de mes')])
         line_assents = self.search([])
         line_assents.create_move_test()
-
+        if ir_cron_line:
+            ir_cron_line.sudo().update({'check_execute': True})
 
     
     # def post_inventory(self):

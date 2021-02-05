@@ -194,7 +194,7 @@
                             </thead>
                             <tbody>
                                 <tr t-foreach="line['prelimit']" t-as="pre" class="o_mrp_data">
-                                    <t t-foreach="line['prelimit_cost']" t-as="cost" class="o_mrp_data">
+                                    <tr t-foreach="line['prelimit_cost']" t-as="cost" class="o_mrp_data">
                                         <t t-if="pre[0] == cost[0]">
                                             <td>
                                                 <span t-esc="pre[0]"/>
@@ -216,7 +216,7 @@
                                                 <span t-esc="total"/>
                                             </td>
                                         </t>
-                                    </t>
+                                    </tr>
                                 </tr>
                             </tbody>
                         </table>

@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_mrp_distribution_accounts_user,mrp_prelimit_extended.mrp.distribution.accounts,model_mrp_distribution_accounts,account.group_account_user,1,1,1,1

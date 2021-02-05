@@ -38,7 +38,6 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree>
-                    <button name="prelimit_journal" type="object" string="Create Jornal"/>
                     <field name="prelimit_code" />
                     <field name="workcenter_id"/>
                     <field name="date_start"/>
@@ -49,7 +48,6 @@
                     <field name="distribution_percentage"/>
                     <field name="cost_mod"/>
                     <field name="cost_cif"/>
-                    <field name="cost_maq"/>
                 </tree>
             </field>
         </record>
@@ -59,6 +57,13 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="mrp_prelimit_tree"/>
         </record>
+        <record id="action_server_journal" model="ir.actions.server">
+          <field name="name">Create Journal</field>
+          <field name="model_id" ref="model_mrp_prelimit"/>
+          <field name="binding_view_types">list</field>
+          <field name="state">code</field>
+          <field name="code">action = records.prelimit_journal()</field>
+      </record>
         <record id="action_account_report_analytic_prelimit" model="ir.actions.client">
             <field name="name">Analytic Report</field>
             <field name="tag">account_report</field>
@@ -69,3 +74,5 @@
         <menuitem id="menu_action_report_account_analytic_prelimit" name="Analytic Prelimit Report" action="action_account_report_analytic_prelimit" parent="account.menu_finance_reports" sequence="20" groups="analytic.group_analytic_accounting"/>
     </data>
 </odoo>
+
+

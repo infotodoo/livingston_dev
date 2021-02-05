@@ -17,6 +17,8 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+                            <button type="object" class="oe_stat_button" icon="fa-bars" string="Ver cuentas">
+                            </button>
                             <button name="go_to_variation_lines" type="object" class="oe_stat_button" icon="fa-dollar" string="Detalle Costos de Variación" attrs="{'invisible': [('line_ids', '=', False)]}">
                             </button>
                         </div>

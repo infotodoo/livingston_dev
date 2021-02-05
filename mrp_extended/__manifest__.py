@@ -17,7 +17,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','mrp_workorder','sale_management'],
+    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','mrp_workorder','sale_management','mrp_thomas'],
 
     # always loaded
     'data': [
@@ -35,6 +35,8 @@
         'views/cost_structure_report.xml',
         'views/sale_order_view.xml',
         'views/mrp_prelimit_view.xml',
+        'views/account_move_view.xml',
         'views/account_line.xml',
+        'views/ir_cron_view.xml',
     ],
 }
