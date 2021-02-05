@@ -12,7 +12,7 @@
                    <field name="total_stock"/>
                    <field name="total"/>
                    <field name="unit_price"/>
-                   <field name="price_unit"/>
+                   <!--<field name="price_unit"/>-->
                    <field name="sale_price"/>
                    <field name="cost_by_sale"/>
                    <field name="vnr_estimate"/>

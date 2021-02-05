@@ -57,40 +57,83 @@ class ZppReportLine(models.Model):
             where pp.id = svl.product_id
         )as total,
         (
-            select (sum(svl.value)/sum(svl.quantity))
+            select sum(svl.value)/sum(svl.quantity)
             from stock_valuation_layer svl
             where pp.id = svl.product_id
         )as unit_price,
+        --(
+          --  select sol.price_unit
+            --from sale_order_line sol
+            --where pp.id = sol.product_id
+        --)as price_unit
         (
-            select (sum(sol.price_unit)/sum(sol.product_uom_qty))
-            from sale_order_line sol
-            join product_product ppo
-            on (ppo.id = sol.product_id)
-        )as price_unit,
-        (
-            select (sum(ppi.fixed_price)/count(ppi.product_id))
+            select sum(ppi.fixed_price)/count(ppi.product_id)
             from product_pricelist_item ppi
             where pp.id = ppi.product_id
         )as sale_price,
         (
-            select (sum(ppi.cost_by_sale)/count(ppi.product_id))
+            select sum(ppi.cost_by_sale)/count(ppi.product_id)
             from product_pricelist_item ppi
             where pp.id = ppi.product_id
         )as cost_by_sale,
         (
             select sum(value)
             from (
-               select (sum(ppi.fixed_price)/count(ppi.product_id)) as value
+               select sum(ppi.fixed_price)/count(ppi.product_id) as value
                from product_pricelist_item ppi
                where pp.id = ppi.product_id
 
                 UNION ALL
                 
-                select ((sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1)) as value
+                select (sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1) as value
                 from product_pricelist_item ppi
                 where pp.id = ppi.product_id
                 )as vnr
-        )as vnr_estimate
+        )as vnr_estimate,
+         (
+          (
+            select sum(value),
+            case when sum(value) > 0 then
+                (
+                select sum(value)
+                from (
+                   select sum(ppi.fixed_price)/count(ppi.product_id) as value
+                   from product_pricelist_item ppi
+                   where pp.id = ppi.product_id
+
+                    UNION ALL
+
+                    select (sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1) as value
+                    from product_pricelist_item ppi
+                    where pp.id = ppi.product_id
+                    )as vnr
+                )
+            else
+                (
+                select sum(ppi.cost_by_sale)/count(ppi.product_id)
+                from product_pricelist_item ppi
+                where pp.id = ppi.product_id
+                )
+            end
+            from (
+               select sum(ppi.fixed_price)/count(ppi.product_id) as value
+               from product_pricelist_item ppi
+               where pp.id = ppi.product_id
+
+                UNION ALL
+                
+                select (sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1) as value
+                from product_pricelist_item ppi
+                where pp.id = ppi.product_id
+                
+                UNION ALL
+                
+                select (sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1) as value
+                from product_pricelist_item ppi
+                where pp.id = ppi.product_id
+                )as test 
+         )    
+        ) as minor
         from product_product pp
         where 1=1
         );
