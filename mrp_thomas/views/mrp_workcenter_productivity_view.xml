@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <record id="view_mrp_workcenter_productivity_form" model="ir.ui.view">
+            <field name="name">view.mrp.workcenter.productivity.form</field>
+            <field name="model">mrp.workcenter.productivity</field>
+            <field name="inherit_id" ref="mrp.oee_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_end']" position="after">
+                    <field name="import_date" readonly="True"/>
+                </xpath>
+                <xpath expr="//field[@name='loss_id']" position="attributes">
+                    <attribute name="string">Activity Name</attribute>
+                </xpath>
+                <xpath expr="//field[@name='loss_id']" position="before">
+                    <field name="activity_vat"/>
+                    <field name="activity_code"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_mrp_workcenter_productivity">
+            <field name="name">Workcenter</field>
+            <field name="res_model">mrp.workcenter.productivity</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_mrp_workcenter_productivity" parent="mrp.menu_mrp_manufacturing" action="action_mrp_workcenter_productivity"/>
+    </data>
+</odoo>
