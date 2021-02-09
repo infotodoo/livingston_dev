@@ -26,22 +26,19 @@ class MrpPrelimit(models.Model):
     def _compute_distribution_percentage(self):
         dates = []
         for record in self:
+            record.distribution_percentage = 0
             if record.workcenter_id and record.distribution != 0:
                 account_obj = record.env['account.move']
                 account_date = """
                                select to_char(date,'MM-YYYY') as date from account_move
-                               where company_id = 19 and state = 'posted'
+                               where company_id = 1 and state = 'posted'
                                group by to_char(date,'MM-YYYY');
                                """
                 record.env.cr.execute(account_date, (tuple(account_obj.ids), ))
                 for date in record.env.cr.fetchall():
-                    _logger.error('-----------------------------datos de fechas----------')
-                    _logger.error(date[0])
                     _logger.error(record.date_end.strftime("%m-%Y"))
                     if date[0] == record.date_end.strftime("%m-%Y"):
-                        _logger.error('---------------------if------------------------')
                         record.distribution_percentage = record.hours/record.distribution
-                        _logger.error(record.distribution_percentage)
                 
     
     @api.depends('workcenter_id')
@@ -60,7 +57,7 @@ class MrpPrelimit(models.Model):
                                 (aaat.account_account_id = aa.id) 
                                 left join account_move am on (am.id = aml.move_id) 
                                 where wc.account_analytic_real = %s 
-                                and aaat.account_account_tag_id = 8 and am.state = 'posted' 
+                                and aaat.account_account_tag_id = 9 and am.state = 'posted' 
                                 group by to_char(am.date,'MM-YYYY');  
                                 """%(record.workcenter_id.account_analytic_real.id)
                 record.env.cr.execute(account_id_cif, (tuple(prelimit.ids), ))
@@ -86,7 +83,7 @@ class MrpPrelimit(models.Model):
                                 (aaat.account_account_id = aa.id) 
                                 left join account_move am on (am.id = aml.move_id) 
                                 where wc.account_analytic_real = %s
-                                and aaat.account_account_tag_id = 7 and am.state = 'posted' 
+                                and aaat.account_account_tag_id = 10 and am.state = 'posted' 
                                 group by to_char(am.date,'MM-YYYY'); 
                                 """%(record.workcenter_id.account_analytic_real.id)
                 record.env.cr.execute(account_id_mod, (tuple(prelimit.ids), ))
@@ -99,22 +96,25 @@ class MrpPrelimit(models.Model):
     @api.depends('hours')
     def _compute_distribution(self):
         for record in self:
-            record.distribution = sum( record.env['mrp.prelimit'].search([('workcenter_id','=',record.workcenter_id.id),('date_end','=',record.date_end)]).mapped('hours'))
-            #record.distribution = sum(record.env['mrp.prelimit'].browse([record.workcenter_id.id].mapped('hours')))
+            if record.date_end and record.workcenter_id:
+                record.distribution = sum(record.env['mrp.prelimit'].search([('workcenter_id','=',record.workcenter_id.id),('date_end','=',record.date_end)]).mapped('hours'))
+            else:
+                record.distribution = 0
                 
                 
     def prelimit_journal(self):
         today = datetime.now()
         date = today.strftime("%d/%m/%Y")
         account_obj = self.env['account.move']
-        for record in self:
+        prelimit_ids = self.filtered(lambda prelimit: prelimit.cost_cif != 0 and prelimit.cost_mod != 0)
+        _logger.error('------------------ prelimit_ids----------')
+        _logger.error(prelimit_ids)
+        for record in prelimit_ids:
             mod = []
             cif = []
-            maq = []
             if record.cost_mod and record.workcenter_id and record.production_id:
                 line = {
                         'name': record.production_id.name + ' - ' + record.workcenter_id.name+' - '+record.workcenter_id.account_analytic_real.name,
-                        #'partner_id': partner_id,
                         'debit': record.cost_mod,
                         'credit': 0.00,
                         'account_id': record.workcenter_id.mod_account_id_real.id,
@@ -123,7 +123,6 @@ class MrpPrelimit(models.Model):
                 mod.append((0,0,line))
                 line = {
                         'name': record.production_id.name + ' - ' + 'Contrapartida -' + record.workcenter_id.name+' - '+record.workcenter_id.account_analytic_real.name,
-                        #'partner_id': partner_id,
                         'debit': 0.00,
                         'credit': record.cost_mod,
                         'account_id': record.workcenter_id.account_mod_id_real.id,
@@ -135,7 +134,6 @@ class MrpPrelimit(models.Model):
             if record.cost_cif and record.workcenter_id and record.production_id:
                 line = {
                         'name': record.production_id.name + ' - ' + record.workcenter_id.name+' - '+record.workcenter_id.account_analytic_real.name,
-                        #'partner_id': partner_id,
                         'debit': record.cost_cif,
                         'credit': 0.00,
                         'account_id': record.workcenter_id.mod_account_id_real.id,
@@ -144,7 +142,6 @@ class MrpPrelimit(models.Model):
                 cif.append((0,0,line))
                 line = {
                         'name': record.production_id.name + ' - ' + 'Contrapartida -' + record.workcenter_id.name+' - '+record.workcenter_id.account_analytic_real.name,
-                        #'partner_id': partner_id,
                         'debit': 0.00,
                         'credit': record.cost_cif,
                         'account_id': record.workcenter_id.account_cif_id_real.id,
@@ -160,7 +157,8 @@ class MrpPrelimit(models.Model):
                         'line_ids': mod,
                         'date': fields.Date.today(),
                         'ref': record.production_id.name + ' - MOD'+' - '+record.workcenter_id.account_analytic_real.name,
-                        'type': 'entry'
+                        'type': 'entry',
+                        'prelimit_id': record.id
                         }
                 account_move = account_obj.sudo().create(move)
                 acc_move_ids.append(account_move.id)
@@ -170,11 +168,22 @@ class MrpPrelimit(models.Model):
                         'line_ids': cif,
                         'date': fields.Date.today(),
                         'ref': record.production_id.name + ' - CIF'+' - '+record.workcenter_id.account_analytic_real.name,
-                        'type': 'entry'
+                        'type': 'entry',
+                        'prelimit_id': record.id
                         }
                 account_move = account_obj.sudo().create(move)
                 acc_move_ids.append(account_move.id)
-            res = {'type': 'ir.actions.client','tag': 'display_notification','params': {'title': _('Warning!'),'message': 'Asientos creados con exito','sticky': False, }}
-            return res
+        res = {'type': 'ir.actions.client','tag': 'display_notification','params': {'title': _('Warning!'),'message': 'Asientos creados con exito','sticky': False, }}
+        return res
 
+    def action_view_journal(self):
+        return {
+            'name': _("Journal"),
+            'domain': [('prelimit_id','=', self.id)],
+            #'view_type': 'form',
+            'res_model': 'account.move',
+            'view_id': self.env.ref('account.view_move_tree').id,
+            'view_mode': 'tree',
+            'type': 'ir.actions.act_window',
+        }
 
