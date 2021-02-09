@@ -17,7 +17,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account','mrp_cost_and_prelimit','sale_management','modify_material_purchase_requisition'],
+    'depends': ['account','mrp_extended','sale_management','modify_material_purchase_requisition'],
   
     # always loaded
     'data': [

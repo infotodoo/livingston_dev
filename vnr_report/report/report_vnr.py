@@ -89,51 +89,7 @@ class ZppReportLine(models.Model):
                 from product_pricelist_item ppi
                 where pp.id = ppi.product_id
                 )as vnr
-        )as vnr_estimate,
-         (
-          (
-            select sum(value),
-            case when sum(value) > 0 then
-                (
-                select sum(value)
-                from (
-                   select sum(ppi.fixed_price)/count(ppi.product_id) as value
-                   from product_pricelist_item ppi
-                   where pp.id = ppi.product_id
-
-                    UNION ALL
-
-                    select (sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1) as value
-                    from product_pricelist_item ppi
-                    where pp.id = ppi.product_id
-                    )as vnr
-                )
-            else
-                (
-                select sum(ppi.cost_by_sale)/count(ppi.product_id)
-                from product_pricelist_item ppi
-                where pp.id = ppi.product_id
-                )
-            end
-            from (
-               select sum(ppi.fixed_price)/count(ppi.product_id) as value
-               from product_pricelist_item ppi
-               where pp.id = ppi.product_id
-
-                UNION ALL
-                
-                select (sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1) as value
-                from product_pricelist_item ppi
-                where pp.id = ppi.product_id
-                
-                UNION ALL
-                
-                select (sum(ppi.cost_by_sale)/count(ppi.product_id)) * (-1) as value
-                from product_pricelist_item ppi
-                where pp.id = ppi.product_id
-                )as test 
-         )    
-        ) as minor
+        )as vnr_estimate
         from product_product pp
         where 1=1
         );

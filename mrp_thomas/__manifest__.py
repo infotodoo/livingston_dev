@@ -10,7 +10,6 @@
 	    'sale_management',
 	    'base_address_city',
       'stock_landed_costs',
-      'sale_order_financial_thomas',
       'uom',
 	],
     'data':[
