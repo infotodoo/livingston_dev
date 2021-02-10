@@ -37,6 +37,7 @@
         'views/mrp_prelimit_view.xml',
         'views/account_move_view.xml',
         'views/account_line.xml',
+        'static/src/xml/button_view_journal.xml',
         #'views/ir_cron_view.xml',
     ],
 }
