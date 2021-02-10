@@ -17,7 +17,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','mrp_workorder','sale_management','mrp_thomas','account_accountant'],
+    'depends': ['mrp_account_enterprise','mrp','web_tree_dynamic_colored_field','mrp_workorder','sale_management','account_accountant'],
 
     # always loaded
     'data': [
@@ -37,7 +37,10 @@
         'views/mrp_prelimit_view.xml',
         'views/account_move_view.xml',
         'views/account_line.xml',
-        'static/src/xml/button_view_journal.xml',
+        'static/src/xml/button_view_journal_1.xml',
         #'views/ir_cron_view.xml',
+    ],
+    'qweb': [
+        'static/src/xml/button_view_journal.xml',
     ],
 }

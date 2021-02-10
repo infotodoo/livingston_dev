@@ -177,13 +177,13 @@ class MrpPrelimit(models.Model):
         return res
 
     def action_view_journal(self):
+        today = datetime.now()
+        date = today.strftime("%m/%d/%Y")
         return {
             'name': _("Journal"),
-            'domain': [('prelimit_id','=', self.id)],
-            #'view_type': 'form',
+            'domain': [('date','=', date)],
             'res_model': 'account.move',
-            'view_id': self.env.ref('account.view_move_tree').id,
-            'view_mode': 'tree',
+            'view_mode': 'tree,form',
             'type': 'ir.actions.act_window',
         }
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <odoo>
+      <template id="button_render_js" name="prelimit_button" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script src="mrp_extended/static/src/js/action_call.js" type="text/javascript"/>
+            </xpath>
+      </template>
+    </odoo>
+</data>

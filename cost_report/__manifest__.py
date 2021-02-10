@@ -13,7 +13,7 @@
     'version': '13.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account','mrp_workorder','mrp_cost_and_prelimit'],
+    'depends': ['account','mrp_workorder','mrp_extended'],
   
     # always loaded
     'data': [

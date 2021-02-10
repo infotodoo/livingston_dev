@@ -12,35 +12,34 @@ odoo.define('mrp_prelimit.action_button', function (require) {
              this.$buttons.find(".oe_action_button").click(this.proxy('action_def'));
              }
        },
-    })
-})
-
-function action_def() {
+    action_def: function() {
     var self = this
     var user = session.uid;
     rpc.query({
-        model: "mrp.prelimit",
-        method: receive_invoice,
+        model: 'mrp.prelimit',
+        method: 'action_view_journal',
         args: [[user],{'id':user}],
         });
-    };
+    },
 
- function receive_invoice() {
+ receive_invoice: function() {
     var self = this
     var user = session.uid;
     rpc.query({
-        model: "account.move",
-        method: 'get_values',
+        model: 'mrp.prelimit',
+        method: 'action_view_journal',
         args: [[user],{'id':user}],
         }).then(function () {
             self.do_action({
                 name: _t('action_invoices'),
                 type: "ir.actions.act_window",
-                res_model: "name.name",
-                views: [["tree", 'form']],
+                res_model: 'account.move',
+                views: [['tree','form']],
                 view_mode: 'tree',
                 target: 'new',
             });
             window.location
         });
-    }
+    },
+    })
+});
