@@ -11,15 +11,6 @@ class MrpProduction(models.Model):
     #     res = super(MrpProduction, self).button_mark_done()
     #     #self.create_move_test()
     #     return res
-    
-    @api.onchange('sale_order_id','product_id')
-    def validation_sale_order(self):
-        for record in self:
-            if record.sale_order_id:
-                if not record.sale_order_id.order_line:
-                    raise ValidationError("El pedido de venta seleccionado no tiene líneas de órdenes")
-                if record.product_id.name != record.sale_order_id.order_line.product_template_id.name:
-                    raise ValidationError("El producto seleccionado en la orden de producción no es igual al del pedido de venta")
 
     def create_move_workcenter(self):
         am_obj = self.env['account.move']
