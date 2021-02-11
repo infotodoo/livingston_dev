@@ -22,7 +22,7 @@ odoo.define('mrp_prelimit.action_button', function (require) {
         });
     },
 
- receive_invoice: function() {
+    receive_invoice: function() {
     var self = this
     var user = session.uid;
     rpc.query({

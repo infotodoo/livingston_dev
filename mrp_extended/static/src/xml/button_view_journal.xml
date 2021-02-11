@@ -2,7 +2,7 @@
   <template xml:space="preserve">
     <t t-extend="ListView.buttons">
       <t t-jquery="button.o_list_export_xlsx" t-operation="after">
-        <button class="btn btn-secondary oe_action_button" type="button" accesskey="f">View Journal</button>
+          <button t-if="widget.modelName == 'mrp.prelimit'" class="btn btn-secondary oe_action_button" type="button" accesskey="f">View Journal</button>
       </t>
     </t>
   </template>

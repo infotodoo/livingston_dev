@@ -18,7 +18,7 @@ class DistributionAssessment(models.Model):
     year = fields.Integer('end',readonly=True)
     hours = fields.Float('Hours',readonly=True)
     total_time = fields.Float('Total Times',readonly=True)
-    percentage = fields.Float('%',readonly=True,digits=(6,6))
+    percentage = fields.Float('%',readonly=True)
     management = fields.Float('Operation Management',readonly=True)
     laboratory = fields.Float('Laboratory',readonly=True)
     dispatch = fields.Float('Dispatch',readonly=True)
@@ -61,7 +61,7 @@ class DistributionAssessment(models.Model):
             query += """
                 select row_number() OVER (ORDER BY subquery.id) as id,company_id,code,name,hours,month,year,total_time,
                 (subquery.hours/(select (sum(p.duration)/60) 
-                 from mrp_workcenter_productivity p where extract(month from p.date_end) = subquery.month and extract(year from p.date_end) = subquery.year)) as percentage,
+                 from mrp_workcenter_productivity p where extract(month from p.date_end) = subquery.month and extract(year from p.date_end) = subquery.year and p.company_id = %s)) as percentage,
                  (
                  (
                  select (sum(aml.debit)-sum(aml.credit)) 
@@ -394,7 +394,7 @@ class DistributionAssessment(models.Model):
                 left join account_analytic_account aaa on (aaa.id = w.account_analytic_real)
                 where 1=1 and mwp.company_id = %s
                 group by w.id, w.name, aaa.code, month, year, mwp.company_id) as subquery
-                """ % (record.id)
+                """ % (record.id ,record.id)
         query += """);"""
         _logger.error(query)
         self.env.cr.execute(query)

@@ -49,5 +49,11 @@
             <field name="view_mode">tree</field>
             <field name="search_view_id" ref="view_distribution_search"/>
         </record>
+        <record model="ir.rule" id="report_distribution_assessment_rule">
+            <field name="name">report_distribution_assessment</field>
+            <field name="model_id" ref="model_report_distribution_assessment"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
     </data>
 </odoo>
