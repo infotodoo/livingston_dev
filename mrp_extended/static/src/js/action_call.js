@@ -9,37 +9,32 @@ odoo.define('mrp_prelimit.action_button', function (require) {
        renderButtons: function($node) {
        this._super.apply(this, arguments);
            if (this.$buttons) {
-             this.$buttons.find(".oe_action_button").click(this.proxy('action_def'));
+             this.$buttons.find(".oe_action_button").click(this.proxy('receive_invoice'));
              }
        },
-    action_def: function() {
-    var self = this
-    var user = session.uid;
-    rpc.query({
-        model: 'mrp.prelimit',
-        method: 'action_view_journal',
-        args: [[user],{'id':user}],
-        });
-    },
-
-    receive_invoice: function() {
-    var self = this
-    var user = session.uid;
-    rpc.query({
-        model: 'mrp.prelimit',
-        method: 'action_view_journal',
-        args: [[user],{'id':user}],
-        }).then(function () {
-            self.do_action({
-                name: _t('action_invoices'),
-                type: "ir.actions.act_window",
-                res_model: 'account.move',
-                views: [['tree','form']],
-                view_mode: 'tree',
-                target: 'new',
-            });
-            window.location
-        });
-    },
+        
+    receive_invoice: function () {
+            var self = this
+            var user = session.uid;
+            /*var date = new Date();
+            let day = date.getDate()
+            let month = date.getMonth() + 1
+            let year = date.getFullYear()*/
+            rpc.query({
+                model: 'mrp.prelimit',
+                method: 'action_view_journal',
+                args: [[]],
+                }).then(function (e) {
+                    self.do_action({
+                        name: _t('Journal'),
+                        context: {date: e.domain[0][2]},
+                        type: e.type,
+                        res_model: e.res_model,
+                        views: [[false,'tree'],[false,'form']],
+                    });
+                    debugger;
+                    window.location
+                });
+            },
     })
 });

@@ -185,5 +185,4 @@ class MrpPrelimit(models.Model):
             'res_model': 'account.move',
             'view_mode': 'tree,form',
             'type': 'ir.actions.act_window',
-        }
-
+        }  
