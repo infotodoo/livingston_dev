@@ -1,0 +1,30 @@
+{
+    'name': 'Modify Purchase Requisition',
+    'version': '1.0',
+    'summary': """This module allow your employees/users to create Purchase Requisitions.""",
+    'description': """
+    Module to modify Material Purchase Requisition
+    """,
+    'author': 'Todoo S.A.S.',
+    'website': 'http://www.todoo.com',
+    'images': [''],
+    'category': 'Requisition',
+    'depends': ['material_purchase_requisitions',
+                'purchase_order_exchange_rate',
+                'stock',
+                'mrp',
+                'account_accountant',
+                'georeferenciacion_ICA',
+                'material_purchase_requisitions_approvals',
+                'contacs_thomas'],
+    'data':[
+    	'report/purchase_requisition_report.xml',
+    	'views/material_purchase_requisition_first.xml',
+        'views/material_purchase_requisition.xml',
+        'views/stock_picking_view.xml',
+        'views/purchase_order_views.xml',
+        'views/account_move.xml',
+    ],
+    'installable' : True,
+    'application' : False,
+}

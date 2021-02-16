@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_move_charge_process" model="ir.ui.view">
+        <field name="name">account.move.charge.process</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@id='other_tab']" position="after">
+                <page name="charte_to" string="Cargar a" attrs="{'invisible':[('type', 'not in',('in_invoice','in_receipt','in_refund'))]}">
+                    <group string='Charge Process' attrs="{'invisible':[('purchase_id', '!=', False)]}">
+                        <group>
+                            <field name="charge_to" />
+                            <field name="production_id" attrs="{'invisible':[('charge_to', '!=', 'order')],'readonly':[('state','!=','draft')]}"/>
+                            <button name="cargar" string="Charge" type="object" attrs="{'invisible':[('charge_to', '!=', 'order')],'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                </page>                
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

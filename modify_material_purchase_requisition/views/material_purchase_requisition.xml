@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_material_purchase_requisition_form_inherit" model="ir.ui.view">
+            <field name="name">material.purchase.requisition.form.inherit</field>
+            <field name="model">material.purchase.requisition</field>
+            <field name="inherit_id" ref="material_purchase_requisitions.material_purchase_requisition_form_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name='request_stock']" position="replace">
+                        <button name="request_stock_modify" type="object" string="Create Picking and PO" states="approve" class="btn-primary" groups="material_purchase_requisitions.group_purchase_requisition_user"/>
+                    </xpath>
+                    <xpath expr="//field[@name='request_date']" position="attributes">
+                        <attribute name="readonly">True</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='receive_date']" position="attributes">
+                        <attribute name="readonly">True</attribute>
+                        <attribute name="force_save">True</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='requisiton_responsible_id']" position="after">
+                        <field name="is_usa" invisible="True"/>
+                        <field name="is_center" invisible="True"/>
+                        <field name="purchase_type" attrs="{'readonly':[('state','!=','draft')],'required': [('is_usa','=',False)]}"/>
+                        <field name="charge_to" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="production_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible':[('charge_to', '!=', 'order')],'readonly':[('state','!=','draft')]}"/>
+                        <button name="cargar" string="Charge" type="object" attrs="{'invisible':[('charge_to', '!=', 'order')],'readonly':[('state','!=','draft')]}"/>
+                    </xpath>
+                    <xpath expr="//field[@name='uom']" position="after">
+                        <field name="uom_id"/>
+                    </xpath>
+                    <xpath expr="//field[@name='employee_id']" position="after">
+                        <!-- <field name="responsable_area" /> -->
+                        <field name="user_id" readonly="True"/>
+                    </xpath>
+                    <xpath expr="//field[@name='product_id']" position="after">
+                        <!-- <field name="analytic_account_id" options="{'no_create': True, 'no_create_edit':True}" optional="hide" attrs="{'readonly':[('bool_state','=',True)]}"/> -->
+                        <field name="is_center" invisible="True"/>
+                        <field name="analytic_account_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('bool_state','=',True)], 'required': [('is_center','=',True)]}"/>
+                    </xpath>
+                    <xpath expr="//field[@name='partner_id']" position="after">
+                        <field name="inspection_state" optional="hide"/>
+                        <field name="lot" optional="hide"/>
+                    </xpath>
+                    <xpath expr="//field[@name='date_end']" position="attributes">
+                        <attribute name="required">True</attribute>
+                        <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='date_end']" position="after">
+                        <field name="delivery_by"/>
+                        <field name="recieved_by"/>
+                        <field name="security_aux"/>
+                    </xpath>
+                    <xpath expr="//field[@name='employee_id']" position="attributes">
+                        <attribute name="invisible">True</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='department_id']" position="attributes">
+                        <attribute name="required">False</attribute>
+                        <attribute name="invisible">True</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='company_id']" position="attributes">
+                        <attribute name="attrs">{'readonly': True}</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='reason']" position="before">
+                        <field name="observations" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    </xpath>
+                    <xpath expr="//form/sheet/notebook/page/field/tree/field[@name='product_id']" position="attributes">
+                        <attribute name="domain">[('purchase_ok','=',True)]</attribute>
+                        <attribute name="options">{'no_create': True}</attribute>
+                    </xpath>
+                    <xpath expr="//form/sheet/notebook/page/field/tree/field[@name='partner_id']" position="attributes">
+                        <attribute name="options">{'no_create': True}</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='custom_picking_type_id']" position="attributes">
+                        <attribute name="options">{'no_create': True}</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <record id="material_purchase_requisition_view_form_inherit_edited" model="ir.ui.view">
+            <field name="name">material.purchase.requisition.view.form.inherit.edited</field>
+            <field name="model">material.purchase.requisition</field>
+            <field name="inherit_id" ref="material_purchase_requisitions_report.material_purchase_requisition_inherit_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='journal_id']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('internal_spending','=',False)], 'required': [('internal_spending','=',True)]}</attribute>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page/field/tree/field[@name='total_cost']" position="attributes">
+                    <attribute name="string">Costo Unitario</attribute>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page/field/tree/field[@name='total_cost']" position="after">
+                    <field name="total_product_cost" />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
