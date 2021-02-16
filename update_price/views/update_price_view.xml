@@ -27,6 +27,6 @@
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
-        <menuitem id="update_price" name="Update price" action="action_update_price" parent="stock.menu_warehouse_report" sequence="500" />
+        <menuitem id="update_price" name="Update price" action="action_update_price" parent="purchase.purchase_report" sequence="500" />
     </data>
 </odoo>

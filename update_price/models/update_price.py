@@ -8,15 +8,15 @@ class UpdatePrice(models.Model):
     product_id = fields.Many2one('product.product','Product')
     price = fields.Float('Price')
 
-    @api.onchage('product_id')
+    @api.onchange('product_id')
     def _onchange_price(self):
         if self.product_id:
-            self.price = self.product_id.pricing
+            self.price = self.product_id.list_price
         else:
             self.price = 0
 
     def action_update_price(self):
-        product_obj = self.env['product.product'].search(['id','=',self.product_id.id],limit=1)
-        product_obj.write({'pricing':self.price})
+        product_obj = self.env['product.product'].search([('id','=',self.product_id.id)],limit=1)
+        product_obj.write({'list_price': self.price})
 
             
