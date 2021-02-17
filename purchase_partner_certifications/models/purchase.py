@@ -10,6 +10,14 @@ class PurchaseOrder(models.Model):
     
     #modify by livingston
     distribution_id = fields.Many2one('purchase.distribution','Distribution')
+    bool = fields.Boolean(compute="_compute_bool")
+    
+    @api.depends('company_id')
+    def _compute_bool(self):
+        if self.company_id.id == 1:
+            self.bool = True
+        else:
+            self.bool = False
     
     
 class PurchaseDistribution(models.Model):
@@ -18,3 +26,4 @@ class PurchaseDistribution(models.Model):
     
     #modify by livingston
     name = fields.Char()
+
