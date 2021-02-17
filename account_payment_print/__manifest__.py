@@ -12,7 +12,7 @@
     'contributors': ['Luis Felipe Paternina lp@todoo.co'],
     'website' : 'http://www.todoo.co',
     'depends': [
-        'account_accountant',
+        'account_accountant','account_payment'
     ],
     'images': ['static/description/banner.jpg'],
     'data': [

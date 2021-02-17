@@ -20,14 +20,15 @@
     <template id="action_report_payment_print_thomas">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-                <div class="header">
-                    <p align="center" style="font-size:14px">Thomas Greg and Sons LIMITED (Guersey)S.A<br></br>
-                                      NIT:830012157-0<br></br>
-                                      5713693720<br></br>
+              <div class="header"><img t-att-src="image_data_uri(doc.company_id.logo)" style="max-height: 45px;" alt="Logo" align="left"/>
+              <br/> 
+              <p align="center" style="font-size:14px"><span t-field="doc.company_id.name"></span><br/>
+                                      NIT:<span t-field="doc.company_id.vat"/><br/>
+                                      5713693720<br/>
                                       KR 42 BIS  17A 75
                     </p>
-                </div>
-                <br></br>    
+              </div>
+                <br/>    
                 <div class="page">
                 	<style>
                 		th, td {
@@ -42,21 +43,21 @@
 	                            </tr>
 	                            <tr>
 	                                <td rowspan="2" valign="middle" align="left">
-	                                   <p>Razón Social:<span> </span><span t-field="doc.partner_id"></span><br></br>
-	                                      NIT:<span> </span><span t-field="p.vat"></span><br></br>
-	                                      Dirección:<span> </span><span t-field="p.street"></span><br></br>
-	                                      Ciudad:<span> </span><span t-field="p.city_id"></span><br></br>
-	                                      Télefono:<span> </span><span t-field="p.phone"></span>
+	                                   <p>Razón Social:<span> </span><span t-field="doc.partner_id"/><br/>
+	                                      NIT:<span> </span><span t-field="p.vat"/><br/>
+	                                      Dirección:<span> </span><span t-field="p.street"/><br/>
+	                                      Ciudad:<span> </span><span t-field="p.city_id"/><br/>
+	                                      Télefono:<span> </span><span t-field="p.phone"/>
 	                               </p> 
 	                                </td>
-	                                <td><strong><p align="center"><span t-field="doc.name"></span></p></strong></td>
+	                                <td><strong><p align="center"><span t-field="doc.name"/></p></strong></td>
 	                            </tr>
 	                            <tr>
 	                                <td colspan="2"><p align="center">Codigo de Barras</p></td>
 	                            </tr>
 	                     </table>
                     </t>
-                    <br></br>
+                    <br/>
                     <table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
                             <tr>
                                 <th style="background-color:#CBCBCB">DATOS DEL PAGO</th>
@@ -65,23 +66,23 @@
                             </tr>
                             <tr>
                                 <td rowspan="3" valign="middle" align="left">
-                                   <p>Concepto:<span> </span>202428575-l573<br></br>
-                                   Cheque:<br></br>
-                                   Moneda:<span> </span>COP<br></br>
+                                   <p>Concepto:<span> </span>202428575-l573<br/>
+                                   Cheque:<br/>
+                                   Moneda:<span> </span>COP<br/>
                                    Tasa de Cambio:
                                </p>  
                                 </td>
-                                <td><p align="center"><span t-field="doc.payment_date"></span></p></td>
-                                <td><p align="center"><span t-field="doc.payment_date"></span></p></td>
+                                <td><p align="center"><span t-field="doc.payment_date"/></p></td>
+                                <td><p align="center"><span t-field="doc.payment_date"/></p></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><strong><p align="center" style="background-color:#CBCBCB">REFERENCIA DE FACTURA</p></strong></td>
                             </tr>
                             <tr>
-                                <td colspan="2" ><p align="center">43647475</p></td>
+                                <td colspan="2"><p align="center">43647475</p></td>
                             </tr>
                     </table>
-                    <br></br>
+                    <br/>
                     <table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
                           <tr>
                             <th colspan="8" style="background-color:#CBCBCB">POSICIONES DOCUMENTO CONTABLE</th>
@@ -90,7 +91,6 @@
                             <td style="background-color:#CBCBCB"><strong><p>Cuenta</p></strong></td>
                             <td style="background-color:#CBCBCB"><strong>Descripción</strong></td>
                             <td style="background-color:#CBCBCB"><strong>IVA</strong></td>
-                            <td style="background-color:#CBCBCB"><strong>Cod SAP</strong></td>
                             <td style="background-color:#CBCBCB"><strong>NIT</strong></td>
                             <td style="background-color:#CBCBCB"><strong>ORDICECO</strong></td>
                             <td style="background-color:#CBCBCB"><strong>IMP.MON.DOC</strong></td>
@@ -99,15 +99,13 @@
                           <tr>
                             <td>127475</td>
                             <td>Cajas menores</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td/>
+                            <td/>
+                            <td/>
+                            <td/>
                           </tr>
                     </table>
-                    <br></br>
+                    <br/>
                     <table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
                           <tr>
                             <th colspan="7" style="background-color:#CBCBCB">RELACION DOCUMENTOS COMPENSADOS</th>
@@ -124,11 +122,11 @@
                           <tr>
                             <td>127475</td>
                             <td>Cajas menores</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td/>
+                            <td/>
+                            <td/>
+                            <td/>
+                            <td/>
                           </tr>
                     </table>
                 </div>  
@@ -136,5 +134,3 @@
         </t> 
     </template>
 </odoo>
-
-
