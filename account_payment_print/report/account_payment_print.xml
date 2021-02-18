@@ -34,6 +34,10 @@
                 		th, td {
                                 padding: 4px;
                                 }
+                        .signature {
+                                border: 0;
+                                border-bottom: 1px solid #000;
+                                }
                 	</style>
                 	<t t-foreach="doc.partner_id" t-as="p">
 	                     <table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
@@ -53,7 +57,9 @@
 	                                <td><strong><p align="center"><span t-field="doc.name"/></p></strong></td>
 	                            </tr>
 	                            <tr>
-	                                <td colspan="2"><p align="center">Codigo de Barras</p></td>
+	                                <td colspan="2">
+                                        <p align="center" t-field="doc.name" t-options="{'widget': 'barcode','width':250,'height':50}"/>
+                                    </td>
 	                            </tr>
 	                     </table>
                     </t>
@@ -128,6 +134,20 @@
                             <td/>
                             <td/>
                           </tr>
+                    </table>
+                    <table width="100%" class='table table-borderless'>
+                        <tr style="border: 0;">
+                            <td ><input type="text" class="signature"/></td>
+                            <td ><input type="text" class="signature"/></td>
+                            <td ><input type="text" class="signature"/></td>
+                            <td ><input type="text" class="signature"/></td>
+                        </tr>
+                        <tr>
+                            <td ><span align="center">Elaboró:NICOLLE MARIANA</span></td>
+                            <td ><span align="center">Autorizado por</span></td>
+                            <td ><span align="center">VoBo. Tesoreria</span></td>
+                            <td ><span align="center">Recibi conforme</span></td>
+                        </tr>
                     </table>
                 </div>  
             </t>
@@ -156,27 +176,55 @@
                                 border-bottom: 1px solid #000;
                                 }
                 	</style>
-                	<t t-foreach="doc.line_ids.partner_id[0]" t-as="p">
-	                     <table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
-	                            <tr>
-	                                <th style="background-color:#CBCBCB">DATOS DEL TERCERO</th>
-	                                <th style="background-color:#CBCBCB"><p>COMPROBANTE DE EGRESO</p></th>
-	                            </tr>
-	                            <tr>
-	                                <td rowspan="2" valign="middle" align="left">
-	                                   <p>Razón Social:<span> </span><span t-field="doc.partner_id"/><br/>
-	                                      NIT:<span> </span><span t-field="p.vat"/><br/>
-	                                      Dirección:<span> </span><span t-field="p.street"/><br/>
-	                                      Ciudad:<span> </span><span t-field="p.city"/><br/>
-	                                      Télefono:<span> </span><span t-field="p.phone"/>
-	                               </p> 
-	                                </td>
-	                                <td><strong><p align="center"><span t-field="doc.name"/></p></strong></td>
-	                            </tr>
-	                            <tr>
-	                                <td colspan="2"><p align="center">Codigo de Barras</p></td>
-	                            </tr>
-	                     </table>
+                    <t t-foreach="doc.line_ids.partner_id[0]" t-as="p">
+                        <t t-if="doc.line_ids.partner_id[0]">
+                             <table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
+                                    <tr>
+                                        <th style="background-color:#CBCBCB">DATOS DEL TERCERO</th>
+                                        <th style="background-color:#CBCBCB"><p>COMPROBANTE DE EGRESO</p></th>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2" valign="middle" align="left">
+                                           <p>Razón Social:<span> </span><span t-field="doc.partner_id"/><br/>
+                                              NIT:<span> </span><span t-field="p.vat"/><br/>
+                                              Dirección:<span> </span><span t-field="p.street"/><br/>
+                                              Ciudad:<span> </span><span t-field="p.city"/><br/>
+                                              Télefono:<span> </span><span t-field="p.phone"/>
+                                       </p> 
+                                        </td>
+                                        <td><strong><p align="center"><span t-field="doc.name"/></p></strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <p align="center" t-field="doc.name" t-options="{'widget': 'barcode','width':250,'height':50}"/>
+                                        </td>
+                                    </tr>
+                             </table>
+                        </t>
+                        <t t-else="">
+                            <t t-set="doc.partner_id" t-as="p">
+                                 <table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
+                                        <tr>
+                                            <th style="background-color:#CBCBCB">DATOS DEL TERCERO</th>
+                                            <th style="background-color:#CBCBCB"><p>COMPROBANTE DE EGRESO</p></th>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2" valign="middle" align="left">
+                                               <p>Razón Social:<span> </span><span t-field="doc.partner_id"/><br/>
+                                                  NIT:<span> </span><span t-field="p.vat"/><br/>
+                                                  Dirección:<span> </span><span t-field="p.street"/><br/>
+                                                  Ciudad:<span> </span><span t-field="p.city"/><br/>
+                                                  Télefono:<span> </span><span t-field="p.phone"/>
+                                           </p> 
+                                            </td>
+                                            <td><strong><p align="center"><span t-field="doc.name"/></p></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><p align="center" t-field="doc.name"></p></td>
+                                        </tr>
+                                 </table>
+                            </t>
+                        </t>
                     </t>
                     <br/>
                     <table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
@@ -251,18 +299,18 @@
                           </tr>
                     </table>
                     <br/>
-                    <table width="100%" border="1" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td bordercolor=""><input type="text" class="signature"/></td>
-                            <td bordercolor="#FFFFFF"><input type="text" class="signature"/></td>
-                            <td bordercolor="#FFFFFF"><input type="text" class="signature"/></td>
-                            <td bordercolor="#FFFFFF"><input type="text" class="signature"/></td>
+                    <table width="100%" class='table table-borderless'>
+                        <tr style="border: 0;">
+                            <td ><input type="text" class="signature"/></td>
+                            <td ><input type="text" class="signature"/></td>
+                            <td ><input type="text" class="signature"/></td>
+                            <td ><input type="text" class="signature"/></td>
                         </tr>
                         <tr>
-                            <td bordercolor="#FFFFFF"><span align="center">Elaboró:NICOLLE MARIANA</span></td>
-                            <td bordercolor="#FFFFFF"><span align="center">Autorizado por</span></td>
-                            <td bordercolor="#FFFFFF"><span align="center">VoBo. Tesoreria</span></td>
-                            <td bordercolor="#FFFFFF"><span align="center">Recibi conforme</span></td>
+                            <td ><span align="center">Elaboró:NICOLLE MARIANA</span></td>
+                            <td ><span align="center">Autorizado por</span></td>
+                            <td ><span align="center">VoBo. Tesoreria</span></td>
+                            <td ><span align="center">Recibi conforme</span></td>
                         </tr>
                     </table>
                 </div>
