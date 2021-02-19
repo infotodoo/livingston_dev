@@ -60,7 +60,7 @@ class PurchaseOrder(models.Model):
         return res
 
     def validation(self):
-        budget = self.env['crossovered.budget'].search([])
+        budget = self.env['crossovered.budget'].search([('state','=','confirm')])
         for line in self.order_line:
             _logger.error("****************\nline: ")
             _logger.error(line.name)
