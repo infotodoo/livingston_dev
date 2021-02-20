@@ -9,5 +9,13 @@
             name="account_payment_print.action_report_payment_print_thomas" 
             file="account_payment_print.action_report_payment_print_thomas"
         />
+        <report 
+            string="Registro Contable" 
+            id="action_report_account_move_thomas" 
+            model="account.move" 
+            report_type="qweb-pdf"
+            name="account_payment_print.action_report_account_move_thomas" 
+            file="account_payment_print.action_report_account_move_thomas"
+        />
     </data>
 </odoo>
