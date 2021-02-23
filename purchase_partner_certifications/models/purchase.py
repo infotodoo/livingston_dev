@@ -14,7 +14,7 @@ class PurchaseOrder(models.Model):
     
     @api.depends('company_id')
     def _compute_bool(self):
-        if self.company_id.id == 1:
+        if self.company_id.id == 19:
             self.bool = True
         else:
             self.bool = False
