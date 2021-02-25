@@ -14,7 +14,7 @@
                 </xpath>
                 <xpath expr="//button[@name='button_validate']" position="after">
                     <button name="active_wizard_stock" type="object" string="Validate"  class="oe_highlight" groups="base.group_user" attrs="{'invisible': [('bool_wizard','=',False)]}"/>
-                    <field name="bool_wizard"/>
+                    <field name="bool_wizard" invisible="1"/>
                 </xpath>
                  <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                     <page name="sync" string="Sync Approve">

@@ -1,0 +1,293 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* distribution_assessment
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-16 20:17+0000\n"
+"PO-Revision-Date: 2021-02-16 20:17+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: distribution_assessment
+#: model:ir.actions.act_window,name:distribution_assessment.action_account_account
+#: model:ir.ui.menu,name:distribution_assessment.menu_account_account
+#: model_terms:ir.ui.view,arch_db:distribution_assessment.view_res_company_inherited
+msgid "Accounts"
+msgstr "Cuentas"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__alternative_center
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__alternative_center
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__alternative_center_id
+msgid "Alternative Center"
+msgstr "Centro Alternativo"
+
+#. module: distribution_assessment
+#: model_terms:ir.ui.view,arch_db:distribution_assessment.view_res_company_inherited
+msgid "Analytic Account"
+msgstr "Cuenta Analitica"
+
+#. module: distribution_assessment
+#: model:ir.model,name:distribution_assessment.model_account_analytic_distribution
+msgid "Analytic Account Distribution"
+msgstr "Distribución de Cuenta Analítica"
+
+#. module: distribution_assessment
+#: model:ir.model,name:distribution_assessment.model_account_analytic_tag
+msgid "Analytic Tags"
+msgstr "Etiquetas analíticas"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__code
+msgid "Code"
+msgstr "Codigo"
+
+#. module: distribution_assessment
+#: model:ir.model,name:distribution_assessment.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__company_id
+#: model_terms:ir.ui.view,arch_db:distribution_assessment.view_distribution_search
+msgid "Company"
+msgstr "Compañia"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__month
+msgid "Date"
+msgstr "Fecha"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__date_end
+msgid "Date End"
+msgstr "Fecha Fin"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__dispatch
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__dispatch
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__dispatch_id
+msgid "Dispatch"
+msgstr "Despacho"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: distribution_assessment
+#: model_terms:ir.ui.view,arch_db:distribution_assessment.distribution_assessment_report_view_tree_colombia
+msgid "Distribution Assessment"
+msgstr "Reparto"
+
+#. module: distribution_assessment
+#: model:ir.actions.act_window,name:distribution_assessment.action_report_distribution_assessment_tree_colombia
+#: model:ir.ui.menu,name:distribution_assessment.distribution_assessment_report_action
+msgid "Distribution Assessment Report"
+msgstr "Reporte de Reparto"
+
+#. module: distribution_assessment
+#: model:ir.ui.menu,name:distribution_assessment.distribution_assessment_report
+msgid "Distribution Assessment report"
+msgstr "Reporte de Reparto"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__disused_assets
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__disused_assets
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__disused_assets_id
+msgid "Disused Assets"
+msgstr "Activos en desuso"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_account_analytic_tag__fiscal_id
+msgid "Fiscal Year"
+msgstr "Año Fiscal"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__hours
+msgid "Hours"
+msgstr "Horas"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__id
+msgid "ID"
+msgstr ""
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__laboratory
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__laboratory
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__laboratory_id
+msgid "Laboratory"
+msgstr "Laboratorio"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__maintenance
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__maintenance
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__maintenance_id
+msgid "Maintenance"
+msgstr "Mantenimiento"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__management
+msgid "Management"
+msgstr "Gerencia"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__management
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__management_id
+msgid "Operation Management"
+msgstr "Gerencia de Operaciones"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__plan_department_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__plan_department
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__plan_department_id
+msgid "Plan Department"
+msgstr "Plan Departamental"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__plant_maintenance_id
+msgid "Plan Maintenance"
+msgstr "Plan de Mantenimiento"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__plant_overhead_id
+msgid "Plan Overhead"
+msgstr ""
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__plant_maintenance_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__plant_maintenance
+msgid "Plant Maintenance"
+msgstr "Planta de Mantenimiento"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__plant_overhead_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__plant_overhead
+msgid "Plant Overhead"
+msgstr ""
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__plant_support_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__plant_support
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__plant_support_id
+msgid "Plant Support"
+msgstr "Plan de Soporte"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__prepress_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__prepress
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__prepress_id
+msgid "Prepress"
+msgstr "Preimpresion"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__proyect_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__proyect
+msgid "Proyect"
+msgstr "Proyecto"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__proyect_id
+msgid "Proyect Movie Plant"
+msgstr ""
+
+#. module: distribution_assessment
+#: model_terms:ir.ui.view,arch_db:distribution_assessment.view_account_analytic_tag_inherited
+msgid "Real Percentage"
+msgstr "Porcentaje Real"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__rm_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__rm
+msgid "Rm"
+msgstr ""
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__rm_id
+msgid "Rm Interv Consum"
+msgstr ""
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__shipping_department_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__shipping_department
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__shipping_department_id
+msgid "Shipping Department"
+msgstr "Transporte Departamental"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_account_analytic_distribution__suggested_percentage
+msgid "Suggested Percentage"
+msgstr "Porcentaje Sugerido"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__supplies_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__supplies
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__supplies_id
+msgid "Supplies"
+msgstr "Suministros"
+
+#. module: distribution_assessment
+#: model:ir.model,name:distribution_assessment.model_report_distribution_assessment
+msgid "This is the lines in the Distribution Assessment report"
+msgstr ""
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__total_time
+msgid "Total Times"
+msgstr "Tiempo Total"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__transport_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__transport
+msgid "Transport"
+msgstr "Transporte"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__transport_id
+msgid "Transport Cost"
+msgstr "COsto de Transporte"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__warehouse_distribution_id
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__warehouse_distribution_id
+msgid "Warehouse"
+msgstr "Almacen"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_res_company__warehouse_distribution
+msgid "Warehouse Distribution"
+msgstr "Distribucion de Almacen"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__name
+#: model_terms:ir.ui.view,arch_db:distribution_assessment.view_distribution_search
+msgid "Workcenter"
+msgstr "Centro de Trabajo"
+
+#. module: distribution_assessment
+#: model_terms:ir.ui.view,arch_db:distribution_assessment.view_distribution_search
+msgid "distribution_filter"
+msgstr "Filtro de distribucion"
+
+#. module: distribution_assessment
+#: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__year
+msgid "end"
+msgstr "Fin"
+
+#. module: distribution_assessment
+#: model_terms:ir.ui.view,arch_db:distribution_assessment.distribution_assessment_report_view_tree_colombia
+msgid "hours"
+msgstr "Horas"

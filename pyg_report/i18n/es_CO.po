@@ -1,0 +1,161 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* pyg_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-25 20:42+0000\n"
+"PO-Revision-Date: 2021-02-25 20:42+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__code
+msgid "Account Analytic"
+msgstr "Cuenta Analítica"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__cif_real
+msgid "CIF Cost"
+msgstr "Costo CIF"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__standard_price
+msgid "Cost x Unit"
+msgstr "Costo por unidad"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__currency_id
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__product_delivery
+msgid "Delivered quantity"
+msgstr "Cantidad entregada"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__description
+msgid "Description"
+msgstr "Descripción"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__analytic_account_id
+msgid "Description Account Analytic"
+msgstr "Descripcion cuenta analitica"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__display_name
+msgid "Display Name"
+msgstr "Nombre Público"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__date_planned_finished
+msgid "End Date"
+msgstr "Fecha final"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__entry
+msgid "Entry"
+msgstr "Entrada"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__id
+msgid "ID"
+msgstr ""
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp____last_update
+msgid "Last Modified on"
+msgstr "Última Modificación el"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__liquidation_order
+msgid "Liquidation Order"
+msgstr "Liquidacion de orden"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__maq_real
+msgid "Machine Cost"
+msgstr "Costo maquina"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__value
+msgid "Material cost"
+msgstr "Costo material"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__sale
+msgid "No.Order"
+msgstr "No.Orden"
+
+#. module: pyg_report
+#: model:ir.actions.act_window,name:pyg_report.action_report_zpp_tree
+msgid "PYG Report"
+msgstr "Reporte PYG"
+
+#. module: pyg_report
+#: model:ir.ui.menu,name:pyg_report.pyg_report_action
+msgid "PYG Report Product Line"
+msgstr "Lineas del reporte pyg"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__name
+msgid "Production Order"
+msgstr "Orden de producción"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__product_qty
+msgid "Quantity Planned"
+msgstr "Cantidad planeada"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__amount_total
+msgid "Sale Price"
+msgstr "Precio de venta"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__date_planned_start
+msgid "Start Date"
+msgstr "Fecha de inicio"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__product_requisition
+msgid "Third Service"
+msgstr "Servicio a tercero"
+
+#. module: pyg_report
+#: model:ir.model,name:pyg_report.model_report_zpp
+msgid "This is the lines in the zpp report"
+msgstr ""
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__total_cost
+msgid "Total Cost"
+msgstr "Costo total"
+
+#. module: pyg_report
+#: model:ir.model.fields,field_description:pyg_report.field_report_zpp__mod_real
+msgid "Workforce Cost"
+msgstr "Costo mano de obra"
+
+#. module: pyg_report
+#: model_terms:ir.ui.view,arch_db:pyg_report.zpp_report_view_tree
+msgid "ZPP lines"
+msgstr "Lineas del ZPP"
+
+#. module: pyg_report
+#: model:ir.ui.menu,name:pyg_report.pyg_report
+msgid "ZPP report"
+msgstr "Reporte ZPP"

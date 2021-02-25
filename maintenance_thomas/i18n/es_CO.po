@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-16 16:11+0000\n"
-"PO-Revision-Date: 2020-09-16 16:11+0000\n"
+"POT-Creation-Date: 2021-02-22 15:49+0000\n"
+"PO-Revision-Date: 2021-02-22 15:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,34 +16,95 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: maintenance_thomas
-#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__actual_location
-msgid "Actual machine location"
-msgstr "Ubicación actual de la maquina"
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "<strong>CONEXIÓN</strong>"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "<strong>OBSERVACIONES</strong>"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "<strong>REQUERIMIENTOS</strong>"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Agua"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Aire Acondicionado"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Aire Comprimido"
+msgstr ""
 
 #. module: maintenance_thomas
 #: model:ir.model.fields.selection,name:maintenance_thomas.selection__maintenance_request__maintenance_type__autonomous
 msgid "Autonomous"
-msgstr "Autonomo"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Año de fabricación"
+msgstr ""
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__bool_quantity
 msgid "Bool Quantity"
-msgstr "Booleano de Cantidad"
+msgstr "Cantidad booleano"
 
 #. module: maintenance_thomas
-#: model:maintenance.stage,name:maintenance_thomas.stage_9
-msgid "CANCELED WITH NOVELTY"
-msgstr "CANCELADO SIN NOVEDAD"
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "CODIGO INTERNO"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.actions.report,name:maintenance_thomas.report_custom
+msgid "CV Equipment"
+msgstr ""
 
 #. module: maintenance_thomas
 #: model:ir.model.fields.selection,name:maintenance_thomas.selection__maintenance_request__metodology_control__calibration
 msgid "Calibration"
+msgstr "Calibracion"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Capacidad"
 msgstr ""
 
 #. module: maintenance_thomas
-#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__partner_client_id
-msgid "Client"
-msgstr "Cliente"
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__capacity
+msgid "Capacity"
+msgstr "Capacidad"
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__compressed_air
+msgid "Compressed Air"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__conditioning_air
+msgid "Conditioning Air"
+msgstr "Aire Acondicionado"
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__connection
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.view_maintenance_equipment_form_inherit
+msgid "Connection"
+msgstr "Conexion"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Consumo"
+msgstr ""
 
 #. module: maintenance_thomas
 #: model:ir.model.fields.selection,name:maintenance_thomas.selection__maintenance_request__maintenance_type__corrective
@@ -53,11 +114,21 @@ msgstr "Correctivo"
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_wizard_maintenance__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creado por"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_wizard_maintenance__create_date
 msgid "Created on"
+msgstr "Creado"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "DESCRIPCION GENERAL"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Descripción"
 msgstr ""
 
 #. module: maintenance_thomas
@@ -68,7 +139,7 @@ msgstr ""
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_wizard_maintenance__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nombre Público"
 
 #. module: maintenance_thomas
 #: model:ir.model,name:maintenance_thomas.model_hr_employee
@@ -76,9 +147,24 @@ msgid "Employee"
 msgstr "Empleado"
 
 #. module: maintenance_thomas
-#: model:maintenance.stage,name:maintenance_thomas.stage_8
-msgid "FINALIZED"
-msgstr "FINALIZADO"
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__machine_id
+msgid "Equipment"
+msgstr "Equipamiento"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.view_maintenance_equipment_form_inherit
+msgid "Equipment Name"
+msgstr "Nombre del equipo"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Fabricante"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__fabrication_date
+msgid "Fabrication Year"
+msgstr "Año de fabricacion"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__fercuency
@@ -88,7 +174,7 @@ msgstr "Frecuencia"
 #. module: maintenance_thomas
 #: model:ir.module.category,description:maintenance_thomas.module_category_maintenance_thomas_production
 msgid "Helps you manage maintenance."
-msgstr "Ayuda a manejar Mantenimiento en Thomas Producción"
+msgstr "Ayuda al manejo de mantenimiento"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_wizard_maintenance__id
@@ -96,24 +182,55 @@ msgid "ID"
 msgstr ""
 
 #. module: maintenance_thomas
-#: model:maintenance.stage,name:maintenance_thomas.stage_6
-msgid "IN PLANNING"
-msgstr "EN PLANEACION"
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "INFORMACION TECNICA"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__image
+msgid "Image"
+msgstr "Imagen"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Insumos"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__intake
+msgid "Intake"
+msgstr "Consumo"
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__internal_code
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.view_maintenance_equipment_form_inherit
+msgid "Internal Code"
+msgstr "Codigo interno"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_wizard_maintenance____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Última Modificación el"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_wizard_maintenance__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Actualizado por"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_wizard_maintenance__write_date
 msgid "Last Updated on"
+msgstr "Actualizado"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "MT-R011<br/>Pagina 1 de 1<br/>Actualizacion 2"
 msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__machine_type
+msgid "Machine Type"
+msgstr "Tipo de maquina"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_hr_employee__maintenance_id
@@ -129,7 +246,7 @@ msgstr "Equipo de mantenimiento"
 #. module: maintenance_thomas
 #: model:ir.module.category,name:maintenance_thomas.module_category_maintenance_thomas_production
 msgid "Maintenance Production Thomas"
-msgstr "Mantenimiento Thomas Producción"
+msgstr "Mantenimiento Thomas Produccion"
 
 #. module: maintenance_thomas
 #: model:ir.model,name:maintenance_thomas.model_maintenance_request
@@ -142,30 +259,47 @@ msgid "Maintenance Type"
 msgstr "Tipos de mantenimiento"
 
 #. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__maker
+msgid "Maker"
+msgstr "Fabricante"
+
+#. module: maintenance_thomas
 #: model:ir.model.fields.selection,name:maintenance_thomas.selection__maintenance_request__variable__mass
 msgid "Mass"
-msgstr ""
+msgstr "Masa"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__metodology_control
 #: model_terms:ir.ui.view,arch_db:maintenance_thomas.view_maintenance_request_form_inherit
 msgid "Metodology Control"
-msgstr "Control Metodologico"
+msgstr "Control metodologico"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__mistake_equipment
 msgid "Mistake Equipment"
-msgstr "Error del Equipo"
+msgstr "Error de equipo"
 
 #. module: maintenance_thomas
-#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__model
-msgid "Model"
-msgstr "Modelo"
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Modelo"
+msgstr ""
 
 #. module: maintenance_thomas
-#: model:maintenance.stage,name:maintenance_thomas.stage_5
-msgid "NEW REQUEST"
-msgstr "Nueva solicitud"
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "NOMBRE"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__name_production
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.view_maintenance_equipment_form_inherit
+msgid "Name"
+msgstr "Nombre"
+
+#. module: maintenance_thomas
+#: code:addons/maintenance_thomas/models/maintenance_request.py:0
+#, python-format
+msgid "New"
+msgstr "Nuevo"
 
 #. module: maintenance_thomas
 #: model_terms:ir.ui.view,arch_db:maintenance_thomas.view_maintenance_request_form_inherit
@@ -174,14 +308,45 @@ msgid "Notify"
 msgstr "Notificar"
 
 #. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "N° Serie"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__observation
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.view_maintenance_equipment_form_inherit
+msgid "Observations"
+msgstr "Observaciones"
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__origin
+msgid "Origin Country"
+msgstr "Compañia de origen"
+
+#. module: maintenance_thomas
 #: model:ir.model.fields.selection,name:maintenance_thomas.selection__maintenance_request__maintenance_type__pdae
 msgid "PDAE"
 msgstr ""
 
 #. module: maintenance_thomas
-#: model:maintenance.stage,name:maintenance_thomas.stage_7
-msgid "PROGRAMMED"
-msgstr "PROGRAMADO"
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Pais Origen"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__phone
+msgid "Phone"
+msgstr "Teléfono"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Potencia"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__power
+msgid "Power"
+msgstr "Poder"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields.selection,name:maintenance_thomas.selection__maintenance_request__maintenance_type__preventive
@@ -189,24 +354,56 @@ msgid "Preventive"
 msgstr "Preventivo"
 
 #. module: maintenance_thomas
-#: model:maintenance.stage,name:maintenance_thomas.stage_10
-msgid "QUALITY"
-msgstr "CALIDAD"
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Proveedor"
+msgstr ""
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__range_measure
 msgid "Range Measure"
-msgstr "Rango Medición"
+msgstr "Medida de rango"
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__requirement
+msgid "Requirement"
+msgstr "Requerimiento"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.view_maintenance_equipment_form_inherit
+msgid "Requirements"
+msgstr "Requerimientos"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid ""
+"TARJETA DE INFORMACION BASICA DE <br/>\n"
+"                            MAQUINARIA"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.view_maintenance_equipment_form_inherit
+msgid "Technical Information"
+msgstr "Información Técnica"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__employee_ids
 msgid "Technicians"
-msgstr "Tecnicos"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Teléfono"
+msgstr ""
 
 #. module: maintenance_thomas
 #: model:ir.model.fields.selection,name:maintenance_thomas.selection__maintenance_request__variable__temperature
 msgid "Temperature"
-msgstr "Temperatuta"
+msgstr "Temperatura"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Tipo de maquina"
+msgstr ""
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__tolerance
@@ -214,14 +411,14 @@ msgid "Tolerance"
 msgstr "Tolerancia"
 
 #. module: maintenance_thomas
-#: model_terms:ir.ui.view,arch_db:maintenance_thomas.maintenance_equipment_thomas_form
-msgid "Ubicacion actual de la maquina"
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "UBICACION"
 msgstr ""
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__uncertainty_measure
 msgid "Uncertainty Measure"
-msgstr "Incertidumbre de la medición"
+msgstr "Medida de incertidumbre"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__unit_measure
@@ -239,24 +436,55 @@ msgid "Users"
 msgstr "Usuarios"
 
 #. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__check
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__check
+msgid "Validador"
+msgstr "Validador"
+
+#. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_request__variable
 msgid "Variable to size"
-msgstr "Variable que mide"
+msgstr "Variable de magnitud"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Velocidad"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__velocity
+msgid "Velocity"
+msgstr "Velocidad"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields.selection,name:maintenance_thomas.selection__maintenance_request__metodology_control__verification
 msgid "Verification"
-msgstr "Verificación"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__voltage_connection
+msgid "Voltage Connection"
+msgstr "Voltaje de conexion"
+
+#. module: maintenance_thomas
+#: model_terms:ir.ui.view,arch_db:maintenance_thomas.report_custom_template
+msgid "Voltaje de conexión"
+msgstr ""
+
+#. module: maintenance_thomas
+#: model:ir.model.fields,field_description:maintenance_thomas.field_maintenance_equipment__water
+msgid "Water"
+msgstr "Agua"
 
 #. module: maintenance_thomas
 #: model_terms:ir.ui.view,arch_db:maintenance_thomas.view_message_activity
 msgid "Wizard Maintenance"
-msgstr "Ventana de Mantenimiento"
+msgstr "Ventana de mantenimiento"
 
 #. module: maintenance_thomas
 #: model:ir.actions.act_window,name:maintenance_thomas.action_create_maintenance
 msgid "create maintenance"
-msgstr "Crear Mantenimiento"
+msgstr "Crear mantenimiento"
 
 #. module: maintenance_thomas
 #: model:ir.model.fields,field_description:maintenance_thomas.field_wizard_maintenance__message
@@ -266,4 +494,4 @@ msgstr "Observaciones"
 #. module: maintenance_thomas
 #: model:ir.model,name:maintenance_thomas.model_wizard_maintenance
 msgid "wizard create maintenance"
-msgstr "Ventana crear Mantenimiento"
+msgstr "Ventana creacion de mantenimiento"
