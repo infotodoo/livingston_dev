@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-16 20:17+0000\n"
-"PO-Revision-Date: 2021-02-16 20:17+0000\n"
+"POT-Creation-Date: 2021-02-25 21:06+0000\n"
+"PO-Revision-Date: 2021-02-25 21:06+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "Cuentas"
 #: model:ir.model.fields,field_description:distribution_assessment.field_res_company__alternative_center
 #: model:ir.model.fields,field_description:distribution_assessment.field_res_company__alternative_center_id
 msgid "Alternative Center"
-msgstr "Centro Alternativo"
+msgstr "Infraestructura"
 
 #. module: distribution_assessment
 #: model_terms:ir.ui.view,arch_db:distribution_assessment.view_res_company_inherited
@@ -80,7 +80,7 @@ msgstr "Despacho"
 #. module: distribution_assessment
 #: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nombre Público"
 
 #. module: distribution_assessment
 #: model_terms:ir.ui.view,arch_db:distribution_assessment.distribution_assessment_report_view_tree_colombia
@@ -130,7 +130,7 @@ msgstr "Laboratorio"
 #. module: distribution_assessment
 #: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Última Modificación el"
 
 #. module: distribution_assessment
 #: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__maintenance
@@ -242,7 +242,7 @@ msgstr "Suministros"
 #. module: distribution_assessment
 #: model:ir.model,name:distribution_assessment.model_report_distribution_assessment
 msgid "This is the lines in the Distribution Assessment report"
-msgstr ""
+msgstr "Reporte de Reparto"
 
 #. module: distribution_assessment
 #: model:ir.model.fields,field_description:distribution_assessment.field_report_distribution_assessment__total_time
