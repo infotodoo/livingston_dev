@@ -11,7 +11,7 @@
     "depends": ["stock"],
     "data": [
         'security/ir.model.access.csv',
-        'views/stock_picking_view.xml',
+        #'views/stock_picking_view.xml',
     ],
     "installable": True,
 }
