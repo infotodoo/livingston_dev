@@ -13,9 +13,9 @@
                    <field name="total"/>
                    <field name="unit_price"/>
                    <field name="sale_price"/>
-                   <field name="cost_by_sale"/>
+                   <!--<field name="cost_by_sale"/>-->
                    <field name="vnr_estimate"/>
-                   <field name="minor"/>
+                   <!--<field name="minor"/>-->
                    <field name="unit_adjustment"/>
                    <field name="total_adjustment"/>
                 </tree>
@@ -26,5 +26,12 @@
             <field name="res_model">report.vnr</field>
             <field name="view_mode">tree</field>
         </record>
+        <record id="action_server_journal_vnr" model="ir.actions.server">
+          <field name="name">Create Journal</field>
+          <field name="model_id" ref="model_report_vnr"/>
+          <field name="binding_view_types">list</field>
+          <field name="state">code</field>
+          <field name="code">action = records.vnr_journal()</field>
+      </record>
     </data>
 </odoo>
