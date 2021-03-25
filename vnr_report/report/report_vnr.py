@@ -17,15 +17,16 @@ class ZppReportLine(models.Model):
     #name = fields.Char('Mayor Cte',readonly=True)
     default_code = fields.Char('Material',readonly=True)
     description = fields.Char('Description',readonly=True)
+    date = fields.Char('Date',readonly=True)
     product_id = fields.Many2one('product.product','Product',readonly=True)
     total_stock = fields.Float('Total Stock',readonly=True)
     total = fields.Float('Total Value',readonly=True)
     unit_price = fields.Float('Unit Value',readonly=True)
     sale_price = fields.Float('Sale price',readonly=True)
-    #cost_by_sale = fields.Float('Cost by sale Unitary',readonly=True)
+    cost_by_sale = fields.Float('Cost by sale Unitary',readonly=True)
     vnr_estimate = fields.Float('VNR estimate',readonly=True)
     unit_adjustment = fields.Float('Unit Adjustment',readonly=True)
-    #minor = fields.Float('Minor between VNR and CTO',compute="_compute_minor")
+    minor = fields.Float('Minor between VNR and CTO',compute="_compute_minor")
     total_adjustment = fields.Float('Total Adjustment',compute="_compute_total_adjustment")
     
     
@@ -69,6 +70,12 @@ class ZppReportLine(models.Model):
             where pp.product_tmpl_id = pt.id
         )as description,
         (
+            select to_char(svl.create_date,'DD/MM/YYYY')
+            from stock_valuation_layer svl
+            where pp.id = svl.product_id
+            group by pp.id,to_char(svl.create_date,'DD/MM/YYYY')
+        )as date,
+        (
             select sum(svl.quantity)
             from stock_valuation_layer svl
             where pp.id = svl.product_id
@@ -88,15 +95,22 @@ class ZppReportLine(models.Model):
             from product_pricelist_item ppi
             where pp.id = ppi.product_id
         )as sale_price,
-        --(
-        --    select (case when (sum(ppi.cost_by_sale)/count(ppi.product_id)) = 0 
-        --    then 0 
-        --    else 
-        --    ppi.cost_by_sale end) + (sum(svl.value)/sum(svl.quantity)) 
-        --    from product_pricelist_item ppi 
-        --    left join stock_valuation_layer svl on pp.id = svl.product_id 
-        --    group by ppi.product_id,ppi.cost_by_sale,svl.quantity,svl.value
-        --)as cost_by_sale,
+            (select  product_id,sum(value) as value,sum(quantity) as quantity  
+            from stock_valuation_layer group by product_id) as a,
+            (
+            select  a.product_id,a.value,a.quantity,
+            ROW_NUMBER () OVER (partition by svl.product_id,To_char(svl.create_date, 'DD/MM/YYYY')) as cont_fecha,
+            To_char(svl.create_date, 'DD/MM/YYYY') as fecha
+            from stock_valuation_layer svl
+            join a on a.product_id=svl.product_id
+            group by a.product_id,svl.product_id,svl.create_date,a.value,a.quantity
+            order by 1
+            ) as b,
+            ( select product_id,avg(cost_by_sale) as cost from product_pricelist_item  group by product_id ) as c,
+            ( select b.product_id,b.fecha,b.value, b.quantity, (b.value/ b.quantity) as prom, 
+            c.cost from b full join c on c.product_id=b.product_id where cont_fecha=1) as d,
+            (select (case when cost>0 then prom+cost end) as cost from d
+        ) as cost_by_sale,
         (
             select sum(value)
             from (
