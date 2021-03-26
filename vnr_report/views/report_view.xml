@@ -6,7 +6,7 @@
             <field name="model">report.vnr</field>
             <field name="arch" type="xml">
                 <tree string="VNR lines" create="0" edit="0">
-                   <!--<field name="name"/>-->
+                   <field name="name"/>
                    <field name="default_code"/>
                    <field name="description"/>
                    <field name="date"/>
@@ -14,7 +14,7 @@
                    <field name="total"/>
                    <field name="unit_price"/>
                    <field name="sale_price"/>
-                   <field name="cost_by_sale"/>
+                   <field name="test"/>
                    <field name="vnr_estimate"/>
                    <field name="minor"/>
                    <field name="unit_adjustment"/>

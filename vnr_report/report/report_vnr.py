@@ -14,7 +14,7 @@ class ZppReportLine(models.Model):
     _description = 'This is the lines in the VNR report'
     _rec_name = 'description'
     
-    #name = fields.Char('Mayor Cte',readonly=True)
+    name = fields.Char('Mayor Cte',compute='_compute_name')
     default_code = fields.Char('Material',readonly=True)
     description = fields.Char('Description',readonly=True)
     date = fields.Char('Date',readonly=True)
@@ -23,12 +23,21 @@ class ZppReportLine(models.Model):
     total = fields.Float('Total Value',readonly=True)
     unit_price = fields.Float('Unit Value',readonly=True)
     sale_price = fields.Float('Sale price',readonly=True)
-    cost_by_sale = fields.Float('Cost by sale Unitary',readonly=True)
     vnr_estimate = fields.Float('VNR estimate',readonly=True)
     unit_adjustment = fields.Float('Unit Adjustment',readonly=True)
     minor = fields.Float('Minor between VNR and CTO',compute="_compute_minor")
     total_adjustment = fields.Float('Total Adjustment',compute="_compute_total_adjustment")
+    test = fields.Float('Cost by sale Unitary',compute='_compute_test')
     
+    @api.depends('product_id')
+    def _compute_name(self):
+        for record in self:
+            record.name = ''
+            _logger.error('\n name')
+            _logger.error(record.name)
+            if record.product_id.categ_id.property_stock_valuation_account_id.code:
+                record.name = record.product_id.categ_id.property_stock_valuation_account_id.code
+                _logger.error(record.name)
     
     @api.depends('unit_adjustment','total')
     def _compute_total_adjustment(self):
@@ -42,86 +51,88 @@ class ZppReportLine(models.Model):
     def _compute_minor(self):
         for record in self:
             if record.vnr_estimate > 0:
-                record.minor = record.cost_by_sale
+                record.minor = record.test
             elif record.vnr_estimate == 0:
                 record.minor = 0
             else:
                 record.minor = record.sale_price
+                
+                
+    def _compute_test(self):
+        list = []
+        query = """
+                WITH 
+
+                a as (select  product_id,sum(value) as value,sum(quantity) as quantity  
+                from stock_valuation_layer group by product_id),
+                b as (select  a.product_id,a.value,a.quantity,
+                ROW_NUMBER () OVER (partition by svl.product_id,To_char(svl.create_date, 'DD/MM/YYYY')) as cont_fecha ,
+                To_char(svl.create_date, 'DD/MM/YYYY') as fecha
+                from stock_valuation_layer svl
+                join a on a.product_id=svl.product_id
+                group by a.product_id,svl.product_id,svl.create_date,a.value,a.quantity
+                order by 1),
+                c as ( select product_id,avg(cost_by_sale) as cost 
+                from product_pricelist_item  group by product_id ),
+                d as( select b.product_id,b.fecha,b.value, b.quantity, (b.value/ b.quantity) as prom, c.cost 
+                from b full join c on c.product_id=b.product_id where cont_fecha=1)
+                select  d.product_id,(case when cost is null or cost<=0 then 0 else prom+cost  end) as cost from d;
+                """
+        self.env.cr.execute(query, (tuple(self.ids), ))
+        for product_id, cost in self.env.cr.fetchall():
+            _logger.error('\n lista')
+            list.append([product_id, cost])
+            _logger.error(list)
+            for record,enumerate in list:
+                for product in self:
+                    _logger.error('\nlist.product_id')
+                    _logger.error(record)
+                    if product.product_id.id == record:
+                        product.test = enumerate
+                        
    
     
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_vnr')
         query = """
-        CREATE or REPLACE VIEW report_vnr AS(
+                CREATE or REPLACE VIEW report_vnr AS(
         
         select 
         row_number() OVER (ORDER BY pp.id) as id,
-        --(
-        --    select aa.code from
-        --    account_account aa letf join product_category pc 
-        --    on (pc.property_account_creditor_price_difference_categ = aa.id)
-        --    where pp.categ_id = pc.id
-        --)as name,
         pp.id as product_id,
         pp.default_code,
+        (date(svl.create_date)) as date,
         (
             select pt.name from
             product_template pt
             where pp.product_tmpl_id = pt.id
         )as description,
         (
-            select to_char(svl.create_date,'DD/MM/YYYY')
-            from stock_valuation_layer svl
-            where pp.id = svl.product_id
-            group by pp.id,to_char(svl.create_date,'DD/MM/YYYY')
-        )as date,
-        (
-            select sum(svl.quantity)
-            from stock_valuation_layer svl
-            where pp.id = svl.product_id
+        sum(svl.quantity)
         )as total_stock,
         (
-            select sum(svl.value)
-            from stock_valuation_layer svl
-            where pp.id = svl.product_id
+        sum(svl.value) 
         )as total,
         (
-            select sum(svl.value)/sum(svl.quantity)
-            from stock_valuation_layer svl
-            where pp.id = svl.product_id
+        sum(svl.value)/sum(svl.quantity)
         )as unit_price,
         (
-            select sum(ppi.fixed_price)/count(ppi.product_id)
+            select avg(ppi.fixed_price)
             from product_pricelist_item ppi
             where pp.id = ppi.product_id
         )as sale_price,
-            (select  product_id,sum(value) as value,sum(quantity) as quantity  
-            from stock_valuation_layer group by product_id) as a,
-            (
-            select  a.product_id,a.value,a.quantity,
-            ROW_NUMBER () OVER (partition by svl.product_id,To_char(svl.create_date, 'DD/MM/YYYY')) as cont_fecha,
-            To_char(svl.create_date, 'DD/MM/YYYY') as fecha
-            from stock_valuation_layer svl
-            join a on a.product_id=svl.product_id
-            group by a.product_id,svl.product_id,svl.create_date,a.value,a.quantity
-            order by 1
-            ) as b,
-            ( select product_id,avg(cost_by_sale) as cost from product_pricelist_item  group by product_id ) as c,
-            ( select b.product_id,b.fecha,b.value, b.quantity, (b.value/ b.quantity) as prom, 
-            c.cost from b full join c on c.product_id=b.product_id where cont_fecha=1) as d,
-            (select (case when cost>0 then prom+cost end) as cost from d
-        ) as cost_by_sale,
         (
             select sum(value)
             from (
-               select (sum(ppi.fixed_price)/count(ppi.product_id)) as value
+               select (avg(ppi.fixed_price)) as value
                from product_pricelist_item ppi
                where pp.id = ppi.product_id
 
                 UNION ALL
                 
-                select (sum(ppi.cost_by_sale)/count(ppi.product_id) + (
-                select sum(svl.value)/sum(svl.quantity) from stock_valuation_layer svl where pp.id = svl.product_id) * (-1)) as value
+                select (avg(ppi.cost_by_sale) + (
+                select sum(svl.value)/sum(svl.quantity) 
+                from stock_valuation_layer svl where pp.id = svl.product_id) * (-1)) as value
                 from product_pricelist_item ppi
                 where pp.id = ppi.product_id
                 )as vnr
@@ -129,20 +140,23 @@ class ZppReportLine(models.Model):
         (
             select sum(value)
             from (
-               select (sum(ppi.fixed_price)/count(ppi.product_id)) as value
+               select (avg(ppi.fixed_price)) as value
                from product_pricelist_item ppi
                where pp.id = ppi.product_id
 
                 UNION ALL
                 
-                select (sum(ppi.cost_by_sale)/count(ppi.product_id) + (
-                select sum(svl.value)/sum(svl.quantity) from stock_valuation_layer svl where pp.id = svl.product_id) * (-1)) as value
+                select (avg(ppi.cost_by_sale) + (
+                select sum(svl.value)/sum(svl.quantity) 
+                from stock_valuation_layer svl where pp.id = svl.product_id) * (-1)) as value
                 from product_pricelist_item ppi
                 where pp.id = ppi.product_id
                 )as vnr
         )as unit_adjustment
         from product_product pp
-        where 1=1
+        left join stock_valuation_layer svl on (svl.product_id = pp.id)
+        where 1=1 
+        group by pp.id,date(svl.create_date)
         );
         """
         self.env.cr.execute(query)
